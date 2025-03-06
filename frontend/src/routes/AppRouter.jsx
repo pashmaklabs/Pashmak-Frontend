@@ -1,11 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import Signup from "../pages/SignupPage";
-import routes from "./Routes";
+import routes from "./Routes";  
+import Login from "../pages/Login";  
+import ForgetPassword from "../pages/ForgetPassword"; 
+
 
 function AppRouter() {
   return (
     <Routes>
-      <Route path={routes.signup} element={<Signup />} />
+      <Route path={routes.login} element={<Login />} />  
+      <Route path={routes.ForgetPassword} element={<ForgetPassword />}/>
     </Routes>
   );
 }
