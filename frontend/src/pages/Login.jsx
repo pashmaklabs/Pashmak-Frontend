@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import EmailInput from '../components/EmailInput';
 import VerificationCode from '../components/VerificationCode';
-import SignUp from '../components/SignUp';
 import PasswordLogin from '../components/PasswordLogin';
-import useStore from '../store/store';
 
 const Login = () => {
-    //Steps: 'Email', 'Verification', 'Signup', 'Password'
-    const [step, setStep] = UseState ('email');
+    //Steps: 'Email', 'Verification', 'Password'
+    const [step, setStep] = useState ('email')
     const [email, setEmail] = useState('');
     const [userExists, setUserExists] = useState(false);
 
@@ -28,15 +26,10 @@ const Login = () => {
       if (userExists) {
         // تایید با ایمیل انجام شده برای ورود موارد لازم 
       } else {
-        setStep('signup');
+        // ثبتنام تایید شده
       }
     };
-  
-    const handleSignUpSuccess = () => {
-      // ثبت نام اوکی بوده کارای لازمو انجام بدیم
-      // مثلا ست کردن توکن و ...
-    };
-  
+    
     const handlePasswordLoginSuccess = () => {
       // ورود با رمز اوکی بوده کارای لازم انجام بشه
     };
@@ -52,7 +45,6 @@ const Login = () => {
             showPasswordLoginButton={userExists}
           />
         )}
-        {step === 'signup' && <SignUp email={email} handleSignUpSuccess={handleSignUpSuccess} />}
         {step === 'password' && <PasswordLogin  handlePasswordLoginSuccess={handlePasswordLoginSuccess} />}
       </div>
     );
