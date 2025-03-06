@@ -11,12 +11,12 @@ const PasswordLogin = ({ handlePasswordLoginSuccess }) => {
     // ارسال رمز به بک و تایید
     const isValid = true; // جواب بک
     if (isValid) {
-        handlePasswordLoginSuccess();
+      handlePasswordLoginSuccess();
     }
   };
 
-  const handleChangePasswordClick = () => {
-    navigate('/change-password/?ForgetPassword=true'); // رفتن به صفحه تغییر رمز
+  const handleForgetPasswordClick = () => {
+    navigate('/change-password'); // رفتن به صفحه تغییر رمز
   };
 
   return (
@@ -31,7 +31,7 @@ const PasswordLogin = ({ handlePasswordLoginSuccess }) => {
         />
         <button type="submit">Login</button>
       </form>
-      <button onClick={handleChangePasswordClick}>Forgot Password?</button>
+      <button onClick={handleForgetPasswordClick}>Forgot Password?</button>
     </div>
   );
 };

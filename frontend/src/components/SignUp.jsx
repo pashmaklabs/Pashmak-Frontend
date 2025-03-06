@@ -11,6 +11,7 @@ const SignUp = ({ email, handleSignUpSuccess }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // validation
     //باید چک کنیم ثبت نام موفق بوده یا نه
     handleSignUpSuccess();
   };
@@ -31,6 +32,13 @@ const SignUp = ({ email, handleSignUpSuccess }) => {
         placeholder="Enter your password"
         required
       />
+      <input
+          type="password"
+          value={userData.confirm_password}
+          onChange={(e) => setUserData({ ...userData, confirm_password: e.target.value })}
+          placeholder="Confirm your password"
+          required
+        />
       <button type="submit">Sign Up</button>
     </form>
   );

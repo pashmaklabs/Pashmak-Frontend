@@ -7,7 +7,7 @@ import useStore from '../store/store';
 
 const Login = () => {
     //Steps: 'Email', 'Verification', 'Signup', 'Password'
-    const { step, setStep } = useStore(); // consting [step, settep] = Usestate ('email'); If we don't want to use Global
+    const [step, setStep] = UseState ('email');
     const [email, setEmail] = useState('');
     const [userExists, setUserExists] = useState(false);
 

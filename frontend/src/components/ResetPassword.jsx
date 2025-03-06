@@ -1,24 +1,17 @@
 import  { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import useStore from '../store/store'; 
 
-const SetPassword = ({ handleSetPasswordSuccess, isFromForgetPassword = false }) => {
+const ResetPassword = ({ handleResetPasswordSuccess }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const navigate = useNavigate(); 
-  const { setStep } = useStore()
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    // validation انجام میشه
     // ارسال رمز به بک
     const isSuccess = true; // جواب بک
     if (isSuccess) {
-      if (isFromForgetPassword) { // رفتن به صفحه لاگین در مرحله وارد کردن رمز اگر از فراموشی رمز اومده بود
-        setStep('password'); 
-        navigate('/login'); 
-      } else {
-        handleSetPasswordSuccess(); 
-      }
+      handleResetPasswordSuccess(); 
     }
   };
 
@@ -46,9 +39,9 @@ const SetPassword = ({ handleSetPasswordSuccess, isFromForgetPassword = false })
   );
 };
 
-SetPassword.propTypes = {
-  handleSetPasswordSuccess: PropTypes.func.isRequired,
+ResetPassword.propTypes = {
+  handleResetPasswordSuccess: PropTypes.func.isRequired,
   isFromForgetPassword: PropTypes.bool, 
 };
 
-export default SetPassword;
+export default ResetPassword;

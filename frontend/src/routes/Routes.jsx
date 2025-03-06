@@ -1,8 +1,7 @@
 const routes = {
     home: "/",
     login: '/login',
-    change_password: "/change-password",
-    signup: "/signup",
+    ForgetPassword: "/change-password",
   };
   
   export default routes;
