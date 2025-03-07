@@ -2,12 +2,14 @@ import { useState } from 'react';
 import EmailInput from '../components/EmailInput';
 import VerificationCode from '../components/VerificationCode';
 import PasswordLogin from '../components/PasswordLogin';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     //Steps: 'Email', 'Verification', 'Password'
     const [step, setStep] = useState ('email')
     const [email, setEmail] = useState('');
     const [userExists, setUserExists] = useState(false);
+    const navigate = useNavigate(); 
 
     const handleEmailSubmit = (email) => {
         // اینجا باید ای پی ای بک کال کنیم ببینیم ثبت نام شده یا نه
@@ -27,6 +29,7 @@ const Login = () => {
         // تایید با ایمیل انجام شده برای ورود موارد لازم 
       } else {
         // ثبتنام تایید شده
+        navigate("/")
       }
     };
     
