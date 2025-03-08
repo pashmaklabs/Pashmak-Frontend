@@ -29,7 +29,7 @@ const Login = () => {
         // تایید با ایمیل انجام شده برای ورود موارد لازم 
       } else {
         // ثبتنام تایید شده
-        navigate("/")
+        navigate("/complete-profile");
       }
     };
     
