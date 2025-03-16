@@ -6,6 +6,7 @@ import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
 import routes from "../routes/Routes";
 import { useLoginStep, useEmail } from "../stores/login";
+import { usePostRequest } from "../services/api"; // Import the usePostRequest hook from your API configuration
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
@@ -13,17 +14,31 @@ const Login = () => {
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
+  // Use the usePostRequest hook for email submission
+  const { mutate: submitEmail, isLoading } = usePostRequest();
+
   const handleEmailSubmit = (email) => {
-    // Request to Back to Find Out That User Was Going to Sign Up or Login
-    // Show in the case of Error
-    setUserExists(true); // Back Answer
-    setEmail(email);
-    setStep("verification");
+    setEmail(email); // Save the email in the store
+
+    // Use the submitEmail mutation to post the email
+    submitEmail(
+      { url: "/send-otp", data: { email } },
+      {
+        onSuccess: (data) => {
+          // Assuming the API returns { exists: true/false }
+          setUserExists(data.exists);
+          setStep("verification"); // Move to the next step
+        },
+        onError: (error) => {
+          console.error("Error checking email:", error);
+          alert("Error checking email. Please try again.");
+        },
+      }
+    );
   };
 
   const handleVerificationSuccess = () => {
     // In both login and registration modes should set token and operations required
-    // Show in the case of Error
     if (userExists) {
       navigate(routes.home);
     } else {
@@ -43,7 +58,7 @@ const Login = () => {
     >
       <PageTransition key={step}>
         {step === "email" && (
-          <EmailInput handleEmailSubmit={handleEmailSubmit} />
+          <EmailInput handleEmailSubmit={handleEmailSubmit} isLoading={isLoading} />
         )}
         {step === "verification" && (
           <VerificationCode
