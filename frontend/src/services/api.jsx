@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-const API_BASE_URL = "https://m67tf2bg-8080.euw.devtunnels.ms";
+const API_BASE_URL = "https://fdz4c0xg-8080.uks1.devtunnels.ms";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -9,6 +9,7 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, 
 });
 
 apiClient.interceptors.request.use(
@@ -26,9 +27,11 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response) => {
-    // Check if the response contains a JWT token and save it
-    if (response.data?.token) {
-      localStorage.setItem("jwtToken", response.data.token);
+    console.log("response header is : ", response.headers);
+    const authHeader = response.headers['Authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      localStorage.setItem("jwtToken", token);
     }
     return response;
   },
@@ -47,9 +50,15 @@ export default apiClient;
 const postRequest = async ({ url, data, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();
   const fullUrl = queryString ? `${url}?${queryString}` : url;
-  console.log(data);
-  const response = await apiClient.post(fullUrl, data);
-  return response.data;
+  console.log("Sending request to:", fullUrl, "with data:", data); // Debugging
+  try {
+    const response = await apiClient.post(fullUrl, data);
+    console.log("Request succeeded:", response.data); // Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Request failed:", error); // Debugging
+    throw error;
+  }
 };
 
 export const usePostRequest = () => {
