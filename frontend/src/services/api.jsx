@@ -9,7 +9,7 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, 
+  withCredentials: true,
 });
 
 apiClient.interceptors.request.use(
@@ -28,9 +28,9 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => {
     console.log("response header is : ", response.headers);
-    const authHeader = response.headers['Authorization'];
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split(' ')[1];
+    const authHeader = response.headers["Authorization"];
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.split(" ")[1];
       localStorage.setItem("jwtToken", token);
     }
     return response;

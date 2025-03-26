@@ -11,14 +11,14 @@ import { usePostRequest } from "../services/api";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
-  const { email, setEmail } = useEmail(); 
+  const { email, setEmail } = useEmail();
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
   const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
 
   const handleEmailSubmit = (email) => {
-    if(email !== "") {
+    if (email !== "") {
       setEmail(email);
     }
 
@@ -38,7 +38,7 @@ const Login = () => {
             toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
           }
         },
-      }
+      },
     );
   };
 
@@ -46,14 +46,13 @@ const Login = () => {
 
   const handleVerificationSuccess = (otp) => {
     console.log("Submitting OTP:", { email, otp });
-    
+
     submitOTP(
-      { url: "/auth/login/otp", data: { email : email, otp: otp } },
+      { url: "/auth/login/otp", data: { email: email, otp: otp } },
       {
         onSuccess: (response) => {
-
           console.log("proccess running ...");
-          
+
           const authHeader = response.headers["Authorization"];
           if (authHeader && authHeader.startsWith("Bearer ")) {
             const token = authHeader.split(" ")[1];
@@ -65,7 +64,6 @@ const Login = () => {
 
           console.log(response);
           console.log(response.headers);
-
 
           if (userExists) {
             navigate(routes.home);
@@ -81,12 +79,12 @@ const Login = () => {
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
-            console.log("cuse : " , error.cause);
-            console.log("error : " , error);
+            console.log("cuse : ", error.cause);
+            console.log("error : ", error);
             toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
           }
         },
-      }
+      },
     );
   };
 
@@ -101,7 +99,10 @@ const Login = () => {
     >
       <PageTransition key={step}>
         {step === "email" && (
-          <EmailInput handleEmailSubmit={handleEmailSubmit} isLoading={isSubmitting} />
+          <EmailInput
+            handleEmailSubmit={handleEmailSubmit}
+            isLoading={isSubmitting}
+          />
         )}
         {step === "verification" && (
           <VerificationCode

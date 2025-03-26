@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { useLoginStep } from "../stores/login";
 
-  const VerificationCode = ({ handleEmailSubmit, handleVerificationSuccess, userExists, isLoading }) => {
+const VerificationCode = ({
+  handleEmailSubmit,
+  handleVerificationSuccess,
+  userExists,
+  isLoading,
+}) => {
   const [code, setCode] = useState(["", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(90);
   const [resendDisabled, setResendDisabled] = useState(true);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 const EmailInput = ({ handleEmailSubmit, isLoading }) => {
@@ -53,11 +53,11 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
             // یا کلا خاکستری باشه و آبی بشه با focus یا یا اینکه با درست غلط بودنش سبز و قرمز شه
             className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
-                email === ''
-                ? 'border-stone-300'
-                : isValidEmail 
-                ? "border-accept" 
-                : "border-reject"
+                email === ""
+                  ? "border-stone-300"
+                  : isValidEmail
+                    ? "border-accept"
+                    : "border-reject"
               } focus:border-primary`}
             required
           />
@@ -69,7 +69,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
         </div>
         <button
           type="submit"
-          disabled={!isValidEmail || isLoading} 
+          disabled={!isValidEmail || isLoading}
           className={`mt-6 w-full rounded-md px-4 py-2 text-white transition duration-300 ${
             isValidEmail ? "bg-primary" : "bg-muted"
           }`}
@@ -87,7 +87,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
               Loading...
             </div>
           ) : (
-          "ورود"
+            "ورود"
           )}
         </button>
       </form>
