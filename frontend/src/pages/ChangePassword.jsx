@@ -26,7 +26,7 @@ const ForgetPassword = () => {
 
   const handleChangePassword = () => {
     // Patch a password to change the password from the back side
-    navigate(routes.home);
+    navigate(routes.map);
   };
 
   return (

@@ -6,34 +6,91 @@ import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
 import routes from "../routes/Routes";
 import { useLoginStep, useEmail } from "../stores/login";
+import { toast } from "react-toastify";
+import { usePostRequest } from "../services/api";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
-  const { setEmail } = useEmail();
+  const { email, setEmail } = useEmail();
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
+  const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
+
   const handleEmailSubmit = (email) => {
-    // Request to Back to Find Out That User Was Going to Sign Up or Login
-    // Show in the case of Error
-    setUserExists(true); // Back Answer
-    setEmail(email);
-    setStep("verification");
+    if (email !== "") {
+      setEmail(email);
+    }
+
+    submitEmail(
+      { url: "/auth/send-otp", data: { email } },
+      {
+        onSuccess: (data) => {
+          setUserExists(data.exists);
+          setStep("verification");
+          toast.success("کد ورود به ایمیل شما ارسال شد.");
+        },
+        onError: (error) => {
+          console.error("Error checking email:", error);
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
   };
 
-  const handleVerificationSuccess = () => {
-    // In both login and registration modes should set token and operations required
-    // Show in the case of Error
-    if (userExists) {
-      navigate(routes.home);
-    } else {
-      navigate(routes.completeProfile);
-    }
+  const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
+
+  const handleVerificationSuccess = (otp) => {
+    console.log("Submitting OTP:", { email, otp });
+
+    submitOTP(
+      { url: "/auth/login/otp", data: { email: email, otp: otp } },
+      {
+        onSuccess: (response) => {
+          console.log("proccess running ...");
+
+          // const authHeader = response.headers["Authorization"];
+          // if (authHeader && authHeader.startsWith("Bearer ")) {
+          //   const token = authHeader.split(" ")[1];
+          //   localStorage.setItem("jwtToken", token);
+          //   console.log("JWT Token:", token);
+          // } else {
+          //   console.error("Authorization header missing or invalid");
+          // }
+          console.log(document.cookie);
+
+          console.log(response);
+          console.log(response.headers);
+
+          if (userExists) {
+            navigate(routes.map);
+            toast.success("خوش آمدید.");
+          } else {
+            navigate(routes.completeProfile);
+            toast.success("ورود موفقیت آمیز بود. پروفایل خود را تکمیل کنید.");
+          }
+        },
+        onError: (error) => {
+          console.error("Error checking OTP:", error);
+
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            console.log("cause : ", error.cause);
+            console.log("error : ", error);
+            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
   };
 
   const handlePasswordLoginSuccess = () => {
-    // Perform the operations required for entry
-    navigate(routes.home);
+    navigate(routes.map);
   };
 
   return (
@@ -43,12 +100,17 @@ const Login = () => {
     >
       <PageTransition key={step}>
         {step === "email" && (
-          <EmailInput handleEmailSubmit={handleEmailSubmit} />
+          <EmailInput
+            handleEmailSubmit={handleEmailSubmit}
+            isLoading={isSubmitting}
+          />
         )}
         {step === "verification" && (
           <VerificationCode
+            handleEmailSubmit={handleEmailSubmit}
             handleVerificationSuccess={handleVerificationSuccess}
             userExists={userExists}
+            isLoading={isSubmittingOTP}
           />
         )}
         {step === "password" && (

@@ -21,7 +21,7 @@ const ResetPassword = ({ handleChangePassword }) => {
   };
 
   const handleGoBack = () => {
-    navigate(routes.home);
+    navigate(routes.map);
   };
 
   const validatePassword = (password) => {

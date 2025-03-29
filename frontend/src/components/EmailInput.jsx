@@ -1,7 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
-const EmailInput = ({ handleEmailSubmit }) => {
+const EmailInput = ({ handleEmailSubmit, isLoading }) => {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
 
@@ -48,8 +50,15 @@ const EmailInput = ({ handleEmailSubmit }) => {
             onChange={handleEmailChange}
             dir="rtl"
             placeholder="ایمیل خود را وارد کنید"
+            // یا کلا خاکستری باشه و آبی بشه با focus یا یا اینکه با درست غلط بودنش سبز و قرمز شه
             className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
-              ${isValidEmail ? "border-accept" : "border-reject"} focus:border-primary`}
+              ${
+                email === ""
+                  ? "border-stone-300"
+                  : isValidEmail
+                    ? "border-accept"
+                    : "border-reject"
+              } focus:border-primary`}
             required
           />
           {!isValidEmail && email.length > 0 && (
@@ -60,12 +69,26 @@ const EmailInput = ({ handleEmailSubmit }) => {
         </div>
         <button
           type="submit"
-          disabled={!isValidEmail}
+          disabled={!isValidEmail || isLoading}
           className={`mt-6 w-full rounded-md px-4 py-2 text-white transition duration-300 ${
             isValidEmail ? "bg-primary" : "bg-muted"
           }`}
         >
-          ورود
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                className="mr-2"
+              />
+              Loading...
+            </div>
+          ) : (
+            "ورود"
+          )}
         </button>
       </form>
     </div>
