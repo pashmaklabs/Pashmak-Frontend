@@ -3,6 +3,7 @@ import routes from "./Routes";
 import Login from "../pages/Login";
 import ChangePassword from "../pages/ChangePassword";
 import CompleteProfile from "../pages/CompleteProfile";
+import Map from "../pages/Map"
 
 function AppRouter() {
   return (
@@ -10,6 +11,7 @@ function AppRouter() {
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.changePassword} element={<ChangePassword />} />
       <Route path={routes.completeProfile} element={<CompleteProfile />} />
+      <Route path={routes.map} element={<Map/>}/>
     </Routes>
   );
 }
