@@ -105,7 +105,13 @@ const ResetPassword = ({ handleChangePassword }) => {
             onBlur={() => setPasswordTouched(false)}
             placeholder="رمز عبور جدید را وارد کنید"
             className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
-              ${passwordError ? "border-reject" : "border-accept"} focus:border-primary`}
+              ${
+                password === ""
+                  ? "border-stone-300"
+                  : passwordError
+                  ? "border-reject"
+                  : "border-accept"
+              } focus:border-primary`}
             required
           />
           <span
@@ -132,7 +138,6 @@ const ResetPassword = ({ handleChangePassword }) => {
             </p>
           ))}
 
-        {/* فیلد تکرار رمز عبور */}
         <div className="relative mt-4">
           <input
             type={showConfirmPassword ? "text" : "password"}
@@ -143,7 +148,13 @@ const ResetPassword = ({ handleChangePassword }) => {
             onBlur={() => setConfirmPasswordTouched(false)}
             placeholder="تکرار رمز عبور جدید"
             className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
-              ${confirmPasswordError ? "border-reject" : "border-accept"} focus:border-primary`}
+              ${
+                confirmPassword === ""
+                  ? "border-stone-300"
+                  : confirmPasswordError
+                  ? "border-reject"
+                  : "border-accept"
+              } focus:border-primary`}
             required
           />
           <span
