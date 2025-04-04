@@ -109,8 +109,8 @@ const ResetPassword = ({ handleChangePassword }) => {
                 password === ""
                   ? "border-stone-300"
                   : passwordError
-                  ? "border-reject"
-                  : "border-accept"
+                    ? "border-reject"
+                    : "border-accept"
               } focus:border-primary`}
             required
           />
@@ -152,8 +152,8 @@ const ResetPassword = ({ handleChangePassword }) => {
                 confirmPassword === ""
                   ? "border-stone-300"
                   : confirmPasswordError
-                  ? "border-reject"
-                  : "border-accept"
+                    ? "border-reject"
+                    : "border-accept"
               } focus:border-primary`}
             required
           />
