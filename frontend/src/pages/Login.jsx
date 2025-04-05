@@ -21,7 +21,6 @@ const Login = () => {
     if (email !== "") {
       setEmail(email);
     }
-
     submitEmail(
       { url: "/auth/send-otp", data: { email } },
       {
@@ -96,7 +95,9 @@ const Login = () => {
   return (
     <div
       className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/background.png')" }}
+      style={{
+        backgroundImage: "linear-gradient(120deg, #5E2B7A, #85A4E2, #C77DF3)",
+      }}
     >
       <PageTransition key={step}>
         {step === "email" && (

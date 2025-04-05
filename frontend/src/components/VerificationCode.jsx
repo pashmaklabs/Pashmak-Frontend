@@ -39,28 +39,29 @@ const VerificationCode = ({
     setCode(newCode);
 
     if (value && index < code.length - 1) {
-      const nextInput = document.getElementById(`input-${index + 1}`);
-      nextInput?.focus();
+      document.getElementById(`input-${index + 1}`)?.focus();
     }
-    if (!value && index > 0) {
-      const prevInput = document.getElementById(`input-${index - 1}`);
-      prevInput?.focus();
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 4);
+
+    if (pastedText.length === 4) {
+      setCode(pastedText.split(""));
+      document.getElementById(`input-3`)?.focus();
     }
   };
 
   useEffect(() => {
     if (code.join("").length === 4) {
       handleVerificationSuccess(code.join(""));
+      navigate(routes.map)
     }
-  }, [code]);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (code.join("").length === 4) {
-  //     console.log("the otp is `" + code.join("") + "`")
-  //     handleVerificationSuccess(code.join(""));
-  //   }
-  // };
+  }, [code, handleVerificationSuccess, navigate]);
 
   const handleBack = () => {
     navigate(routes.login);
@@ -78,7 +79,7 @@ const VerificationCode = ({
     <div>
       <form
         // onSubmit={handleSubmit}
-        className="w-full h-full rounded-lg bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
         <div className="flex justify-between items-center mb-6">
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />
@@ -104,6 +105,7 @@ const VerificationCode = ({
               maxLength="1"
               value={digit}
               onChange={(e) => handleInputChange(index, e.target.value)}
+              onPaste={handlePaste}
               className="w-14 h-14 border-[2px] text-center text-2xl border-primary bg-white text-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
           ))}

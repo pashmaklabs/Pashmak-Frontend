@@ -32,7 +32,7 @@ const ForgetPassword = () => {
   return (
     <div
       className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/background.png')" }}
+      style={{  backgroundImage: "linear-gradient(120deg, #5E2B7A, #85A4E2, #C77DF3)" }}
     >
       <PageTransition key={stepPassword}>
         {stepPassword === "verification" && (

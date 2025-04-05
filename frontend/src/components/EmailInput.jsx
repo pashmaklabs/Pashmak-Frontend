@@ -25,7 +25,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="w-full h-full rounded-lg bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
         <div className="mt-6 mb-4 flex flex-col items-center justify-center">
           <img
@@ -51,7 +51,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
             dir="rtl"
             placeholder="ایمیل خود را وارد کنید"
             // یا کلا خاکستری باشه و آبی بشه با focus یا یا اینکه با درست غلط بودنش سبز و قرمز شه
-            className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
+            className={`mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
                 email === ""
                   ? "border-stone-300"
