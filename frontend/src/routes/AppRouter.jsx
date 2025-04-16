@@ -3,8 +3,8 @@ import routes from "./Routes";
 import Login from "../pages/Login";
 import ChangePassword from "../pages/ChangePassword";
 import CompleteProfile from "../pages/CompleteProfile";
-import Map from "../pages/Map";
 import Profile from "../pages/Profile";
+import MapLayout from "../pages/MapLayout";
 
 function AppRouter() {
   return (
@@ -12,8 +12,12 @@ function AppRouter() {
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.changePassword} element={<ChangePassword />} />
       <Route path={routes.completeProfile} element={<CompleteProfile />} />
-      <Route path={routes.map} element={<Map />} />
       <Route path={routes.profile} element={<Profile />} />
+      <Route element={<MapLayout />}>
+        <Route path={routes.map} element={<></>} />
+        <Route path={routes.search} element={<></>} />
+        <Route path={routes.place} element={<></>} />
+      </Route>
     </Routes>
   );
 }

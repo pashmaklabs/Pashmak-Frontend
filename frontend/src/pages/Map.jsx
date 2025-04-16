@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import MapView from "../components/MapView";
 import PromptBar from "../components/PromptBar";
 import LocateButton from "../components/LocateButton";
 import { usePostRequest } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
-const MapPage = () => {
+const Map = () => {
   const [userLocation, setUserLocation] = useState(null);
-  
-  const [staticPoints,setStaticPoints] = useState([
+
+  const [staticPoints, setStaticPoints] = useState([
     { id: 1, name: "Point A", lat: 35.6997, lon: 51.3381 },
     { id: 2, name: "Point B", lat: 35.7153, lon: 51.4043 },
     { id: 3, name: "Point C", lat: 35.7326, lon: 51.4469 },
   ]);
-
 
   const { mutate: fetchInitialTags, isLoading: isFetchingInitialTags } =
     usePostRequest();
@@ -74,21 +74,36 @@ const MapPage = () => {
     //   }
     // );
   };
+  const navigate = useNavigate();
 
   return (
     <div style={{ position: "relative" }}>
+      {/* this code must be delete */}
+      <button
+        onClick={() => navigate("/map/search")}
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          zIndex: 1000,
+        }}
+      >
+        این دکمه مثلا همون دکمه تایید پرامت بار که باید سرچ های که بک داده رو
+        نشون بدیم
+      </button>
+      {/* this code must be delete */}
       <PromptBar
         fetchInitialTags={handleFetchInitialTags}
         fetchSuggestedTags={handleFetchSuggestedTags}
         submitData={handleSubmitData}
       />
-      <LocateButton setUserLocation={setUserLocation} userLocation={userLocation} />
-      <MapView
+      <LocateButton
+        setUserLocation={setUserLocation}
         userLocation={userLocation}
-        staticPoints={staticPoints}
       />
+      <MapView userLocation={userLocation} staticPoints={staticPoints} />
     </div>
   );
 };
 
-export default MapPage;
+export default memo(Map);
