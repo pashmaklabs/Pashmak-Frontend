@@ -168,4 +168,11 @@ const VerificationCode = ({
     </div>
   );
 };
+
+VerificationCode.propTypes = {
+  handleVerificationSuccess: PropTypes.func.isRequired,
+  handleEmailSubmit: PropTypes.func.isRequired,
+  userExists: PropTypes.bool.isRequired,
+};
+
 export default VerificationCode;

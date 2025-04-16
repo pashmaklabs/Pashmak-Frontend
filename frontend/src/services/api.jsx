@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const API_BASE_URL = "https://pashmak-api.darkube.app";
 
@@ -33,6 +33,29 @@ export const usePostRequest = () => {
     mutationFn: postRequest,
   });
 };
+
+
+const getRequest = async ({ url, queryParams }) => {
+  const queryString = new URLSearchParams(queryParams).toString();
+  const fullUrl = queryString ? `${url}?${queryString}` : url;
+  console.log("Sending GET request to:", fullUrl); // Debugging
+  try {
+    const response = await apiClient.get(fullUrl);
+    console.log("GET Request succeeded:", response.data); // Debugging
+    return response.data;
+  } catch (error) {
+    console.error("GET Request failed:", error); // Debugging
+    throw error;
+  }
+};
+
+export const useGetRequest = (queryKey, queryParams) => {
+  return useQuery({
+    queryKey: [queryKey, queryParams], // Unique key for caching
+    queryFn: () => getRequest(queryParams),
+  });
+};
+
 
 const patchRequest = async ({ url, data, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();

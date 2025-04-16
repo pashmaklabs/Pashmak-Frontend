@@ -6,13 +6,14 @@ import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
 import Signup from "../components/Signup";
 import routes from "../routes/Routes";
-import { useLoginStep, useEmail } from "../stores/login";
+import { useLoginStep, useEmail, useUserLogin } from "../stores/login";
 import { toast } from "react-toastify";
 import { usePostRequest, usePatchRequest } from "../services/api";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
   const { email, setEmail } = useEmail();
+  const { userLogin, setUserLogin } = useUserLogin();
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
@@ -54,6 +55,7 @@ const Login = () => {
       {
         onSuccess: (response) => {
           if (userExists) {
+            setUserLogin(true);
             navigate(routes.map);
             toast.success("خوش آمدید.");
           } else {
@@ -116,7 +118,7 @@ const Login = () => {
       { url: "/auth/password", data: { email: email, password: password } },
       {
         onSuccess: (data) => {
-          console.log(data);
+          setUserLogin(true);
           setUserExists(true);
           toast.success("با موفقیت وارد شدید.");
           navigate(routes.map);

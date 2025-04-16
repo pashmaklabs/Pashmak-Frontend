@@ -137,7 +137,7 @@ const MapView = ({ staticPoints, userLocation }) => {
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}
-        className="h-full w-full"
+        className="h-full w-full z-20"
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

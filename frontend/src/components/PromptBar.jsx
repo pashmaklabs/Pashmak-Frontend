@@ -80,7 +80,7 @@ export default function PromptBar({
           <img src="/ChatExpand.svg" alt="expand" className="w-20 h-20" />
         </div>
       ) : (
-        <div className="z-30 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] max-w-[800px] p-8 font-sans transition-all duration-300 ease-in-out">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[30] max-w-[800px] p-8 font-sans transition-all duration-300 ease-in-out">
           {isExpanded && (
             <div className="relative right-[8px] flex flex-nowrap">
               <TagContainer

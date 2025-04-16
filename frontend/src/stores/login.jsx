@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import Cookies from 'js-cookie';
 
 const useLoginStep = create((set) => ({
   step: "email",
@@ -10,4 +11,9 @@ const useEmail = create((set) => ({
   setEmail: (newEmail) => set({ email: newEmail }),
 }));
 
-export { useLoginStep, useEmail };
+const useUserLogin = create((set) => ({
+  userLogin: !!Cookies.get('pashmak_authentication'),
+  setUserLogin: (newUserLogin) => set({ userLogin: newUserLogin }),
+}));
+
+export { useLoginStep, useEmail, useUserLogin };
