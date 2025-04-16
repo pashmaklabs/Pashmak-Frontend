@@ -33,7 +33,7 @@ function TagList({ tags, addTag }) {
   }, [tags]);
 
   const checkWrapperWidth = (wrapper) => {
-    if (wrapper.offsetWidth < 400) {
+    if (wrapper.offsetWidth < 500) {
       setHideIcons(true);
     } else {
       setHideIcons(false);
@@ -57,7 +57,7 @@ function TagList({ tags, addTag }) {
   };
   console.log("hideIcons: ", hideIcons);
   return (
-    <div className="flex items-center relative max-w-[400px]" ref={wrapperRef}>
+    <div className="flex items-center relative max-w-[500px]" ref={wrapperRef}>
       {!hideIcons && (
         <img
           src="/more.svg"
@@ -89,7 +89,7 @@ function TagList({ tags, addTag }) {
 function Tag({ tag, addTag }) {
   return (
     <button
-      className="flex items-center justify-center bg-white h-4 px-2 text-sm cursor-pointer outline-none focus:outline-none rounded-lg leading-3 shadow-md m-[2px] whitespace-nowrap"
+      className="flex items-center text-gray-700 justify-center bg-white h-6 px-2 text-sm cursor-pointer outline-none focus:outline-none rounded-xl leading-3 shadow-md m-[3px] whitespace-nowrap"
       key={tag}
       onClick={() => addTag(tag)}
     >

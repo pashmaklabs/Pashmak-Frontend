@@ -74,13 +74,13 @@ export default function PromptBar({
     <>
       {isFullyCollapsed ? (
         <div
-          className="absolute z-[1000] bottom-24 left-6 rounded-full flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-110"
+          className="shadow-xl absolute z-[1000] bottom-24 left-6 rounded-full flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 "
           onClick={handleExpandFromIcon}
         >
-          <img src="/ChatExpand.svg" alt="expand" className="w-24 h-24" />
+          <img src="/ChatExpand.svg" alt="expand" className="w-20 h-20" />
         </div>
       ) : (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] max-w-[800px] p-8 font-sans transition-all duration-300 ease-in-out">
+        <div className="z-30 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] max-w-[800px] p-8 font-sans transition-all duration-300 ease-in-out">
           {isExpanded && (
             <div className="relative right-[8px] flex flex-nowrap">
               <TagContainer
@@ -117,15 +117,15 @@ export default function PromptBar({
                 placeholder={isExpanded ? "" : "کجا میخواهید بروید؟"}
                 value={inputPrompt}
                 onChange={(e) => setInputPrompt(e.target.value)}
-                className="w-90% h-auto mt-2 mr-4 min-h-[40px] border-none outline-none text-[16px] text-right bg-transparent p-1.5 resize-none leading-6"
+                className="w-90% h-auto text-black mt-2 mr-4 min-h-[40px] border-none outline-none text-[16px] text-right bg-transparent p-1.5 resize-none leading-6"
                 dir="rtl"
               />
               {isExpanded && (
-                <div className="flex flex-wrap mt-2 ml-2 max-w-full">
+                <div className="flex flex-wrap ml-2 max-w-full">
                   {selectedTags.map((tag) => (
                     <div
                       key={tag}
-                      className="flex items-center h-5 bg-gray-200 px-2 py-1 rounded-md text-sm shadow-sm m-[1px]"
+                      className="flex text-gray-900 items-center h-6 bg-gray-200 px-2 py-1 rounded-xl text-sm shadow-sm m-[3px]"
                     >
                       {tag}
                       <img
