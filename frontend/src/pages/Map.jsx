@@ -73,25 +73,12 @@ const Map = () => {
     //     },
     //   }
     // );
+    navigate("/map/search")
   };
   const navigate = useNavigate();
 
   return (
     <div style={{ position: "relative" }}>
-      {/* this code must be delete */}
-      <button
-        onClick={() => navigate("/map/search")}
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          zIndex: 1000,
-        }}
-      >
-        این دکمه مثلا همون دکمه تایید پرامت بار که باید سرچ های که بک داده رو
-        نشون بدیم
-      </button>
-      {/* this code must be delete */}
       <PromptBar
         fetchInitialTags={handleFetchInitialTags}
         fetchSuggestedTags={handleFetchSuggestedTags}

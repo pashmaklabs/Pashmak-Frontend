@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import TagContainer from "./TagContainer";
 
 export default function PromptBar({
   fetchInitialTags,
   fetchSuggestedTags,
   submitData,
+  
 }) {
   const [availableTags, setAvailableTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -14,6 +16,17 @@ export default function PromptBar({
   const [inputPrompt, setInputPrompt] = useState("");
   const promptBarRef = useRef(null);
 
+  const location = useLocation(); // Get the current URL
+
+  // Update state based on the current URL
+  useEffect(() => {
+    if (location.pathname === "/map") {
+      setIsExpanded(false);
+      setIsFullyCollapsed(false);
+    } else if (location.pathname === "/map/search" || location.pathname === "/map/place") {
+      setIsFullyCollapsed(true);
+    }
+  }, [location.pathname]);
   const isSearchDisabled =
     inputPrompt.trim() === "" && selectedTags.length === 0;
 
@@ -67,8 +80,24 @@ export default function PromptBar({
       await submitData({ input: inputPrompt, tags: selectedTags });
       setInputPrompt("");
       setSelectedTags([]);
+      setIsFullyCollapsed(true); 
+      setIsExpanded(false);
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (promptBarRef.current && !promptBarRef.current.contains(event.target)) {
+        setIsFullyCollapsed(true);
+        setIsExpanded(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [promptBarRef]);
+  
 
   return (
     <>
@@ -80,7 +109,8 @@ export default function PromptBar({
           <img src="/ChatExpand.svg" alt="expand" className="w-20 h-20" />
         </div>
       ) : (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[30] max-w-[800px] p-8 font-sans transition-all duration-300 ease-in-out">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[30] max-w-[800px] p-8 font-sans transition-all duration-300 ease-in-out"
+          ref={promptBarRef}>
           {isExpanded && (
             <div className="relative right-[8px] flex flex-nowrap">
               <TagContainer
