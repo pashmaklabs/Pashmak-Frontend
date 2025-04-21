@@ -1,0 +1,97 @@
+{
+	"count": 3,
+	"status": "success",
+	"message": "",
+	"results": [
+	  {
+		"name": "مکان اول",
+		"id": "1",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 3.5,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان دوم",
+		"id": "2",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 1.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان سوم",
+		"id": "3",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 3.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان چهارم",
+		"id": "4",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 1.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان پنجم",
+		"id": "5",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 3.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان ششم",
+		"id": "6",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 1.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان هفتم",
+		"id": "7",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 3.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان هشتم",
+		"id": "8",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 1.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان نهم",
+		"id": "9",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 3.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  },
+	  {
+		"name": "مکان دهم",
+		"id": "10",
+		"category": "رستوان",
+		"image_url": "/unnamed.png",
+		"place_rating": 3.2,
+		"comment_count": 4800,
+		"address" : "تهران، علیالی، یاس، پلاک 1 (کوی نصر)"
+	  }
+	]
+  }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import StarRating from "./StarRating";
 import { useNavigate } from "react-router-dom";
 
-const PlaceInfoContainer = ({ imageUrl, name, rating, reviews, address, weeklySchedule, phone, links, hasSearch }) => {
+const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rating, reviews, address, weeklySchedule, phone, links, hasSearch }) => {
   // Default values
   imageUrl = "/resturant.jpg";
   name = "نام رستوران";
@@ -96,8 +96,16 @@ const PlaceInfoContainer = ({ imageUrl, name, rating, reviews, address, weeklySc
           alt="close"
           className="absolute top-1 right-1 w-8 h-8 cursor-pointer"
           onClick={() => {
-            if(hasSearch)
-              navigate("/map/search");
+            if(hasSearch){
+              if(!expendSearch)
+              {
+                setExpendSearch(true);
+                // navigate("/map/search");
+              }
+              else{
+                navigate("/map/search")
+              }
+            }
             else
               navigate("/map"); // Replace with your navigation logic
           }} // Replace with your close logic
@@ -111,7 +119,7 @@ const PlaceInfoContainer = ({ imageUrl, name, rating, reviews, address, weeklySc
       </div>
 
       {/* Section 3: Tabs */}
-      <div className="relative sticky top-[70px] bg-white z-10 border-b border-gray-300">
+      <div className="sticky top-[70px] bg-white z-10 border-b border-gray-300">
         <div className="flex justify-around">{renderTabs()}</div>
         <div
           className="absolute bottom-0 h-[3px] bg-purple-500 transition-all duration-300"

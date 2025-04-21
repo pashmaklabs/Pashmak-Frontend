@@ -103,7 +103,7 @@ export default function PromptBar({
     <>
       {isFullyCollapsed ? (
         <div
-          className="shadow-xl absolute z-[1000] bottom-24 left-6 rounded-full flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 "
+          className="shadow-xl absolute z-[997] bottom-24 left-6 rounded-full flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 "
           onClick={handleExpandFromIcon}
         >
           <img src="/ChatExpand.svg" alt="expand" className="w-20 h-20" />

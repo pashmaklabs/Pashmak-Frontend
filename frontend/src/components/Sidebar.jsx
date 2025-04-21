@@ -31,19 +31,20 @@ const Sidebar = () => {
     <>
     {(isOpen || showLoginPopup) && (
       <div
-        className="fixed inset-0 bg-gray-500/50 z-40"
+        className="fixed inset-0 bg-gray-500/50 z-[998]"
         onClick={toggleSidebar}
         aria-hidden="true"
       />
     )}
     <nav
-      className={`fixed top-0 right-0 h-full bg-white text-white transition-all duration-300 ease-in-out ${
-        isOpen ? "w-64" : "w-16"
-      } z-50`}
+      className={`rounded-none fixed top-0 right-0 h-full bg-white text-white shadow-lg transition-all duration-300 ease-in-out ${
+        isOpen ? "w-[380px]" : "w-[70px]"
+      } z-[999]`}
     >
       <button
         onClick={toggleSidebar}
-        className="w-full bg-white text-gray-400 py-2 px-4 hover:bg-slate-300 transition-colors flex justify-end"
+        className="w-[70px]  focus:border-transparent border-transparent !outline-none rounded-none bg-white text-gray-400 right-0 transition-colors absolute justify-end"
+        
       >
         <svg
           className="w-8 h-8"
@@ -58,7 +59,7 @@ const Sidebar = () => {
             x2="20"
             y2="6"
             className={`transition-transform duration-300 origin-center ${
-              isOpen ? "rotate-45 translate-y-1" : ""
+              isOpen ? "rotate-45 translate-y-1 -translate-x-1" : ""
             }`}
           />
           <line
@@ -76,13 +77,13 @@ const Sidebar = () => {
             x2="20"
             y2="18"
             className={`transition-transform duration-300 origin-center ${
-              isOpen ? "-rotate-45 -translate-y-1" : ""
+              isOpen ? "-rotate-45 -translate-y-1 -translate-x-1" : ""
             }`}
           />
         </svg>
       </button>
 
-      <nav className="mt-4">
+      <div className="mt-14">
         <ul className="space-y-2">
           <li>
           <NavLink
@@ -105,11 +106,11 @@ const Sidebar = () => {
             <span 
               dir="rtl"
               style={{ animationDelay: '2000ms' }} 
-              className="mr-2 inline-block overflow-hidden whitespace-nowrap text-right">
+              className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right">
               پروفایل
             </span>
             }
-            <img src="/profile.svg" alt="profile" className="mr-0.5 w-7 h-7" />
+            <img src="/profile.svg" alt="profile" className="w-9 h-9" />
           </div>
         </NavLink>
           </li>
@@ -133,14 +134,14 @@ const Sidebar = () => {
                 {isOpen && 
                 <span 
                   dir="rtl"
-                  className="mr-2 inline-block overflow-hidden whitespace-nowrap text-right">
+                  className="mr-3 mb- inline-block overflow-hidden whitespace-nowrap text-right">
                   مکان های ذخیره شده
                 </span>
                 }
                 <img
                   src="/Bookmark.svg"
                   alt="saved places"
-                  className="w-7 h-7"
+                  className="w-9 h-9"
                 />
               </div>
             </NavLink>
@@ -165,23 +166,23 @@ const Sidebar = () => {
                 {isOpen && 
                 <span 
                   dir="rtl"
-                  className="mr-2 inline-block overflow-hidden whitespace-nowrap text-right">
+                  className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right">
                   تاریخچه جستجو
                 </span>
                 }
                 <img
                   src="/History.svg"
                   alt="search history"
-                  className=" w-8 h-8"
+                  className=" w-10 h-10"
                 />
               </div>
             </NavLink>
           </li>
         </ul>
-      </nav>
+      </div>
     </nav>
     {showLoginPopup && (
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+      <div className="z-[999] fixed inset-0 flex items-center justify-center bg-black/50">
         <div className="bg-white p-6 rounded-3xl shadow-lg w-1/3 max-w-[400px] min-w-[200px]">
         <div className="text-right">
           <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>

@@ -4,12 +4,12 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative flex h-screen w-screen items-center justify-center bg-[url('/notfound.png')] bg-cover bg-center bg-no-repeat">
+    <div className="relative flex h-screen w-screen items-center justify-center bg-[url('/notfound.png')] bg-cover bg-center bg-no-repeat z-[1000]">
       <div className="absolute inset-0 bg-black/10"></div>
       
       <button
         onClick={() => navigate('/map')}
-        className="z-10 rounded-lg bg-white px-8 py-3 text-lg font-semibold text-black shadow-lg transition-all hover:scale-105 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+        className="z-[1000] rounded-lg bg-white px-8 py-3 text-lg font-semibold text-black shadow-lg transition-all hover:scale-105 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
       >
         برگرد به نقشه
       </button>

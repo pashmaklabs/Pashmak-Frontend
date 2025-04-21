@@ -4,38 +4,14 @@ import PlaceInfoContainer from "../components/PlaceInfoContainer";
 
 const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch }) => {
   return (
-    <>
-      <div
+     <div
         dir="rtl"
-        className={`absolute bg-white bottom-2  shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans ${
-          expendSearch ? "right-1/4 h-[80%] rounded-xl" : "right-16 h-screen top-0 "
-        } w-[350px] z-[1000] transition-all duration-300`}
+        className={`absolute bg-white   shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans ${
+          expendSearch ? "right-[475px] h-[80%] rounded-xl w-[350px] bottom-8" : " w-[400px] right-16 h-[100%] bottom-0 "
+        }  z-[997] transition-all duration-500`}
       >
-        <PlaceInfoContainer hasSearch={hasSearch} />
+        <PlaceInfoContainer hasSearch={hasSearch} setExpendSearch={setExpendSearch} expendSearch={expendSearch} />
       </div>
-
-      {hasSearch && expendSearch && (
-        <button
-          className="absolute right-5 top-1/3 z-[1000] pointer-events-auto"
-          onClick={() => setExpendSearch(false)}
-        > 
-          این دکمه حالت سرچ جمع میکنه
-        </button>
-      )}
-      {hasSearch && !expendSearch && (
-        <button
-          className="absolute right-5 top-1/3 z-[1000] pointer-events-auto"
-          onClick={() => setExpendSearch(true)}
-        >
-          این دکمه حالت سرچ میاره دوباره
-        </button>
-      )}
-      {!hasSearch && (
-        <button className="absolute right-5 top-1/3 z-[1000] pointer-events-auto">
-          این حالت وقتی که سرچ برا بازگشت وجود نداره
-        </button>
-      )}
-    </>
   );
 };
 
