@@ -1,3 +1,7 @@
+workflow:
+  rules:
+    - when: never
+
 # stages:
 #   - build
 #   - deploy
