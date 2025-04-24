@@ -3,15 +3,24 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "font-awesome/css/font-awesome.min.css";
+import { useSearchParams } from "react-router-dom";
 import { useFocus } from "../stores/map";
+
 const MapView = ({ staticPoints, userLocation }) => {
   const defaultCenter = [35.6892, 51.389];
   const defaultZoom = 13;
+
   const { focus, setFocus } = useFocus();
   const mapCenterRef = useRef(defaultCenter);
   const zoomLevelRef = useRef(defaultZoom);
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [points, setPoints] = useState([]);
+
+  const latParam = parseFloat(searchParams.get("lat")) || defaultCenter[0];
+  const lngParam = parseFloat(searchParams.get("lng")) || defaultCenter[1];
+  const zoomParam = parseInt(searchParams.get("zoom")) || defaultZoom;
+  const initialCenter = [latParam, lngParam];
 
   const fetchPoints = async (lat, lon, zoom) => {
     const MIN_ZOOM_LEVEL = 17;
@@ -64,6 +73,12 @@ const MapView = ({ staticPoints, userLocation }) => {
         mapCenterRef.current = [center.lat, center.lng];
         zoomLevelRef.current = zoom;
 
+        setSearchParams({
+          lat: center.lat.toFixed(5),
+          lng: center.lng.toFixed(5),
+          zoom: zoom.toFixed(0),
+        });
+
         fetchPoints(center.lat, center.lng, zoom);
       };
 
@@ -80,9 +95,10 @@ const MapView = ({ staticPoints, userLocation }) => {
     const map = useMap();
 
     useEffect(() => {
-      setFocus(false)
+      setFocus(false);
       if (location) map.setView(location, 20);
-    }, [location,map]);
+    }, [location, map]);
+
     return null;
   };
 
@@ -103,7 +119,6 @@ const MapView = ({ staticPoints, userLocation }) => {
 
   const Shet = ({ userLocation }) => {
     const map = useMap();
-    const a = false;
     return (
       <>
         {focus && <MapFocus location={userLocation} map={map} />}
@@ -112,10 +127,8 @@ const MapView = ({ staticPoints, userLocation }) => {
       </>
     );
   };
-  
 
   const createCustomIcon = (type) => {
-    
     const iconClass = {
       restaurant: "fa-cutlery",
       cafe: "fa-coffee",
@@ -123,7 +136,7 @@ const MapView = ({ staticPoints, userLocation }) => {
       hotel: "fa-bed",
       museum: "fa-university",
     }[type] || "fa-map-marker";
-    
+
     return new L.DivIcon({
       className: "custom-icon-wrapper",
       html: `<div class="custom-icon"><i class="fa ${iconClass}" style="font-size: 24px; color: blue;"></i></div>`,
@@ -135,24 +148,14 @@ const MapView = ({ staticPoints, userLocation }) => {
   return (
     <div className="h-screen w-screen">
       <MapContainer
-        center={defaultCenter}
-        zoom={defaultZoom}
+        center={initialCenter}
+        zoom={zoomParam}
         className="h-full w-full z-20"
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-
-
-        {/* {userLocation && (
-          <>
-            <MapFocus location={userLocation} />
-            <FixedSizeCircle location={userLocation} />
-          </>
-        )}
-
-        <MapEventHandler /> */}
 
         <Shet userLocation={userLocation}/>
 
@@ -175,7 +178,6 @@ const MapView = ({ staticPoints, userLocation }) => {
             key={point.id}
             position={[point.lat, point.lon]}
             icon={createCustomIcon(point.type)}
-            
           >
             <Popup>
               <h3>{point.name}</h3>
