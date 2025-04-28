@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 
-export default function TagContainer({ availableTags, addTag }) {
+export default function TagContainer({ availableTags, addTag, width }) {
   return (
     <div className="relative flex flex-col gap-2 ml-auto">
-      <TagList tags={availableTags} addTag={addTag} />
+      <TagList tags={availableTags} addTag={addTag} width={width} />
     </div>
   );
 }
 
-function TagList({ tags, addTag }) {
+function TagList({ tags, addTag, width }) {
   const [isAtFarRight, setIsAtFarRight] = useState(false);
   const [hideIcons, setHideIcons] = useState(false);
   const wrapperRef = useRef(null);
@@ -33,7 +33,7 @@ function TagList({ tags, addTag }) {
   }, [tags]);
 
   const checkWrapperWidth = (wrapper) => {
-    if (wrapper.offsetWidth < 500) {
+    if (wrapper.offsetWidth < width) {
       setHideIcons(true);
     } else {
       setHideIcons(false);
@@ -57,7 +57,7 @@ function TagList({ tags, addTag }) {
   };
   console.log("hideIcons: ", hideIcons);
   return (
-    <div className="flex items-center relative max-w-[500px]" ref={wrapperRef}>
+    <div className="flex items-center relative " ref={wrapperRef} style={{ maxWidth: `${width}px` }} >
       {!hideIcons && (
         <img
           src="/more.svg"

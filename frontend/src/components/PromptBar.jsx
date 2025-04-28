@@ -137,7 +137,7 @@ export default function PromptBar({
           //#region renderTagContainer
           uiState.isExpanded && (
             <div className="absolute translate-y-[-100%] right-9">
-              <TagContainer availableTags={availableTags} addTag={addTag} />
+              <TagContainer availableTags={availableTags} addTag={addTag} width={500} />
             </div>
           )
           //#endregion
@@ -162,7 +162,7 @@ export default function PromptBar({
             <button
               onClick={handleSubmit}
               disabled={isSearchDisabled}
-              className={`absolute bottom-[18px] right-4 w-[28px] h-[28px] rounded-full transition-opacity duration-300 p-0 border-none bg-transparent
+              className={`absolute bottom-[18px] right-4 w-[46px] h-[46px] rounded-full transition-opacity duration-300 p-0 border-none bg-transparent
                 ${isSearchDisabled ? "opacity-50 cursor-not-allowed" : "opacity-100"}`}
               aria-label="Submit search"
             >
