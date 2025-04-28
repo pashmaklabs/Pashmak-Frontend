@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const useLoginStep = create((set) => ({
   step: "email",
@@ -12,7 +12,7 @@ const useEmail = create((set) => ({
 }));
 
 const useUserLogin = create((set) => ({
-  userLogin: !!Cookies.get('pashmak_authentication'),
+  userLogin: Cookies.get("pashmak_authentication"),
   setUserLogin: (newUserLogin) => set({ userLogin: newUserLogin }),
 }));
 

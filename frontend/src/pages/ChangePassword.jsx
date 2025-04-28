@@ -1,25 +1,28 @@
 import { useState, useEffect, useCallback } from "react";
 import PageTransition from "../components/PageTransition";
-import EmailInput from "../components/EmailInput";
 import VerificationCode from "../components/VerificationCode";
 import ResetPassword from "../components/ResetPassword";
 import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { toast } from "react-toastify";
-import { useLoginStep, useEmail } from "../stores/login";
+import { useUserLogin, useEmail } from "../stores/login";
 
 import { usePostRequest } from "../services/api";
 
 const ChangePassword = () => {
-  const { step, setStep } = useLoginStep();
+  const [step, setStep] = useState("verification");
   const navigate = useNavigate();
   const { email, setEmail } = useEmail();
+  const { userLogin, setUserLogin } = useUserLogin();
 
   useEffect(() => {
-    if (!email) {
+    console.log(userLogin);
+    if (userLogin) {
+      setStep("ResetPassword");
+    } else if (!email) {
       navigate(routes.login);
     }
-  }, [email, navigate]);
+  }, [userLogin, email]);
 
   const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
@@ -54,7 +57,8 @@ const ChangePassword = () => {
     [email, setStep, submitOTP],
   );
 
-  const { mutate: submitPassword, isLoading: isSubmittingPassword } = usePostRequest();
+  const { mutate: submitPassword, isLoading: isSubmittingPassword } =
+    usePostRequest();
 
   const handleChangePassword = (password) => {
     // Patch a password to change the password from the back side

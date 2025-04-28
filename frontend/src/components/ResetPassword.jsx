@@ -22,10 +22,9 @@ const ResetPassword = ({ handleChangePassword }) => {
     }
   };
 
-  // َASK
-  const handleGoBack = () => {
-    navigate(routes.home);
-  };
+  useEffect(() => {
+    validatePassword(password);
+  }, []);
 
   const validatePassword = (password) => {
     const minLength = 8;
@@ -138,18 +137,6 @@ const ResetPassword = ({ handleChangePassword }) => {
           </span>
         </div>
 
-        {passwordTouched &&
-          Object.values(passwordErrors).map((error, index) => (
-            <p
-              key={index}
-              className={`mt-1 mr-4 text-right text-xs ${
-                error.isError ? "text-reject" : "text-accept"
-              }`}
-            >
-              {error.message}
-            </p>
-          ))}
-
         <div className="relative mt-4">
           <input
             type={showConfirmPassword ? "text" : "password"}
@@ -159,7 +146,7 @@ const ResetPassword = ({ handleChangePassword }) => {
             onFocus={() => setConfirmPasswordTouched(true)}
             onBlur={() => setConfirmPasswordTouched(false)}
             placeholder="تکرار رمز عبور جدید"
-            className={`mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
+            className={`mt-1 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
                 confirmPassword === ""
                   ? "border-stone-300"
@@ -171,7 +158,7 @@ const ResetPassword = ({ handleChangePassword }) => {
           />
           <span
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute left-3 top-2/3 transform -translate-y-1/2 cursor-pointer text-xl text-primary"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-primary"
           >
             {showConfirmPassword ? (
               <EyeOffIcon className="w-5 h-5 text-primary" />
@@ -180,8 +167,17 @@ const ResetPassword = ({ handleChangePassword }) => {
             )}
           </span>
         </div>
-
-        {confirmPasswordTouched && (
+        {Object.values(passwordErrors).map((error, index) => (
+          <p
+            key={index}
+            className={`mt-1 mr-4 text-right text-xs ${
+              error.isError ? "text-reject" : "text-accept"
+            }`}
+          >
+            {error.message}
+          </p>
+        ))}
+        {
           <p
             className={`mt-1 mr-4 text-right text-xs ${
               confirmPasswordError ? "text-reject" : "text-accept"
@@ -191,7 +187,7 @@ const ResetPassword = ({ handleChangePassword }) => {
               ? "رمز عبور و تکرار آن مطابقت ندارند"
               : "رمز عبور و تکرار آن مطابقت دارند"}
           </p>
-        )}
+        }
 
         <button
           type="submit"

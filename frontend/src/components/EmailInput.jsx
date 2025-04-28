@@ -1,8 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useEmail, useLoginStep } from "../stores/login";
-
-import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 const EmailInput = ({ handleEmailSubmit, isLoading }) => {
@@ -42,7 +40,9 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
         <h2 className="mt-12 mb-2 text-right font-Vazir text-5xl text-primary">
           ورود
         </h2>
-        <p className="mb-6 text-right font-Vazir text-3xl text-muted">...سفرتو شروع کن</p>
+        <p className="mb-6 text-right font-Vazir text-3xl text-muted">
+          ...سفرتو شروع کن
+        </p>
         <div className="mb-4">
           <input
             type="email"

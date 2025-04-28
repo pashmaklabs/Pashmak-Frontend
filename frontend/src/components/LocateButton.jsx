@@ -8,12 +8,12 @@ const LocateButton = ({ setUserLocation }) => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation([latitude, longitude]);
-          setFocus(true)
+          setFocus(true);
         },
         (error) => {
           console.error("Error getting location:", error);
           alert("Unable to access your location.");
-        }
+        },
       );
     } else {
       alert("Your browser does not support geolocation.");

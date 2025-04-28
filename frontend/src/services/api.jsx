@@ -34,7 +34,6 @@ export const usePostRequest = () => {
   });
 };
 
-
 const getRequest = async ({ url, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();
   const fullUrl = queryString ? `${url}?${queryString}` : url;
@@ -55,7 +54,6 @@ export const useGetRequest = (queryKey, queryParams) => {
     queryFn: () => getRequest(queryParams),
   });
 };
-
 
 const patchRequest = async ({ url, data, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();

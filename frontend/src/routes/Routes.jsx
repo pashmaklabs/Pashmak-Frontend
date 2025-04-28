@@ -4,7 +4,6 @@ const routes = {
   place: "/map/place",
   login: "/login",
   changePassword: "/change-password",
-  completeProfile: "/complete-profile",
   profile: "/profile",
   notfound: "*",
 };
