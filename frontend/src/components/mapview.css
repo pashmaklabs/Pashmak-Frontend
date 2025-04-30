@@ -1,31 +1,36 @@
-.container{
-    /* padding: 10px 10px; */
-    width:max-content;
-  }
-  .xyz-dialog {
-    background-color: rgba(59, 130, 246, 0.9); /* Blue background with transparency */
-    color: white; /* White text */
-    font-size: 12px; /* Smaller font size */
-    padding: 6px; /* Add padding */
-    border-radius: 8px; /* Rounded corners */
-    text-align: center; /* Center align text */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    position: relative; /* For the triangle positioning */
-    width: 135px; /* Fixed width */
-  }
-  
-  .xyz-dialog::after {
-    content: "";
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid  rgba(59, 130, 246, 0.9);
-    position: absolute;
-    top: 100%;
-    left: 40%;
-  }
-  .body {
-    color: white;
-    font-size: 12px
-  }
+.container {
+  /* padding: 10px 10px; */
+  width: max-content;
+}
+.xyz-dialog {
+  background-color: rgba(
+    59,
+    130,
+    246,
+    0.9
+  ); /* Blue background with transparency */
+  color: white; /* White text */
+  font-size: 12px; /* Smaller font size */
+  padding: 6px; /* Add padding */
+  border-radius: 8px; /* Rounded corners */
+  text-align: center; /* Center align text */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  position: relative; /* For the triangle positioning */
+  width: 135px; /* Fixed width */
+}
+
+.xyz-dialog::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(59, 130, 246, 0.9);
+  position: absolute;
+  top: 100%;
+  left: 40%;
+}
+.body {
+  color: white;
+  font-size: 12px;
+}

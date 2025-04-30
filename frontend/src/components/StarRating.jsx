@@ -1,8 +1,8 @@
 import React from "react";
 
-const StarRating = ({rating, reviews }) => {
-    // Render stars for the rating
-    const renderStars = () => {
+const StarRating = ({ rating, reviews }) => {
+  // Render stars for the rating
+  const renderStars = () => {
     return [...Array(5)].map((_, index) => {
       const isFullStar = index < Math.floor(rating);
       const isHalfStar = index === Math.floor(rating) && rating % 1 !== 0;
@@ -51,7 +51,6 @@ const StarRating = ({rating, reviews }) => {
 
   return (
     <>
-      
       <div className="flex items-center mr-1">
         {renderStars()}
         <p className="text-xs text-gray-600 mr-1 mt-1">
@@ -59,7 +58,6 @@ const StarRating = ({rating, reviews }) => {
         </p>
       </div>
     </>
-
   );
 };
 

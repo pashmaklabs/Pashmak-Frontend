@@ -129,13 +129,14 @@ const MapView = ({ staticPoints, userLocation }) => {
   };
 
   const createCustomIcon = (type) => {
-    const iconClass = {
-      restaurant: "fa-cutlery",
-      cafe: "fa-coffee",
-      park: "fa-tree",
-      hotel: "fa-bed",
-      museum: "fa-university",
-    }[type] || "fa-map-marker";
+    const iconClass =
+      {
+        restaurant: "fa-cutlery",
+        cafe: "fa-coffee",
+        park: "fa-tree",
+        hotel: "fa-bed",
+        museum: "fa-university",
+      }[type] || "fa-map-marker";
 
     return new L.DivIcon({
       className: "custom-icon-wrapper",
@@ -150,20 +151,17 @@ const MapView = ({ staticPoints, userLocation }) => {
       <MapContainer
         center={initialCenter}
         zoom={zoomParam}
-        className="h-full w-full z-20"
+        className="h-full w-full z-[0]"
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        <Shet userLocation={userLocation}/>
+        <Shet userLocation={userLocation} />
 
         {staticPoints.map((point) => (
-          <Marker
-            key={`static-${point.id}`}
-            position={[point.lat, point.lon]}
-          >
+          <Marker key={`static-${point.id}`} position={[point.lat, point.lon]}>
             <Popup>
               <h3>{point.name}</h3>
               <p>ID: {point.id}</p>

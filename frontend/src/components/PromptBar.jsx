@@ -119,7 +119,7 @@ export default function PromptBar({
       {/* Expand Button */}
       <button
         onClick={handleOpenChatBox}
-        className={`absolute z-[997] focus:outline-none bottom-24 left-8 rounded-full flex justify-center items-center p-0 border-0 bg-transparent transition-all duration-500 transform hover:scale-110 hover:drop-shadow-lg
+        className={`absolute z-[10] focus:outline-none bottom-24 left-8 rounded-full flex justify-center items-center p-0 border-0 bg-transparent transition-all duration-500 transform hover:scale-110 hover:drop-shadow-lg
           ${uiState.isFullyCollapsed ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}`}
         aria-label="Expand search"
       >
@@ -129,7 +129,7 @@ export default function PromptBar({
       {/* Prompt Bar */}
       <div
         ref={promptBarRef}
-        className={`absolute w-11/12 max-w-[800px] top-1/2 left-1/2 transform z-[30] p-8 font-sans origin-bottom-left transition-all duration-700 ease-in-out
+        className={`absolute w-11/12 max-w-[800px] top-1/2 left-1/2 transform z-[10] p-8 font-sans origin-bottom-left transition-all duration-700 ease-in-out
           ${uiState.isFullyCollapsed ? "translate-x-[-150%] translate-y-[80%] scale-50 opacity-0 pointer-events-none" : "translate-x-[-50%] translate-y-[-50%] scale-100 opacity-100"}
         `}
       >
@@ -137,7 +137,11 @@ export default function PromptBar({
           //#region renderTagContainer
           uiState.isExpanded && (
             <div className="absolute translate-y-[-100%] right-9">
-              <TagContainer availableTags={availableTags} addTag={addTag} width={500} />
+              <TagContainer
+                availableTags={availableTags}
+                addTag={addTag}
+                width={500}
+              />
             </div>
           )
           //#endregion

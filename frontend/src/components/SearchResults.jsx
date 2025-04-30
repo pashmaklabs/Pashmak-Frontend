@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import StarRating from "./StarRating";
+import { toast } from "react-toastify";
 
 const SearchResults = ({ setExpendSearch, expendSearch }) => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
       {!expendSearch && (
         <button
           onClick={toggleSearchPanel}
-          className="fixed w-9 h-9 right-20 top-4 p-2 rounded-full bg-white hover:bg-gray-100 shadow-md z-50"
+          className="fixed w-9 h-9 right-20 top-4 p-2 rounded-full bg-white hover:bg-gray-100 shadow-md z-[10]"
           aria-label="Expand search results"
         >
           <img src="/arrow_left.svg" className="h-6 w-6 -mt-1" alt="Expand" />
@@ -49,7 +50,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
 
       {/* Main panel */}
       <div
-        className={`font-sans fixed right-16 top-0 z-40 bg-white shadow-lg h-screen transition-all duration-300 ease-in-out ${
+        className={`font-sans fixed right-16 top-0 z-[10] bg-white shadow-lg h-screen transition-all duration-300 ease-in-out ${
           expendSearch ? "w-[400px]" : "w-4 bg-zinc-100 overflow-hidden"
         }`}
         dir="rtl"
@@ -60,7 +61,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
             <div className="flex-shrink-0 pt-2 px-4 relative">
               <button
                 onClick={toggleSearchPanel}
-                className="absolute w-9 h-9 -left-10 top-4 p-2 rounded-full hover:bg-gray-100 bg-white z-50"
+                className="absolute w-9 h-9 -left-10 top-4 p-2 rounded-full hover:bg-gray-100 bg-white z-[10]"
                 aria-label="Collapse search results"
               >
                 <img

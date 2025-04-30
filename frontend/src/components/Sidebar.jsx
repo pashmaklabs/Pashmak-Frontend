@@ -36,7 +36,7 @@ const Sidebar = () => {
     <>
       {(isOpen || showLoginPopup) && (
         <div
-          className="fixed inset-0 bg-gray-500/50 z-[996]"
+          className="fixed inset-0 bg-gray-500/50 z-[20]"
           onClick={toggleSidebar}
           aria-hidden="true"
         />
@@ -44,7 +44,7 @@ const Sidebar = () => {
       <nav
         className={`rounded-none fixed top-0 right-0 h-full bg-white text-white shadow-lg transition-all duration-300 ease-in-out ${
           isOpen ? "w-[380px]" : "w-[70px]"
-        } z-[997]`}
+        } z-[30]`}
       >
         <button
           onClick={toggleSidebar}
@@ -189,7 +189,7 @@ const Sidebar = () => {
         </div>
       </nav>
       {showLoginPopup && (
-        <div className="z-[997] fixed inset-0 flex items-center justify-center bg-black/50">
+        <div className="z-[50] fixed inset-0 flex items-center justify-center bg-black/50">
           <div className="bg-white p-6 rounded-3xl shadow-lg w-1/3 max-w-[400px] min-w-[200px]">
             <div className="text-right">
               <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>

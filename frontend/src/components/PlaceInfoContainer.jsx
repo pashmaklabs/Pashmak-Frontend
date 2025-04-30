@@ -122,13 +122,13 @@ const PlaceInfoContainer = ({
       </div>
 
       {/* Section 2: Name and Rating */}
-      <div className="p-4 sticky top-0 bg-white z-10">
+      <div className="p-4 sticky top-0 bg-white z-[10]">
         <h2 className="text-xl font-sans-bold text-black">{name}</h2>
         <StarRating rating={rating} reviews={reviews} />
       </div>
 
       {/* Section 3: Tabs */}
-      <div className="sticky top-[70px] bg-white z-10 border-b border-gray-300">
+      <div className="sticky top-[70px] bg-white z-[10] border-b border-gray-300">
         <div className="flex justify-around">{renderTabs()}</div>
         <div
           className="absolute bottom-0 h-[3px] bg-purple-500 transition-all duration-300"

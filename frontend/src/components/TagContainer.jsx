@@ -57,7 +57,11 @@ function TagList({ tags, addTag, width }) {
   };
   console.log("hideIcons: ", hideIcons);
   return (
-    <div className="flex items-center relative " ref={wrapperRef} style={{ maxWidth: `${width}px` }} >
+    <div
+      className="flex items-center relative "
+      ref={wrapperRef}
+      style={{ maxWidth: `${width}px` }}
+    >
       {!hideIcons && (
         <img
           src="/more.svg"
