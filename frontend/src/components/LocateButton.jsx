@@ -7,13 +7,18 @@ const LocateButton = ({ setUserLocation }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setUserLocation([latitude, longitude]);
+          setUserLocation({latitude, longitude});
           setFocus(true);
         },
         (error) => {
           console.error("Error getting location:", error);
           alert("Unable to access your location.");
         },
+        {
+          enableHighAccuracy: true, 
+          timeout: 10000, 
+          maximumAge: 0, // Prevent using cached location
+        }
       );
     } else {
       alert("Your browser does not support geolocation.");

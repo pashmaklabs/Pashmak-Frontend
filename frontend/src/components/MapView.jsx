@@ -1,192 +1,235 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import "font-awesome/css/font-awesome.min.css";
-import { useSearchParams } from "react-router-dom";
 import { useFocus } from "../stores/map";
+import { useSearchParams } from "react-router-dom";
+
+maplibregl.setRTLTextPlugin(
+  "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
+  null,
+  true,
+);
 
 const MapView = ({ staticPoints, userLocation }) => {
-  const defaultCenter = [35.6892, 51.389];
+  const defaultCenter = [51.389, 35.6892]; // [lng, lat]
   const defaultZoom = 13;
-
   const { focus, setFocus } = useFocus();
-  const mapCenterRef = useRef(defaultCenter);
-  const zoomLevelRef = useRef(defaultZoom);
+  const mapRef = useRef(null);
+  const mapContainerRef = useRef(null);
+  const userMarkerRef = useRef(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [points, setPoints] = useState([]);
 
-  const latParam = parseFloat(searchParams.get("lat")) || defaultCenter[0];
-  const lngParam = parseFloat(searchParams.get("lng")) || defaultCenter[1];
-  const zoomParam = parseInt(searchParams.get("zoom")) || defaultZoom;
-  const initialCenter = [latParam, lngParam];
+  // Initialize map position from search params
+  const initialCenter = [
+    parseFloat(searchParams.get("lng")) || defaultCenter[0],
+    parseFloat(searchParams.get("lat")) || defaultCenter[1],
+  ];
+  const initialZoom = parseFloat(searchParams.get("zoom")) || defaultZoom;
 
-  const fetchPoints = async (lat, lon, zoom) => {
-    const MIN_ZOOM_LEVEL = 17;
-    if (zoom < MIN_ZOOM_LEVEL) {
-      setPoints([]);
-      return;
-    }
+  const fetchPoints = async (bounds) => {
+    const { _ne, _sw } = bounds;
+    const bbox = `${_sw.lat},${_sw.lng},${_ne.lat},${_ne.lng}`;
+    const query = `
+        [out:json];
+      (
+        node["amenity"](bbox);
+      );
+      out body;`.replace("bbox", bbox);
 
-    try {
-      const query = `
-        [out:json][timeout:25];
-        (
-          node(around:500,${lat},${lon})[name];
-        );
-        out body;
-      `;
+    const url = "https://overpass-api.de/api/interpreter";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `data=${encodeURIComponent(query)}`,
+    });
 
-      const url = "https://overpass-api.de/api/interpreter";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `data=${encodeURIComponent(query)}`,
+    const data = await response.json();
+    const features = data.elements
+      .filter((item) => item.lat && item.lon)
+      .map((item) => {
+        const type = item.tags?.amenity || item.tags?.shop || "default";
+        return {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [item.lon, item.lat],
+          },
+          properties: {
+            id: item.id,
+            name: item.tags?.name || "Unnamed Location",
+            type,
+            icon: "cat",
+          },
+        };
       });
 
-      const data = await response.json();
-      const formattedPoints = data.elements
-        .filter((item) => item.lat && item.lon)
-        .map((item) => ({
-          id: item.id,
-          name: item.tags?.name || "Unnamed Location",
-          type: item.tags?.amenity || item.tags?.shop || "default",
-          lat: item.lat,
-          lon: item.lon,
-        }));
-
-      setPoints(formattedPoints);
-    } catch (error) {
-      console.error("Error fetching points:", error);
-    }
+    return {
+      type: "FeatureCollection",
+      features,
+    };
   };
 
-  const MapEventHandler = () => {
-    const map = useMap();
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
 
-    useEffect(() => {
-      const handleMoveEnd = () => {
-        const center = map.getCenter();
+    const map = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style:
+        "https://api.maptiler.com/maps/basic/style.json?key=tEK4qnOFcTz1wVKBpZvq",
+      center: initialCenter,
+      zoom: initialZoom,
+    });
+    mapRef.current = map;
+
+    map.on("load", async () => {
+      const image = await map.loadImage(
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png",
+      );
+      map.addImage("cat", image.data);
+
+      map.addSource("points", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [],
+        },
+      });
+
+      map.addLayer({
+        id: "points-layer",
+        type: "symbol",
+        source: "points",
+        layout: {
+          "icon-image": ["get", "icon"],
+          "icon-size": 0.1,
+          "icon-allow-overlap": true,
+        },
+        minzoom: 15,
+      });
+
+      map.on("click", "points-layer", (e) => {
+        const feature = e.features[0];
+        const { name, type } = feature.properties;
+        const [lon, lat] = feature.geometry.coordinates;
+
+        new maplibregl.Popup({ offset: 10 })
+          .setLngLat([lon, lat])
+          .setHTML(
+            `
+            <strong>${name}</strong><br />
+            <strong>Type:</strong> ${type}<br />
+            <strong>Lat:</strong> ${lat.toFixed(5)}<br />
+            <strong>Lon:</strong> ${lon.toFixed(5)}
+          `,
+          )
+          .addTo(map);
+      });
+
+      map.on("moveend", async () => {
+        const source = map.getSource("points");
         const zoom = map.getZoom();
-
-        mapCenterRef.current = [center.lat, center.lng];
-        zoomLevelRef.current = zoom;
-
-        setSearchParams({
-          lat: center.lat.toFixed(5),
-          lng: center.lng.toFixed(5),
-          zoom: zoom.toFixed(0),
-        });
-
-        fetchPoints(center.lat, center.lng, zoom);
-      };
-
-      map.on("moveend", handleMoveEnd);
-      return () => {
-        map.off("moveend", handleMoveEnd);
-      };
-    }, [map]);
-
-    return null;
-  };
-
-  const MapFocus = ({ location }) => {
-    const map = useMap();
-
-    useEffect(() => {
-      setFocus(false);
-      if (location) map.setView(location, 20);
-    }, [location, map]);
-
-    return null;
-  };
-
-  const FixedSizeCircle = ({ location }) => {
-    if (!location) return null;
-
-    const icon = new L.DivIcon({
-      className: "fixed-circle",
-      html: `
-        <div class="relative w-5 h-5 bg-blue-500 border-[1.5px] border-white rounded-full opacity-100 shadow-[0_0_10px_rgba(66,133,244,0.5)]"></div>
-        <div class="absolute top-[-7px] left-[-7px] w-[34px] h-[34px] bg-blue-500/20 rounded-full"></div>
-      `,
-      iconSize: [20, 20],
+        if (!source) return;
+        if (zoom >= 15) {
+          const data = await fetchPoints(map.getBounds());
+          source.setData(data);
+        } else {
+          source.setData({ type: "FeatureCollection", features: [] }); // ⬅ Clear points
+        }
+      });
     });
 
-    return <Marker position={location} icon={icon} />;
-  };
+    // Update URL search params when the map moves
+    map.on("moveend", () => {
+      const center = map.getCenter();
+      const zoom = map.getZoom();
 
-  const Shet = ({ userLocation }) => {
-    const map = useMap();
-    return (
-      <>
-        {focus && <MapFocus location={userLocation} map={map} />}
-        <FixedSizeCircle location={userLocation} />
-        <MapEventHandler map={map} />
-      </>
-    );
-  };
-
-  const createCustomIcon = (type) => {
-    const iconClass =
-      {
-        restaurant: "fa-cutlery",
-        cafe: "fa-coffee",
-        park: "fa-tree",
-        hotel: "fa-bed",
-        museum: "fa-university",
-      }[type] || "fa-map-marker";
-
-    return new L.DivIcon({
-      className: "custom-icon-wrapper",
-      html: `<div class="custom-icon"><i class="fa ${iconClass}" style="font-size: 24px; color: blue;"></i></div>`,
-      iconSize: [24, 24],
-      iconAnchor: [12, 12],
+      setSearchParams({
+        lat: center.lat.toFixed(5),
+        lng: center.lng.toFixed(5),
+        zoom: zoom.toFixed(2),
+      });
     });
-  };
 
-  return (
-    <div className="h-screen w-screen">
-      <MapContainer
-        center={initialCenter}
-        zoom={zoomParam}
-        className="h-full w-full z-[0]"
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
+    return () => {
+      map.remove();
+    };
+  }, []);
 
-        <Shet userLocation={userLocation} />
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !staticPoints || staticPoints.length === 0) return;
 
-        {staticPoints.map((point) => (
-          <Marker key={`static-${point.id}`} position={[point.lat, point.lon]}>
-            <Popup>
-              <h3>{point.name}</h3>
-              <p>ID: {point.id}</p>
-              <p>Lat: {point.lat.toFixed(4)}</p>
-              <p>Lon: {point.lon.toFixed(4)}</p>
-            </Popup>
-          </Marker>
-        ))}
+    const staticPointMarkers = [];
 
-        {points.map((point) => (
-          <Marker
-            key={point.id}
-            position={[point.lat, point.lon]}
-            icon={createCustomIcon(point.type)}
-          >
-            <Popup>
-              <h3>{point.name}</h3>
-              <p>Lat: {point.lat.toFixed(4)}</p>
-              <p>Lon: {point.lon.toFixed(4)}</p>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-    </div>
-  );
+    staticPoints.forEach((point) => {
+      const el = document.createElement("div");
+      el.className = "custom-marker";
+      el.style.width = "20px";
+      el.style.height = "20px";
+      el.style.backgroundColor = "blue";
+      el.style.borderRadius = "50%";
+
+      const marker = new maplibregl.Marker(el)
+        .setLngLat([point.lon, point.lat])
+        .addTo(map);
+
+      staticPointMarkers.push(marker);
+    });
+
+    const bounds = new maplibregl.LngLatBounds();
+    staticPoints.forEach((point) => {
+      bounds.extend([point.lon, point.lat]);
+    });
+
+    map.fitBounds(bounds, {
+      padding: {
+        top: 100,
+        bottom: 200,
+        left: 100,
+        right: 400,
+      },
+      maxZoom: 12,
+      duration: 1000,
+    });
+
+    return () => {
+      staticPointMarkers.forEach((marker) => marker.remove());
+    };
+  }, [staticPoints]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !userLocation) return;
+
+    const { latitude, longitude } = userLocation;
+
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom: 14,
+      essential: true,
+    });
+
+    if (userMarkerRef.current) {
+      userMarkerRef.current.remove();
+    }
+
+    const el = document.createElement("div");
+    el.className = "fixed-circle";
+    el.innerHTML = `
+      <div class="relative w-5 h-5 bg-blue-500 border-[1.5px] border-white rounded-full opacity-100 shadow-[0_0_10px_rgba(66,133,244,0.5)]"></div>
+      <div class="absolute top-[-7px] left-[-7px] w-[34px] h-[34px] bg-blue-500/20 rounded-full"></div>
+    `;
+
+    const marker = new maplibregl.Marker({ element: el })
+      .setLngLat([longitude, latitude])
+      .addTo(map);
+
+    userMarkerRef.current = marker;
+  }, [userLocation]);
+
+  return <div ref={mapContainerRef} className="h-screen w-screen"></div>;
 };
 
 export default MapView;
