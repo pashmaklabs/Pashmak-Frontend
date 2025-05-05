@@ -19,7 +19,7 @@ const MainLayout = () => {
   }, [search]);
   return (
     <div>
-      <Map />
+      <Map expendSearch={expendSearch} />
 
       {((place && expendSearch) || search) && (
         <SearchLocation

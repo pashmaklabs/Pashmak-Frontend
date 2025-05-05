@@ -55,7 +55,7 @@ function TagList({ tags, addTag, width }) {
     const slider = document.getElementById("slider");
     slider.scrollLeft += 50;
   };
-  console.log("hideIcons: ", hideIcons);
+  // console.log("hideIcons: ", hideIcons);
   return (
     <div
       className="flex items-center relative "
@@ -66,7 +66,7 @@ function TagList({ tags, addTag, width }) {
         <img
           src="/more.svg"
           alt="slide left"
-          className="w-6 h-6 cursor-pointer transform transition-transform duration-300 ease-in-out"
+          className="w-6 h-6 cursor-pointer transform transition-transform duration-300 ease-in-out "
           onClick={slideLeft}
         />
       )}
@@ -93,7 +93,7 @@ function TagList({ tags, addTag, width }) {
 function Tag({ tag, addTag }) {
   return (
     <button
-      className="flex items-center text-gray-700 justify-center bg-white h-6 px-2 text-sm cursor-pointer outline-none focus:outline-none rounded-xl leading-3 shadow-md m-[3px] whitespace-nowrap"
+      className="flex items-center text-gray-700 justify-center bg-white h-6 px-2 text-sm cursor-pointer outline-none focus:outline-none rounded-xl leading-3  shadow-[rgba(0,0,0,0.1)_1px_1px_1px_1px] m-[3px] whitespace-nowrap"
       key={tag}
       onClick={() => addTag(tag)}
     >

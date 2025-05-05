@@ -25,7 +25,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
 
     fetchResults();
   }, [setExpendSearch]);
-
+  
   const toggleSearchPanel = () => {
     setExpendSearch(!expendSearch);
   };
@@ -50,7 +50,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
 
       {/* Main panel */}
       <div
-        className={`font-sans fixed right-16 top-0 z-[10] bg-white shadow-lg h-screen transition-all duration-300 ease-in-out ${
+        className={`font-sans fixed right-16 top-[200px] z-[10] bg-white shadow-lg h-screen transition-all duration-300 ease-in-out ${
           expendSearch ? "w-[400px]" : "w-4 bg-zinc-100 overflow-hidden"
         }`}
         dir="rtl"
@@ -61,7 +61,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
             <div className="flex-shrink-0 pt-2 px-4 relative">
               <button
                 onClick={toggleSearchPanel}
-                className="absolute w-9 h-9 -left-10 top-4 p-2 rounded-full hover:bg-gray-100 bg-white z-[10]"
+                className="fixed w-9 h-9 right-[470px] top-4 p-2 rounded-full hover:bg-gray-100 bg-white z-[10] hover:border-0"
                 aria-label="Collapse search results"
               >
                 <img

@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import TagContainer from "./TagContainer";
+import TagRenderer from "./TagRenderer";
 
 export default function PromptBar({
   fetchInitialTags,
   fetchSuggestedTags,
   submitData,
+  expendSearch,
 }) {
   const [availableTags, setAvailableTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [inputPrompt, setInputPrompt] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [uiState, setUiState] = useState({
     isExpanded: false,
     isFullyCollapsed: false,
@@ -21,51 +25,15 @@ export default function PromptBar({
   const isSearchDisabled =
     inputPrompt.trim() === "" && selectedTags.length === 0;
 
-  // Route-driven UI behavior
-  useEffect(() => {
-    const { pathname } = location;
-    if (pathname === "/map") {
-      setUiState({ isExpanded: false, isFullyCollapsed: false });
-    } else if (pathname === "/map/search" || pathname === "/map/place") {
-      setUiState({ isExpanded: false, isFullyCollapsed: true });
-    }
-  }, [location.pathname]);
+  const handleExpand = () => {
+    if (!isSearching) setUiState({ isExpanded: true, isFullyCollapsed: false });
+  };
 
-  // Initial tag load
-  useEffect(() => {
-    fetchInitialTags().then(setAvailableTags);
-  }, [fetchInitialTags]);
-
-  // Debounced tag suggestions
-  useEffect(() => {
-    const timer = setTimeout(async () => {
-      if (inputPrompt.trim()) {
-        const suggestions = await fetchSuggestedTags(inputPrompt);
-        setAvailableTags((prev) => [...new Set([...prev, ...suggestions])]);
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [inputPrompt, fetchSuggestedTags]);
-
-  // Click outside to collapse
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (promptBarRef.current && !promptBarRef.current.contains(e.target)) {
-        setUiState({ isExpanded: false, isFullyCollapsed: true });
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleExpand = () =>
-    setUiState({ isExpanded: true, isFullyCollapsed: false });
   const handleExpandFromIcon = () => {
-    if (uiState.isExpanded) {
-      setUiState({ isExpanded: false, isFullyCollapsed: true });
-    } else {
-      setUiState({ isExpanded: true, isFullyCollapsed: false });
-    }
+    setUiState((prev) => ({
+      isExpanded: !prev.isExpanded,
+      isFullyCollapsed: prev.isExpanded,
+    }));
   };
 
   const handleOpenChatBox = () => {
@@ -74,10 +42,9 @@ export default function PromptBar({
 
   const handleSubmit = () => {
     if (isSearchDisabled) return;
+    setIsSearching(true);
+    setUiState({ isExpanded: true, isFullyCollapsed: false });
     submitData({ input: inputPrompt, tags: selectedTags });
-    setInputPrompt("");
-    setSelectedTags([]);
-    handleExpandFromIcon();
   };
 
   const addTag = (tag) => {
@@ -85,114 +52,278 @@ export default function PromptBar({
     setAvailableTags((prev) => prev.filter((t) => t !== tag));
   };
 
-  const removeTag = (tag) => {
-    setSelectedTags((prev) => prev.filter((t) => t !== tag));
-    setAvailableTags((prev) => [...prev, tag]);
-  };
+  useEffect(() => {
+    const { pathname } = location;
+    if (pathname === "/map") {
+      setUiState({ isExpanded: false, isFullyCollapsed: false });
+    } else if (pathname === "/map/search") {
+      setIsSearching(true);
+      setUiState({ isExpanded: true, isFullyCollapsed: false });
+    } else if (pathname === "/map/place") {
+      setUiState({
+        isExpanded: isSearching,
+        isFullyCollapsed: !isSearching,
+      });
+    }
+  }, [location.pathname, isSearching]);
 
-  const renderSelectedTags = () => (
-    <div className="flex flex-wrap ml-11 mr-11 max-w-full">
-      {selectedTags.map((tag) => (
-        <div
-          key={tag}
-          className="flex items-center h-6 bg-gray-200 px-2 py-1 rounded-xl text-sm text-gray-900 shadow-sm m-[3px] transition-all duration-300"
-        >
-          {tag}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              removeTag(tag);
-            }}
-            className="h-[16px] w-[16px] ml-2 p-0 border-none bg-transparent cursor-pointer focus:outline-none"
-            aria-label={`Remove ${tag}`}
-          >
-            <img src="/close.svg" alt="Remove" className="w-full h-full" />
-          </button>
-        </div>
-      ))}
-    </div>
-  );
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (inputPrompt.trim()) {
+        const suggestions = await fetchSuggestedTags(inputPrompt);
+        setAvailableTags((prev) => [...new Set([...prev, ...suggestions])]);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [inputPrompt, fetchSuggestedTags]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        !isSearching &&
+        promptBarRef.current &&
+        !promptBarRef.current.contains(e.target)
+      ) {
+        setUiState({ isExpanded: false, isFullyCollapsed: true });
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSearching]);
 
   return (
     <>
-      {console.log(uiState.isExpanded)}
       {/* Expand Button */}
-      <button
-        onClick={handleOpenChatBox}
-        className={`absolute z-[10] focus:outline-none bottom-24 left-8 rounded-full flex justify-center items-center p-0 border-0 bg-transparent transition-all duration-500 transform hover:scale-110 hover:drop-shadow-lg
-          ${uiState.isFullyCollapsed ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}`}
-        aria-label="Expand search"
-      >
-        <img src="/ChatExpand.svg" alt="Expand" className="w-20 h-20" />
-      </button>
+      {!isSearching && (
+        <motion.button
+          onClick={handleOpenChatBox}
+          className="absolute bottom-24 left-8 z-[11] rounded-full p-0 border-0 bg-transparent focus:outline-none flex justify-center items-center"
+          initial={{ opacity: 0, scale: 0.75 }}
+          animate={{
+            opacity: uiState.isFullyCollapsed ? 1 : 0,
+            scale: uiState.isFullyCollapsed ? 1 : 0.75,
+          }}
+          transition={{ duration: 0.5 }}
+          aria-label="Expand search"
+        >
+          <img src="/ChatExpand.svg" alt="Expand" className="w-20 h-20" />
+        </motion.button>
+      )}
 
       {/* Prompt Bar */}
-      <div
+      <motion.div
         ref={promptBarRef}
-        className={`absolute w-11/12 max-w-[800px] top-1/2 left-1/2 transform z-[10] p-8 font-sans origin-bottom-left transition-all duration-700 ease-in-out
-          ${uiState.isFullyCollapsed ? "translate-x-[-150%] translate-y-[80%] scale-50 opacity-0 pointer-events-none" : "translate-x-[-50%] translate-y-[-50%] scale-100 opacity-100"}
-        `}
-      >
-        {
-          //#region renderTagContainer
-          uiState.isExpanded && (
-            <div className="absolute translate-y-[-100%] right-9">
-              <TagContainer
-                availableTags={availableTags}
-                addTag={addTag}
-                width={500}
-              />
-            </div>
-          )
-          //#endregion
+        className="absolute font-sans"
+        initial={{
+          top: "10%",
+          left: "100%",
+          right: "auto",
+        }}
+        animate={
+          isSearching
+            ? {
+                top: 0,
+                right: "auto",
+                width: expendSearch ? "400px" : "1rem",
+                height: "200px",
+                scale: 1,
+                opacity: 1,
+                borderRadius: 0,
+                zIndex: 12,
+              }
+            : uiState.isFullyCollapsed
+              ? {
+                  top: "81%",
+                  left: "5%",
+                  x: "-180%",
+                  y: "150%",
+                  width: 0,
+                  height: 0,
+                  maxWidth: "800px",
+                  scale: 0.5,
+                  opacity: "20%",
+                  pointerEvents: "none",
+                  zIndex: 10,
+                }
+              : {
+                  top: "40%",
+                  left: "50%",
+                  x: "-55%",
+                  y: "-50%",
+                  width: "80%",
+                  maxWidth: "800px",
+                  scale: 1,
+                  opacity: 1,
+                  zIndex: 10,
+                }
         }
-
-        <div
-          className={`w-full bg-white rounded-[20px] shadow-lg p-2 overflow-hidden overflow-y-auto transition-all duration-700 ease-in-out relative 
-          ${uiState.isExpanded ? "h-[200px]" : "h-[116px]"} 
-          scrollbar-hide`}
+        transition={{ type: "spring", stiffness: 300, damping: 50 }}
+      >
+        <motion.div
+          className="fixed scrollbar-hide overflow-hidden bg-white"
+          animate={{
+            boxShadow:
+              isSearching && !expendSearch
+                ? "none"
+                : "0px 4px 20px rgba(0,0,0,0.1)",
+            height: isSearching
+              ? expendSearch
+                ? "auto"
+                : 200
+              : uiState.isExpanded
+                ? "auto"
+                : 116,
+            borderRadius: isSearching ? 0 : 20,
+            width:
+              isSearching && expendSearch ? 402 : isSearching ? 18 : "100%",
+            right: isSearching ? 62 : 0,
+            paddingBottom: uiState.isExpanded ? 50 : 0,
+          }}
+          transition={{ duration: 0.3 }}
         >
-          {/* Collapse + Submit */}
-          <button
-            onClick={handleExpandFromIcon}
-            className={`absolute bottom-4 focus:outline-none left-4 w-8 h-8 rounded-full transition-all duration-300 transform p-0 border-none bg-transparent
-              ${uiState.isExpanded ? "rotate-90" : "rotate-0"}`}
-            aria-label={uiState.isExpanded ? "Close search" : "Expand search"}
+          {/* Textarea + Actions */}
+          <motion.div
+            className="fixed scrollbar-hide overflow-hidden overflow-y-auto"
+            animate={{
+              boxShadow:
+                isSearching || uiState.isExpanded
+                  ? "none"
+                  : "0px 4px 10px rgba(0,0,0,0.1)",
+              backgroundColor:
+                isSearching && !expendSearch ? "#F3F3F4" : "#ffffff",
+              height: isSearching ? 200 : uiState.isExpanded ? 200 : 116,
+              borderRadius: isSearching ? 0 : 20,
+              width:
+                isSearching && expendSearch ? 402 : isSearching ? 18 : "100%",
+              right: isSearching ? 62 : 0,
+            }}
+            transition={{ duration: 0.3 }}
           >
-            <img src="/collapse.svg" alt="Collapse" className="w-full h-full" />
-          </button>
+            {/* Expand/Collapse Button */}
+            {!isSearching && (
+              <motion.button
+                onClick={handleExpandFromIcon}
+                className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-transparent p-0 border-none focus:outline-none z-[12]"
+                animate={{ rotate: uiState.isExpanded ? 90 : 0 }}
+                transition={{ duration: 0.3 }}
+                aria-label={
+                  uiState.isExpanded ? "Close search" : "Expand search"
+                }
+              >
+                <img
+                  src="/collapse.svg"
+                  alt="Collapse"
+                  className="w-full h-full"
+                />
+              </motion.button>
+            )}
 
-          {uiState.isExpanded && (
-            <button
-              onClick={handleSubmit}
-              disabled={isSearchDisabled}
-              className={`absolute bottom-[18px] right-4 w-[46px] h-[46px] rounded-full transition-opacity duration-300 p-0 border-none bg-transparent
-                ${isSearchDisabled ? "opacity-50 cursor-not-allowed" : "opacity-100"}`}
-              aria-label="Submit search"
+            {/* Submit Button */}
+            {uiState.isExpanded && (
+              <motion.button
+                onClick={handleSubmit}
+                disabled={isSearchDisabled}
+                className={`absolute ${isSearching ? "bottom-[30px]" : "bottom-[19px]"} right-5 w-[28px] h-[28px] rounded-full bg-transparent p-0 border-none focus:outline-none hover:scale-110 z-[12]`}
+                whileHover={!isSearchDisabled ? { scale: 1.1 } : {}}
+                aria-label="Submit search"
+              >
+                <img src="/search.svg" alt="Search" className="w-full h-full" />
+              </motion.button>
+            )}
+
+            {/* Text Area and Tag Renderer */}
+            <motion.div
+              onClick={handleExpand}
+              initial={false}
+              animate={{
+                height: isSearching ? 170 : uiState.isExpanded ? 180 : 70,
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: "100%",
+                marginBottom: 10,
+                paddingRight: 0,
+                marginRight: 0,
+              }}
+              transition={{ duration: 0.3 }}
             >
-              <img src="/search.svg" alt="Search" className="w-full h-full" />
-            </button>
-          )}
+              <textarea
+                rows={uiState.isExpanded ? 3 : 1}
+                dir="rtl"
+                value={isSearching && !expendSearch ? "" : inputPrompt}
+                onChange={(e) => setInputPrompt(e.target.value)}
+                placeholder={uiState.isExpanded ? "" : "کجا میخواهید بروید؟"}
+                className="w-full pr-6 pl-5 z-[10] text-black text-[16px] leading-6 p-2 resize-none outline-none border-none bg-transparent scrollbar-hide"
+                style={{
+                  height: isSearching
+                    ? "100px"
+                    : uiState.isExpanded
+                      ? "130px"
+                      : "30px",
+                  marginTop: "0.5rem",
+                }}
+              />
 
-          {/* Text + Tags */}
-          <div
-            className={`flex flex-col gap-2 w-full pb-[4px]  ${uiState.isExpanded ? "h-[180px]" : "h-[70px]"} `}
-            onClick={handleExpand}
-          >
-            <textarea
-              rows={uiState.isExpanded ? 3 : 1}
-              dir="rtl"
-              value={inputPrompt}
-              onChange={(e) => setInputPrompt(e.target.value)}
-              placeholder={uiState.isExpanded ? "" : "کجا میخواهید بروید؟"}
-              className={`w-full mt-2 pr-5 pl-4 ${uiState.isExpanded ? "h-[130px]" : "h-[30px]"} border-none outline-none bg-transparent text-black text-[16px] leading-6 p-1.5 resize-none transition-all scrollbar-hide`}
-              style={{ transition: "all 0.3s ease-out" }}
-            />
+              {/* Tag Container */}
+              <AnimatePresence>
+                {uiState.isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      width:
+                        isSearching && expendSearch
+                          ? 402
+                          : isSearching
+                            ? 18
+                            : 600,
+                      backgroundColor: isSearching
+                        ? expendSearch
+                          ? "#ffffff"
+                          : "#f4f4f5"
+                        : "transparent",
+                      right: isSearching ? 62 : 0,
+                      top: isSearching ? 170 : "auto",
+                      bottom: isSearching ? "auto" : "100%",
+                    }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      position: "fixed",
+                      zIndex: 10,
+                    }}
+                  >
+                    <TagContainer
+                      availableTags={availableTags}
+                      addTag={addTag}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            {uiState.isExpanded && renderSelectedTags()}
-          </div>
-        </div>
-      </div>
+              {uiState.isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="z-[10] pl-5 pr-1"
+                >
+                  <TagRenderer
+                    fetchInitialTags={fetchInitialTags}
+                    setAvailableTags={setAvailableTags}
+                    selectedTags={selectedTags}
+                    setSelectedTags={setSelectedTags}
+                  />
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </>
   );
 }
