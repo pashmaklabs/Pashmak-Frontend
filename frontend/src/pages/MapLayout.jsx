@@ -12,6 +12,7 @@ const MainLayout = () => {
 
   const [expendSearch, setExpendSearch] = useState(false);
   const [hasSearch, setHasdSearch] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
   useEffect(() => {
     if (search) {
       setHasdSearch(true);
@@ -19,12 +20,16 @@ const MainLayout = () => {
   }, [search]);
   return (
     <div>
-      <Map expendSearch={expendSearch} />
-
-      {((place && expendSearch) || search) && (
+      <Map
+        expendSearch={expendSearch}
+        setExpendSearch={setExpendSearch}
+        setSearchResult={setSearchResult}
+      />
+      {((place && expendSearch) || search) && searchResult && (
         <SearchLocation
           setExpendSearch={setExpendSearch}
           expendSearch={expendSearch}
+          searchResult={searchResult}
         />
       )}
 

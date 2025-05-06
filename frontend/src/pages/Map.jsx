@@ -2,10 +2,11 @@ import { useState, memo } from "react";
 import MapView from "../components/MapView";
 import PromptBar from "../components/PromptBar";
 import LocateButton from "../components/LocateButton";
-import { usePostRequest } from "../services/api";
+import { useGetRequest, usePostRequest } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const Map = ({ expendSearch }) => {
+const Map = ({ expendSearch, setExpendSearch, setSearchResult }) => {
   const [userLocation, setUserLocation] = useState(null);
 
   const [staticPoints, setStaticPoints] = useState([
@@ -65,26 +66,38 @@ const Map = ({ expendSearch }) => {
     // });
   };
 
-  const { mutate: submitData, isLoading: isSubmitting } = usePostRequest();
-  const handleSubmitData = (input, tags) => {
-    // submitData(
-    //   { url: "/api/submit", data: { input, tags } },
-    //   {
-    //     onSuccess: () => {
-    //       console.log("Data submitted successfully!");
-    //       alert("Submission successful!");
-    //     },
-    //     onError: (error) => {
-    //       console.error("Error submitting data:", error);
-    //       if (error.response?.data?.message) {
-    //         alert(error.response.data.message);
-    //       } else {
-    //         alert("An error occurred. Please try again.");
-    //       }
-    //     },
-    //   }
-    // );
+  const {
+    mutate: search,
+    data: searchOutput,
+    isPending: isGettingResult,
+    error,
+  } = useGetRequest();
+  const handleSubmitData = ({ input, tags }) => {
     navigate("/map/search");
+    search(
+      { endpoint: "/places", params: { q: input } },
+      {
+        onSuccess: ({ places }) => {
+          setSearchResult([]);
+          setSearchResult(places);
+
+          try {
+            const jsonString = JSON.stringify(places);
+            const base64 = btoa(unescape(encodeURIComponent(jsonString)));
+            localStorage.setItem("search_places", base64);
+          } catch (e) {
+            console.error("Failed to store results in localStorage", e);
+          }
+        },
+        onError: (error) => {
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("An error occurred. Please try again.");
+          }
+        },
+      },
+    );
   };
   const navigate = useNavigate();
 
