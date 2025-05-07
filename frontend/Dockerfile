@@ -1,31 +1,23 @@
-# Stage 1: Build the application
+# Stage 1: Build the app
 FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files first to leverage Docker cache
 COPY package.json package-lock.json ./
+RUN npm ci
 
-# Install dependencies (including devDependencies)
-RUN npm install
-
-# Copy all source files
 COPY . .
-
-# Build the application (if needed)
 RUN npm run build
 
-# Stage 2: Production image
-FROM node:22-alpine
+# Stage 2: Serve with nginx
+FROM nginx:stable-alpine AS production
 
-WORKDIR /app
+# Copy built assets
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy only production dependencies from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app ./
+# Replace default nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 5173
+EXPOSE 80
 
-# Run the application
-CMD [ "npm", "run", "dev" , "--", "--host"]
+CMD ["nginx", "-g", "daemon off;"]
