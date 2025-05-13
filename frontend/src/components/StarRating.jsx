@@ -54,7 +54,7 @@ const StarRating = ({ rating, reviews }) => {
       <div className="flex items-center mr-1">
         {renderStars()}
         <p className="text-xs text-gray-600 mr-1 mt-1">
-          {rating} ({reviews})
+          {rating} {reviews!==0 && ('('+reviews+')')}
         </p>
       </div>
     </>
