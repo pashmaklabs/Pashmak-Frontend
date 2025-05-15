@@ -92,7 +92,16 @@ const VerificationCode = ({
 
   return (
     <div>
-      <form className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]">
+      <form className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]">
+        <div className="absolute right-4 top-4 cursor-pointer">
+          <img
+            src="/closeWhiteBg.svg"
+            alt="close"
+            className="w-8 h-auto"
+            onClick={() => navigate(-1)}
+          />
+        </div>
+
         <div className="flex justify-between items-center mb-6">
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />
         </div>

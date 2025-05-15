@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import PageTransition from "../components/PageTransition";
 import VerificationCode from "../components/VerificationCode";
 import ResetPassword from "../components/ResetPassword";
@@ -88,12 +88,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div
-      className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
-      style={{
-        backgroundImage: "linear-gradient(120deg, #5E2B7A, #85A4E2, #C77DF3)",
-      }}
-    >
+    <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-black/20 backdrop-blur-sm">
       <PageTransition key={step}>
         {step === "verification" && (
           <VerificationCode
@@ -110,4 +105,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default memo(ChangePassword);

@@ -2,10 +2,13 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useEmail, useLoginStep } from "../stores/login";
 import Spinner from "react-bootstrap/Spinner";
+import { useNavigate } from "react-router-dom";
+import routes from "../routes/Routes";
 
 const EmailInput = ({ handleEmailSubmit, isLoading }) => {
   const { email, setEmail } = useEmail();
   const [isValidEmail, setIsValidEmail] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,8 +28,17 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
+        <div className="absolute right-4 top-4 cursor-pointer">
+          <img
+            src="/closeWhiteBg.svg"
+            alt="close"
+            className="w-8 h-auto"
+            onClick={() => navigate(-1)}
+          />
+        </div>
+
         <div className="mt-6 mb-4 flex flex-col items-center justify-center">
           <img
             src="/logo.svg"

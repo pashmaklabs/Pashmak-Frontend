@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
 import routes from "../routes/Routes";
 import { useLoginStep } from "../stores/login";
-
 const PasswordLogin = ({ handlePasswordLoginSuccess, setUserExists }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -29,8 +28,17 @@ const PasswordLogin = ({ handlePasswordLoginSuccess, setUserExists }) => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
+        <div className="absolute right-4 top-4 cursor-pointer">
+          <img
+            src="/closeWhiteBg.svg"
+            alt="close"
+            className="w-8 h-auto"
+            onClick={() => navigate(-1)}
+          />
+        </div>
+
         <div className="flex justify-between items-center mb-6">
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />
         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
 import EmailInput from "../components/EmailInput";
@@ -136,12 +136,7 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
-      style={{
-        backgroundImage: "linear-gradient(120deg, #5E2B7A, #85A4E2, #C77DF3)",
-      }}
-    >
+    <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-black/20 backdrop-blur-sm">
       <PageTransition key={step}>
         {step === "email" && (
           <EmailInput
@@ -169,4 +164,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default memo(Login);

@@ -86,8 +86,17 @@ const Signup = ({ handleSignup }) => {
         e.preventDefault();
         handleSubmit(e);
       }}
-      className="pb-12 w-full max-w-[474px] rounded-lg bg-white p-6 shadow-lg lg:p-8 mx-auto my-8"
+      className="relative pb-12 w-full max-w-[474px] rounded-lg bg-white p-6 shadow-lg lg:p-8 mx-auto my-8"
     >
+      <div className="absolute right-4 top-4 cursor-pointer">
+        <img
+          src="/closeWhiteBg.svg"
+          alt="close"
+          className="w-8 h-auto"
+          onClick={() => navigate(-1)}
+        />
+      </div>
+
       <div className="flex justify-between items-center">
         <div className="flex flex-col items-center">
           <img src="/logo.svg" alt="Logo" className="w-10 h-auto" />

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUserLogin } from "../stores/login";
+import routes from "../routes/Routes";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,14 +10,13 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-  const hiddenRoutes = [
-    "/login",
-    "/profile",
-    "/complete-profile",
-    "/change-password",
-  ];
+  const hiddenRoutes = ["/profile"];
+  const allDefinedRoutes = Object.values(routes).filter((r) => r !== "*");
 
-  if (hiddenRoutes.includes(location.pathname)) {
+  if (
+    hiddenRoutes.includes(location.pathname) ||
+    !allDefinedRoutes.includes(location.pathname)
+  ) {
     return null;
   }
 
