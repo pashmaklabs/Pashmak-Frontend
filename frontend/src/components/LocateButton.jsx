@@ -28,7 +28,7 @@ const LocateButton = ({ setUserLocation }) => {
 
   return (
     <div
-      className="absolute z-[10] bottom-5 left-10 rounded-full flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 group"
+      className="absolute z-[10] sm:bottom-5 bottom-[var(--sidebar-width)] sm:left-10 left-4 rounded-full flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 group"
       onClick={handleLocate}
     >
       <div className="relative">

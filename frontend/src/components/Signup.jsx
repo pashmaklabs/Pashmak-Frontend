@@ -86,7 +86,7 @@ const Signup = ({ handleSignup }) => {
         e.preventDefault();
         handleSubmit(e);
       }}
-      className="relative pb-12 w-full max-w-[474px] rounded-lg bg-white p-6 shadow-lg lg:p-8 mx-auto my-8"
+      className="relative pb-12 lg:w-full lg:max-w-[474px] h-auto w-[370px] rounded-lg bg-white p-6 shadow-lg lg:p-8 mx-auto my-8"
     >
       <div className="absolute right-4 top-4 cursor-pointer">
         <img
@@ -105,7 +105,7 @@ const Signup = ({ handleSignup }) => {
           </span>
         </div>
       </div>
-      <h2 className="mt-4 mb-4 pb-8 pr-6 text-right font-Vazir text-5xl text-black">
+      <h2 className="mt-4 lg:mb-4 pb-8 pr-6 mr-6 text-right font-Vazir lg:text-5xl text-2xl text-black">
         ثبت نام
       </h2>
 

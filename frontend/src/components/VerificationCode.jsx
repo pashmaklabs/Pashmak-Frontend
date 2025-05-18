@@ -92,7 +92,7 @@ const VerificationCode = ({
 
   return (
     <div>
-      <form className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]">
+      <form className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]">
         <div className="absolute right-4 top-4 cursor-pointer">
           <img
             src="/closeWhiteBg.svg"
@@ -106,7 +106,7 @@ const VerificationCode = ({
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />
         </div>
 
-        <p className="text-right text-muted text-lg mt-2">
+        <p className="text-right text-muted lg:text-lg text-md mt-2">
           کد ۴ رقمی فرستاده شده به
           <span
             className="text-primary font-bold inline-block"
@@ -117,7 +117,7 @@ const VerificationCode = ({
           را وارد کنید
         </p>
 
-        <div className="flex justify-between my-6">
+        <div className="flex justify-between my-6 lg:justify-center lg:space-x-10">
           {code.map((digit, index) => (
             <input
               key={index}
@@ -140,14 +140,14 @@ const VerificationCode = ({
           type="button"
           onClick={handleResendCode}
           disabled={resendDisabled}
-          className={`w-full text-secondary bg-white text-lg border-none mt-4  ${resendDisabled ? "opacity-50" : "hover:text-primary"}`}
+          className={`w-full text-secondary bg-white lg:text-lg text-sm border-none lg:mt-4   ${resendDisabled ? "opacity-50" : "hover:text-primary"}`}
         >
           ارسال مجدد کد
         </button>
         <button
           type="submit"
           disabled={code.join("").length < 4}
-          className={`w-full py-2 mt-6 rounded-md text-white ${
+          className={`w-full py-2 lg:mt-6 mt-2 rounded-md text-white ${
             code.join("").length === 4 ? "bg-primary" : "bg-muted"
           }`}
         >
@@ -158,7 +158,7 @@ const VerificationCode = ({
           <button
             type="button"
             onClick={handleBack}
-            className="text-secondary bg-white text-lg border-none mb-2 hover:text-primary focus:outline-none"
+            className="text-secondary bg-white lg:text-lg text-sm border-none mb-2 hover:text-primary focus:outline-none"
           >
             تغییر ایمیل
           </button>
@@ -167,7 +167,7 @@ const VerificationCode = ({
             <button
               type="button"
               onClick={handleLoginPasswordRedirect}
-              className="text-secondary bg-white text-lg border-none mb-2 hover:text-primary focus:outline-none"
+              className="text-secondary bg-white lg:text-lg text-sm border-none mb-2 hover:text-primary focus:outline-none"
             >
               ورود با رمز عبور
             </button>

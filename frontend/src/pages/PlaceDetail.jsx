@@ -50,10 +50,10 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch }) => {
   return (
     <div
       dir="rtl"
-      className={`z-20 absolute bg-white   shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans ${
+      className={` z-[13] absolute bg-white shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans ${
         expendSearch
           ? "right-[475px] h-[80%] rounded-xl w-[350px] bottom-8"
-          : " w-[400px] right-16 h-[100%] bottom-0 "
+          : " sm:w-[400px] w-full sm:right-[var(--sidebar-width)] sm:top-0 right-0  sm:bottom-0 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width))] sm:h-auto"
       }  transition-all duration-500`}
     >
       <PlaceInfoContainer

@@ -42,13 +42,17 @@ const Sidebar = () => {
         />
       )}
       <nav
-        className={`rounded-none fixed top-0 right-0 h-full bg-white text-white shadow-lg transition-all duration-300 ease-in-out ${
-          isOpen ? "w-[380px]" : "w-[70px]"
-        } z-[30]`}
+        dir="rtl"
+        className={`
+        fixed bg-white shadow-[rgba(0,0,1,0.5)_1px_4px_4px_2px] transition-all duration-300 ease-in-out z-[30]
+        bottom-0 left-0 w-full flex flex-row 
+        sm:shadow-lg sm:px-0 sm:justify-start sm:top-0 sm:right-0 sm:bottom-auto sm:left-auto sm:h-full sm:w-[380px] sm:flex-col 
+        ${isOpen ? "flex-col justify-start h-screen sm:w-[380px] px-2" : " px-10 justify-between h-[70px] sm:w-[70px]"}
+      `}
       >
         <button
           onClick={toggleSidebar}
-          className="w-[70px]  focus:border-transparent border-transparent !outline-none rounded-none bg-white text-gray-400 right-0 transition-colors absolute justify-end"
+          className="py-4 rounded-none bg-transparent text-gray-400 flex justify-start"
         >
           <svg
             className="w-8 h-8"
@@ -86,111 +90,89 @@ const Sidebar = () => {
             />
           </svg>
         </button>
-
-        <div className="mt-14">
-          <ul className="space-y-2">
-            <li>
-              <NavLink
-                to="/profile"
-                end
-                onClick={(e) => {
-                  if (!userLogin) {
-                    e.preventDefault(); // stop navigation
-                    setShowLoginPopup(true);
-                  }
-                }}
-                className={({ isActive }) =>
-                  `flex justify-end py-2 px-4 hover:bg-slate-300 transition-colors ${
-                    isActive ? "bg-slate-100" : ""
-                  }`
-                }
+        <NavLink
+          to="/profile"
+          end
+          onClick={(e) => {
+            if (!userLogin) {
+              e.preventDefault(); // stop navigation
+              setShowLoginPopup(true);
+            }
+          }}
+          className={({ isActive }) =>
+            `flex justify-start px-4 py-4 sm:hover:bg-slate-300 transition-colors ${
+              isActive ? "bg-slate-100" : ""
+            }`
+          }
+        >
+          <div className="flex items-center">
+            <img src="/profile.svg" alt="profile" className="w-9 h-9" />
+            {isOpen && (
+              <span
+                style={{ animationDelay: "2000ms" }}
+                className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right"
               >
-                <div className="flex items-center">
-                  {isOpen && (
-                    <span
-                      dir="rtl"
-                      style={{ animationDelay: "2000ms" }}
-                      className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right"
-                    >
-                      پروفایل
-                    </span>
-                  )}
-                  <img src="/profile.svg" alt="profile" className="w-9 h-9" />
-                </div>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/bookmarks"
-                end
-                onClick={(e) => {
-                  if (!userLogin) {
-                    e.preventDefault(); // stop navigation
-                    setShowLoginPopup(true);
-                  }
-                }}
-                className={({ isActive }) =>
-                  `flex justify-end py-2 px-4 hover:bg-slate-300 transition-colors ${
-                    isActive ? "bg-slate-100" : ""
-                  }`
-                }
-              >
-                <div className="flex items-center">
-                  {isOpen && (
-                    <span
-                      dir="rtl"
-                      className="mr-3 mb- inline-block overflow-hidden whitespace-nowrap text-right"
-                    >
-                      مکان های ذخیره شده
-                    </span>
-                  )}
-                  <img
-                    src="/Bookmark.svg"
-                    alt="saved places"
-                    className="w-9 h-9"
-                  />
-                </div>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/search-history"
-                end
-                onClick={(e) => {
-                  if (!userLogin) {
-                    e.preventDefault(); // stop navigation
-                    setShowLoginPopup(true);
-                  }
-                }}
-                className={({ isActive }) =>
-                  `flex justify-end py-2 px-4 hover:bg-slate-300 transition-colors ${
-                    isActive ? "bg-slate-100" : ""
-                  }`
-                }
-              >
-                <div className="flex items-center">
-                  {isOpen && (
-                    <span
-                      dir="rtl"
-                      className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right"
-                    >
-                      تاریخچه جستجو
-                    </span>
-                  )}
-                  <img
-                    src="/History.svg"
-                    alt="search history"
-                    className=" w-10 h-10"
-                  />
-                </div>
-              </NavLink>
-            </li>
-          </ul>
-        </div>
+                پروفایل
+              </span>
+            )}
+          </div>
+        </NavLink>
+        <NavLink
+          to="/bookmarks"
+          end
+          onClick={(e) => {
+            if (!userLogin) {
+              e.preventDefault(); // stop navigation
+              setShowLoginPopup(true);
+            }
+          }}
+          className={({ isActive }) =>
+            `flex justify-start  px-4 py-4 sm:hover:bg-slate-300 transition-colors ${
+              isActive ? "bg-slate-100" : ""
+            }`
+          }
+        >
+          <div className="flex items-center">
+            <img src="/Bookmark.svg" alt="saved places" className="w-9 h-9" />
+            {isOpen && (
+              <span className="mr-3 mb- inline-block overflow-hidden whitespace-nowrap text-right">
+                مکان های ذخیره شده
+              </span>
+            )}
+          </div>
+        </NavLink>
+        <NavLink
+          to="/search-history"
+          end
+          onClick={(e) => {
+            if (!userLogin) {
+              e.preventDefault(); // stop navigation
+              setShowLoginPopup(true);
+            }
+          }}
+          className={({ isActive }) =>
+            `flex justify-start px-4 py-4 sm:hover:bg-slate-300 transition-colors ${
+              isActive ? "bg-slate-100" : ""
+            }`
+          }
+        >
+          <div className="flex items-center">
+            <img
+              src="/History.svg"
+              alt="search history"
+              className=" w-10 h-10"
+            />
+            {isOpen && (
+              <span className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right">
+                تاریخچه جستجو
+              </span>
+            )}
+          </div>
+        </NavLink>
       </nav>
       {showLoginPopup && (
         <div className="z-[50] fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="bg-white p-6 rounded-3xl shadow-lg w-1/3 max-w-[400px] min-w-[200px]">
+          <div className="bg-white p-6 rounded-3xl shadow-lg sm:w-1/3 max-w-[400px] sm:min-w-[200px]">
             <div className="text-right">
               <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>
               <p className="mb-4 text-gray-500">
@@ -200,7 +182,7 @@ const Sidebar = () => {
             <div className="flex justify-center space-x-10">
               <button
                 onClick={() => setShowLoginPopup(false)}
-                className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200"
+                className="bg-white text-blue-500 px-4 py-2 rounded "
               >
                 بعدا
               </button>
@@ -209,7 +191,7 @@ const Sidebar = () => {
                   setShowLoginPopup(false);
                   navigate("/login");
                 }}
-                className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200"
+                className="bg-white text-blue-500 px-4 py-2 rounded"
               >
                 ورود به حساب
               </button>

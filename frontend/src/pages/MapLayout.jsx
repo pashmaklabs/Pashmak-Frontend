@@ -39,7 +39,7 @@ const MainLayout = () => {
   }, [search]);
 
   return (
-    <div>
+    <>
       <Map
         expendSearch={expendSearch}
         setExpendSearch={setExpendSearch}
@@ -66,7 +66,7 @@ const MainLayout = () => {
       )}
 
       <Outlet />
-    </div>
+    </>
   );
 };
 

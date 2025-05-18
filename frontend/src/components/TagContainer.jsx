@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 export default function TagContainer({ availableTags, addTag, width }) {
   return (
-    <div className="relative flex flex-col gap-2 ml-auto">
+    <div className="relative flex flex-col gap-2 ml-auto w-full">
       <TagList tags={availableTags} addTag={addTag} width={width} />
     </div>
   );
@@ -58,7 +58,7 @@ function TagList({ tags, addTag, width }) {
   // console.log("hideIcons: ", hideIcons);
   return (
     <div
-      className="flex items-center relative "
+      className="flex items-center relative self-end px-2 "
       ref={wrapperRef}
       style={{ maxWidth: `${width}px` }}
     >

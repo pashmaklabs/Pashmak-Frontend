@@ -170,7 +170,10 @@ const PlaceInfoContainer = ({
               className="w-[100px] py-1 bg-white border border-purple-500
                                      text-purple-500 text-sm rounded-lg 
                                       focus:outline-none focus:border-purple-500 hover:border-purple-500"
-              onClick={handleSubmitCommentButton}
+              onClick={(e) => {
+                handleSubmitCommentButton();
+                e.currentTarget.blur(); // This will remove focus from the button
+              }}
             >
               ثبت نظر
             </button>

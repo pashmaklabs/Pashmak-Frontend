@@ -28,7 +28,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]"
       >
         <div className="absolute right-4 top-4 cursor-pointer">
           <img
@@ -43,26 +43,26 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
           <img
             src="/logo.svg"
             alt="Logo"
-            className="h-[50%] w-[50%] lg:h-[88px] lg:w-[132px]"
+            className="h-[40%] w-[40%] lg:h-[88px] lg:w-[132px]"
           />
-          <p className="mt-1 text-center font-Vazir text-3xl text-primary">
+          <p className="mt-1 text-center font-Vazir lg:text-3xl text-xl text-primary">
             پشمک
           </p>
         </div>
-        <h2 className="mt-12 mb-2 text-right font-Vazir text-5xl text-primary">
+        <h2 className="mt-12 mb-2 text-right font-Vazir lg:text-5xl text-3xl text-primary">
           ورود
         </h2>
-        <p className="mb-6 text-right font-Vazir text-3xl text-muted">
+        <p className="lg:mb-6 text-right font-Vazir lg:text-2xl text-muted">
           ...سفرتو شروع کن
         </p>
-        <div className="mb-4">
+        <div className="flex-col mb-4 justify-center">
           <input
             type="email"
             value={email}
             onChange={handleEmailChange}
             dir="rtl"
             placeholder="ایمیل خود را وارد کنید"
-            className={`mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
+            className={` mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
                 email === ""
                   ? "border-stone-300"
@@ -81,7 +81,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
         <button
           type="submit"
           disabled={!isValidEmail || isLoading}
-          className={`mt-6 w-full rounded-md px-4 py-2 text-white transition duration-300 ${
+          className={`lg:mt-6  w-full rounded-md px-4 py-2 text-white transition duration-300 ${
             isValidEmail ? "bg-primary" : "bg-muted"
           }`}
         >
