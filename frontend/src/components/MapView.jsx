@@ -23,8 +23,9 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   const mapContainerRef = useRef(null);
   const [searchParams] = useSearchParams();
   const selectedPlaceRef = useRef(null);
-  const navigate = useNavigate();
+
   const location = useLocation();
+  const navigate = useNavigate();
   const initialCenter = [
     parseFloat(searchParams.get("lng")) || defaultCenter[0],
     parseFloat(searchParams.get("lat")) || defaultCenter[1],
@@ -196,8 +197,19 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       onMoveEnd = async () => {
         const source = map.getSource("points");
         const zoom = map.getZoom();
-        console.log("move end");
+        const center = map.getCenter();
+
         if (!source) return;
+
+        // Update URL with lat, lng, zoom
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set("lat", center.lat.toFixed(6));
+        newParams.set("lng", center.lng.toFixed(6));
+        newParams.set("zoom", zoom.toFixed(2));
+        navigate(`${window.location.pathname}?${newParams.toString()}`, {
+          replace: true,
+        });
+
         if (zoom >= 15) {
           const data = await fetchPoints(map.getBounds());
           source.setData(data);
