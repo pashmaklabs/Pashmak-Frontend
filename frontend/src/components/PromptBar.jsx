@@ -22,28 +22,6 @@ export default function PromptBar({
   });
 
   const promptBarRef = useRef(null);
-  const [promptBarWidth, setPromptBarWidth] = useState(0);
-
-  useEffect(() => {
-    function updateWidth() {
-      if (promptBarRef.current) {
-        setPromptBarWidth(promptBarRef.current.offsetWidth);
-      }
-    }
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-  useEffect(() => {
-    if (promptBarRef.current) {
-      setPromptBarWidth(promptBarRef.current.offsetWidth);
-    }
-  }, [isSearching, uiState.isExpanded, expendSearch]);
-
-  useEffect(() => {
-    console.log(promptBarWidth);
-  }, [promptBarWidth]);
-
   const location = useLocation();
 
   const isSearchDisabled =
@@ -306,7 +284,7 @@ export default function PromptBar({
                 >
                   <TagContainer
                     availableTags={availableTags}
-                    addTag={addTag}
+                    onTagClick={addTag}
                     width={
                       isSearching
                         ? !expendSearch
@@ -314,7 +292,9 @@ export default function PromptBar({
                           : isMobile
                             ? window.screen.width
                             : 412
-                        : window.screen.width * 0.6
+                        : isMobile
+                          ? 312
+                          : window.screen.width * 0.6
                     }
                   />
                 </motion.div>

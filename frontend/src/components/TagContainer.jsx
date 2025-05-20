@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 
-export default function TagContainer({ availableTags, addTag, width }) {
+export default function TagContainer({ availableTags, onTagClick, width }) {
   return (
     <div className="relative flex flex-col gap-2 ml-auto w-full">
-      <TagList tags={availableTags} addTag={addTag} width={width} />
+      <TagList tags={availableTags} onTagClick={onTagClick} width={width} />
     </div>
   );
 }
 
-function TagList({ tags, addTag, width }) {
+function TagList({ tags, onTagClick, width }) {
   const [isAtFarRight, setIsAtFarRight] = useState(false);
   const [hideIcons, setHideIcons] = useState(false);
   const wrapperRef = useRef(null);
@@ -55,7 +55,6 @@ function TagList({ tags, addTag, width }) {
     const slider = document.getElementById("slider");
     slider.scrollLeft += 50;
   };
-  // console.log("hideIcons: ", hideIcons);
   return (
     <div
       className="flex items-center relative self-end px-2 "
@@ -75,7 +74,7 @@ function TagList({ tags, addTag, width }) {
         className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth flex items-center scrollbar-hide"
       >
         {tags.map((tag) => (
-          <Tag key={tag} tag={tag} addTag={addTag} />
+          <Tag key={tag} tag={tag} onTagClick={onTagClick} />
         ))}
       </div>
       {!hideIcons && (
@@ -90,12 +89,12 @@ function TagList({ tags, addTag, width }) {
   );
 }
 
-function Tag({ tag, addTag }) {
+function Tag({ tag, onTagClick }) {
   return (
     <button
       className="flex items-center text-gray-700 justify-center bg-white h-6 px-2 text-sm cursor-pointer outline-none focus:outline-none rounded-xl leading-3  shadow-[rgba(0,0,0,0.1)_1px_1px_1px_1px] m-[3px] whitespace-nowrap"
       key={tag}
-      onClick={() => addTag(tag)}
+      onClick={() => onTagClick(tag)}
     >
       {tag}
     </button>

@@ -25,8 +25,8 @@ const SearchLocation = ({
       </Helmet>
       <button
         onClick={toggleSearchPanel}
-        className={`absolute shadow-md w-9 h-9 top-2 transition-all duration-300 ease-in-out p-2 rounded-full hover:bg-gray-100 bg-white z-[12] hover:border-0
-          ${expendSearch ? "right-[480px] rotate-0" : "right-[90px] rotate-180"}`}
+        className={`absolute  shadow-md w-9 h-9 top-2 transition-all duration-300 ease-in-out p-2 rounded-full hover:bg-gray-100 bg-white z-[13] hover:border-0
+          ${expendSearch ? "sm:right-[480px] left-0 sm:left-auto rotate-0" : "sm:right-[90px] right-[20px] rotate-180"}`}
         aria-label="Collapse search results"
       >
         <img

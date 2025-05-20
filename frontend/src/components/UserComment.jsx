@@ -5,7 +5,6 @@ import { Like, Dislike, DangerCircle } from "solar-icon-set";
 const UserComment = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const fullText = props.comment.content;
-  console.log(fullText.length);
   const created_at = props.comment.created_at.slice(0, 10);
   const dislikes = props.comment.dislikes;
   const likes = props.comment.likes;

@@ -27,7 +27,7 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch }) => {
         {
           onSuccess: (data) => {
             // Handle the successful response here, e.g.:
-            console.log("Point details:", data);
+            // console.log("Point details:", data);
           },
           onError: (error) => {
             if (error.response?.data?.message) {
@@ -50,7 +50,7 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch }) => {
   return (
     <div
       dir="rtl"
-      className={` z-[13] absolute bg-white shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans ${
+      className={` z-[13] absolute scrollbar-hide bg-white shadow-md scroll-smooth overflow-x-hidden font-sans ${
         expendSearch
           ? "right-[475px] h-[80%] rounded-xl w-[350px] bottom-8"
           : " sm:w-[400px] w-full sm:right-[var(--sidebar-width)] sm:top-0 right-0  sm:bottom-0 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width))] sm:h-auto"

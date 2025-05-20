@@ -12,7 +12,7 @@ const MapMarkers = ({ map, staticPoints }) => {
 
     staticPoints.forEach((point) => {
       const el = document.createElement("div");
-      el.className = "custom-marker";
+      el.className = "custom-marker cursor-pointer";
       el.style.width = "20px";
       el.style.height = "20px";
       el.style.backgroundColor = "blue";

@@ -50,7 +50,6 @@ export default function CommentsList(props) {
       setComments(data.comments || []);
     }
   }, [data]);
-  console.log(comments);
   return (
     <>
       {isLoading && (

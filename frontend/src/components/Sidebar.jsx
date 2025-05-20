@@ -163,7 +163,7 @@ const Sidebar = () => {
               className=" w-10 h-10"
             />
             {isOpen && (
-              <span className="mr-3 mb-2 inline-block overflow-hidden whitespace-nowrap text-right">
+              <span className="mr-3 mb-1 inline-block overflow-hidden whitespace-nowrap text-right">
                 تاریخچه جستجو
               </span>
             )}

@@ -34,7 +34,6 @@ export const fetchPoints = async (bounds) => {
         },
       };
     });
-  console.log(data);
   return {
     type: "FeatureCollection",
     features,

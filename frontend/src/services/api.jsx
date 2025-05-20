@@ -18,10 +18,10 @@ export default apiClient;
 const postRequest = async ({ url, data, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();
   const fullUrl = queryString ? `${url}?${queryString}` : url;
-  console.log("Sending request to:", fullUrl, "with data:", data); // Debugging
+  // console.log("Sending request to:", fullUrl, "with data:", data); // Debugging
   try {
     const response = await apiClient.post(fullUrl, data);
-    console.log("Request succeeded:", response.data); // Debugging
+    // console.log("Request succeeded:", response.data); // Debugging
     return response.data;
   } catch (error) {
     console.error("Request failed:", error); // Debugging
@@ -54,10 +54,10 @@ export const useGetRequest = () => {
 const patchRequest = async ({ url, data, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();
   const fullUrl = queryString ? `${url}?${queryString}` : url;
-  console.log("Sending PATCH request to:", fullUrl, "with data:", data); // Debugging
+  // console.log("Sending PATCH request to:", fullUrl, "with data:", data); // Debugging
   try {
     const response = await apiClient.patch(fullUrl, data);
-    console.log("PATCH request succeeded:", response.data); // Debugging
+    // console.log("PATCH request succeeded:", response.data); // Debugging
     return response.data;
   } catch (error) {
     console.error("PATCH request failed:", error); // Debugging

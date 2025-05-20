@@ -194,14 +194,28 @@ const PlaceInfoContainer = ({
       </div>
 
       {activeTab === "اطلاعات کلی" && (
-        <>
+        <div className="flex-col items-center justify-center overflow-y-auto  ">
           {/* Section 4: Icons */}
           <div className="flex justify-around py-4 px-10 border-b border-gray-300">
-            <img src="/direction.svg" alt="route" className="w-10 h-10" />
-            <img src="/save.svg" alt="save" className="w-10 h-10" />
-            <img src="/call.svg" alt="call" className="w-10 h-10" />
-            <img src="/share.svg" alt="share" className="w-10 h-10" />
+            <img src="/direction.svg" alt="route" className="w-10 h-10 cursor-pointer" />
+            <img src="/save.svg" alt="save" className="w-10 h-10 cursor-pointer" />
+            <img src="/call.svg" alt="call" className="w-10 h-10 cursor-pointer" />
+            <img
+              src="/share.svg"
+              alt="share"
+              className="w-10 h-10 cursor-pointer"
+              onClick={() => setIsShareOpen(true)}
+            />
+
           </div>
+            {isShareOpen && (
+            <SharePopup
+              shareUrl={links}
+              placeName={name}
+              placeAddress={address}
+              onClose={() => setIsShareOpen(false)}
+            />
+          )}
 
           {/* Section 5: Address, Time, Phone, Links */}
           <div className="p-4 border-b border-gray-300 text-xs">
@@ -286,7 +300,7 @@ const PlaceInfoContainer = ({
               ثبت نظر
             </button>
           </div>
-        </>
+        </div>
       )}
 
       {activeTab === "نظرات" && (

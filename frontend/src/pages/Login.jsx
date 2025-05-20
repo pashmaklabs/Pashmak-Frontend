@@ -29,8 +29,6 @@ const Login = () => {
       {
         onSuccess: (data) => {
           setUserExists(data.userExists);
-          console.log("Response userExists:", data.userExists);
-          console.log("State userExists:", userExists);
           setStep("verification");
           toast.success("کد ورود به ایمیل شما ارسال شد.");
         },
@@ -49,8 +47,6 @@ const Login = () => {
   const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
   const handleVerificationSuccess = (otp) => {
-    console.log("Submitting OTP:", { email, otp });
-
     submitOTP(
       { url: "/auth/otp/verify", data: { email: email, otp: otp } },
       {
@@ -70,8 +66,8 @@ const Login = () => {
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
-            console.log("cause : ", error.cause);
-            console.log("error : ", error);
+            // console.log("cause : ", error.cause);
+            // console.log("error : ", error);
             toast.error("ورود موفقیت آمیز نبود. دوباره تلاش کنید.");
           }
         },
@@ -94,7 +90,6 @@ const Login = () => {
       },
       {
         onSuccess: (data) => {
-          console.log(data);
           setUserExists(true);
           toast.success("تغییرات حساب کاربری شما با موفقیت اعمال شد✅");
           navigate(routes.map);

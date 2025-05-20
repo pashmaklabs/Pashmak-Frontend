@@ -8,6 +8,7 @@ import MapControlsStyle from "./MapControls";
 import MapMarkers from "./MapMarkers";
 import UserLocationMarker from "./UserLocationMarker";
 import { fetchPoints } from "../utils/fetchPoints";
+import useIsMobile from "../hooks/useIsMobile";
 
 maplibregl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
@@ -21,7 +22,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   const defaultZoom = 13;
   const mapRef = useRef(null);
   const mapContainerRef = useRef(null);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();  
   const selectedPlaceRef = useRef(null);
 
   const location = useLocation();
@@ -31,7 +32,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
     parseFloat(searchParams.get("lat")) || defaultCenter[1],
   ];
   const initialZoom = parseFloat(searchParams.get("zoom")) || defaultZoom;
-
+  const isMobile = useIsMobile();
   // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -46,6 +47,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
     mapRef.current = map;
 
     map.addControl(new maplibregl.NavigationControl(), "top-left");
+   
     map.addControl(
       new maplibregl.AttributionControl({ compact: true }),
       "bottom-right",
@@ -201,14 +203,14 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
         if (!source) return;
 
-        // Update URL with lat, lng, zoom
-        const newParams = new URLSearchParams(searchParams);
-        newParams.set("lat", center.lat.toFixed(6));
-        newParams.set("lng", center.lng.toFixed(6));
-        newParams.set("zoom", zoom.toFixed(2));
-        navigate(`${window.location.pathname}?${newParams.toString()}`, {
-          replace: true,
-        });
+        const currentParams = new URLSearchParams(window.location.search);// searchParams are not updated inside useEffect so window.location.search is used
+
+        currentParams.set("lat", center.lat.toFixed(6));
+        currentParams.set("lng", center.lng.toFixed(6));
+        currentParams.set("zoom", zoom.toFixed(2));
+
+        window.history.pushState({}, "", `${window.location.pathname}?${currentParams.toString()}`);//prevents map rerendering
+
 
         if (zoom >= 15) {
           const data = await fetchPoints(map.getBounds());
@@ -225,6 +227,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
       // Clean up
       removeLayerAndSource = () => {
+        if (!map) return;
         if (map.getLayer("points-layer")) map.removeLayer("points-layer");
         if (map.getSource("points")) map.removeSource("points");
         if (map.hasImage("cat")) map.removeImage("cat");
@@ -246,7 +249,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
   return (
     <>
-      <MapControlsStyle />
+      {!isMobile && (<MapControlsStyle />)}
       <div ref={mapContainerRef} className="h-screen w-screen"></div>
       <MapMarkers map={mapRef.current} staticPoints={staticPoints} />
       <UserLocationMarker map={mapRef.current} userLocation={userLocation} />

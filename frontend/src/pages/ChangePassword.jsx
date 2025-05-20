@@ -16,7 +16,6 @@ const ChangePassword = () => {
   const { userLogin, setUserLogin } = useUserLogin();
 
   useEffect(() => {
-    console.log(userLogin);
     if (userLogin) {
       setStep("ResetPassword");
     } else if (!email) {
@@ -28,8 +27,6 @@ const ChangePassword = () => {
 
   const handleVerificationSuccess = useCallback(
     (otp) => {
-      console.log("Submitting OTP in change password:", { email, otp });
-
       submitOTP(
         {
           url: "/auth/password/forget/verify",
@@ -46,8 +43,8 @@ const ChangePassword = () => {
             if (error.response?.data?.message) {
               toast.error(error.response.data.message);
             } else {
-              console.log("cause : ", error.cause);
-              console.log("error : ", error);
+              // console.log("cause : ", error.cause);
+              // console.log("error : ", error);
               toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
             }
           },
@@ -69,7 +66,6 @@ const ChangePassword = () => {
       },
       {
         onSuccess: (data) => {
-          console.log(data);
           toast.success("رمز با موفقیت تغییر کرد.");
           navigate(routes.map);
         },
