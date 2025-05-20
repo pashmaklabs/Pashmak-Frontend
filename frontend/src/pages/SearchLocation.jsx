@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchResults from "../components/SearchResults";
-import { Helmet } from "react-helmet";
+import routes from "../routes/Routes";
 
 const SearchLocation = ({
   setHasdSearch,
@@ -17,12 +17,11 @@ const SearchLocation = ({
   const toggleSearchPanel = () => {
     setExpendSearch(!expendSearch);
   };
-
+  const closeSearchPanel = () => {
+    navigate(routes.map);
+  };
   return (
     <>
-      <Helmet>
-        <title>جست و جو</title>
-      </Helmet>
       <button
         onClick={toggleSearchPanel}
         className={`absolute  shadow-md w-9 h-9 top-2 transition-all duration-300 ease-in-out p-2 rounded-full hover:bg-gray-100 bg-white z-[13] hover:border-0
@@ -33,6 +32,19 @@ const SearchLocation = ({
           src="/arrow_right.svg"
           className={`h-6 w-6 ${expendSearch ? "-mt-[15%]" : "-mt-[10%]"}`}
           alt="Collapse"
+        />
+      </button>
+
+      <button
+        onClick={closeSearchPanel}
+        className={`absolute  shadow-md w-9 h-9 top-12 transition-all duration-300 ease-in-out p-2 rounded-full hover:bg-gray-100 bg-white z-[13] hover:border-0
+          ${expendSearch ? "sm:right-[480px] left-0 sm:left-auto rotate-0" : "sm:right-[90px] right-[20px] rotate-180"}`}
+        aria-label="Collapse search results"
+      >
+        <img
+          src="/closeWhiteBg.svg"
+          className={`h-6 w-6 ${expendSearch ? "-mt-[15%]" : "-mt-[10%]"}`}
+          alt="closeWhiteBg"
         />
       </button>
       {/* <div className={`transition-all bottom-0 duration-300 ease-in-out absolute sm:right-[var(--sidebar-width)] right-0 top-[200px] z-[10] bg-white shadow-lg  overflow-x-hidden overflow-y-auto`}> */}

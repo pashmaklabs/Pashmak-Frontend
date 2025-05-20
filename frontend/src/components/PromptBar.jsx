@@ -57,6 +57,7 @@ export default function PromptBar({
   useEffect(() => {
     const { pathname } = location;
     if (pathname === "/map") {
+      setIsSearching(false);
       setUiState({ isExpanded: false, isFullyCollapsed: false });
     } else if (pathname === "/map/search") {
       setIsSearching(true);

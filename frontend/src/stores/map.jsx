@@ -5,4 +5,9 @@ const useFocus = create((set) => ({
   setFocus: (newFocus) => set({ focus: newFocus }),
 }));
 
-export { useFocus };
+const useInput = create((set) => ({
+  input: "جست و جو",
+  setInput: (newInput) => set({ input: newInput }),
+}));
+
+export { useFocus, useInput };

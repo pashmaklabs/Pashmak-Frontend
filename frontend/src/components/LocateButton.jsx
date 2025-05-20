@@ -17,8 +17,8 @@ const LocateButton = ({ setUserLocation }) => {
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 1000,
+          timeout: 15000,
+          maximumAge: 15000,
         },
       );
     } else {

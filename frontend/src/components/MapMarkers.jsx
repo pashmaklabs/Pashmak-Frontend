@@ -11,14 +11,7 @@ const MapMarkers = ({ map, staticPoints }) => {
     const staticPointMarkers = [];
 
     staticPoints.forEach((point) => {
-      const el = document.createElement("div");
-      el.className = "custom-marker cursor-pointer";
-      el.style.width = "20px";
-      el.style.height = "20px";
-      el.style.backgroundColor = "blue";
-      el.style.borderRadius = "50%";
-
-      const marker = new maplibregl.Marker(el)
+      const marker = new maplibregl.Marker()
         .setLngLat([point.longitude, point.latitude])
         .addTo(map);
 

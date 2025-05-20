@@ -2,7 +2,6 @@ import { useState } from "react";
 import StarRating from "./StarRating";
 import { useNavigate } from "react-router-dom";
 import CommentsList from "./CommentsList";
-import { HandPills } from "solar-icon-set";
 import SharePopup from "./SharePopUp";
 import { Helmet } from "react-helmet";
 import routes from "../routes/Routes";
@@ -35,6 +34,7 @@ const PlaceInfoContainer = ({
   const [isShareOpen, setIsShareOpen] = useState(false);
 
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
+  const shareURL = window.location.href;
 
   // Weekly schedule
   weeklySchedule = {
@@ -197,20 +197,31 @@ const PlaceInfoContainer = ({
         <div className="flex-col items-center justify-center overflow-y-auto  ">
           {/* Section 4: Icons */}
           <div className="flex justify-around py-4 px-10 border-b border-gray-300">
-            <img src="/direction.svg" alt="route" className="w-10 h-10 cursor-pointer" />
-            <img src="/save.svg" alt="save" className="w-10 h-10 cursor-pointer" />
-            <img src="/call.svg" alt="call" className="w-10 h-10 cursor-pointer" />
+            <img
+              src="/direction.svg"
+              alt="route"
+              className="w-10 h-10 cursor-pointer"
+            />
+            <img
+              src="/save.svg"
+              alt="save"
+              className="w-10 h-10 cursor-pointer"
+            />
+            <img
+              src="/call.svg"
+              alt="call"
+              className="w-10 h-10 cursor-pointer"
+            />
             <img
               src="/share.svg"
               alt="share"
               className="w-10 h-10 cursor-pointer"
               onClick={() => setIsShareOpen(true)}
             />
-
           </div>
-            {isShareOpen && (
+          {isShareOpen && (
             <SharePopup
-              shareUrl={links}
+              shareUrl={shareURL}
               placeName={name}
               placeAddress={address}
               onClose={() => setIsShareOpen(false)}

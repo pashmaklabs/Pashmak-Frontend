@@ -22,7 +22,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   const defaultZoom = 13;
   const mapRef = useRef(null);
   const mapContainerRef = useRef(null);
-  const [searchParams, setSearchParams] = useSearchParams();  
+  const [searchParams, setSearchParams] = useSearchParams();
   const selectedPlaceRef = useRef(null);
 
   const location = useLocation();
@@ -47,7 +47,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
     mapRef.current = map;
 
     map.addControl(new maplibregl.NavigationControl(), "top-left");
-   
+
     map.addControl(
       new maplibregl.AttributionControl({ compact: true }),
       "bottom-right",
@@ -76,7 +76,6 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
           left: 100,
           right: 400,
         },
-        maxZoom: 12,
         duration: 1000,
       });
     }
@@ -115,8 +114,16 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       if (selectedPlaceRef.current) {
         selectedPlaceRef.current.remove();
       }
+      const el = document.createElement("img");
+      el.src = "/locPin.svg";
+      el.style.width = "50px";
+      el.style.height = "50px";
+      el.style.marginTop = "-25px";
+      el.style.cursor = "pointer";
 
-      const marker = new maplibregl.Marker().setLngLat([lng, lat]).addTo(map);
+      const marker = new maplibregl.Marker({ element: el })
+        .setLngLat([lng, lat])
+        .addTo(map);
 
       selectedPlaceRef.current = marker;
 
@@ -140,7 +147,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       // Only add image if not already present
       if (!map.hasImage("cat")) {
         const image = await map.loadImage(
-          "https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png",
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Blue_circle.png/120px-Blue_circle.png",
         );
         map.addImage("cat", image.data);
       }
@@ -203,14 +210,17 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
         if (!source) return;
 
-        const currentParams = new URLSearchParams(window.location.search);// searchParams are not updated inside useEffect so window.location.search is used
+        const currentParams = new URLSearchParams(window.location.search); // searchParams are not updated inside useEffect so window.location.search is used
 
         currentParams.set("lat", center.lat.toFixed(6));
         currentParams.set("lng", center.lng.toFixed(6));
         currentParams.set("zoom", zoom.toFixed(2));
 
-        window.history.pushState({}, "", `${window.location.pathname}?${currentParams.toString()}`);//prevents map rerendering
-
+        window.history.pushState(
+          {},
+          "",
+          `${window.location.pathname}?${currentParams.toString()}`,
+        ); //prevents map rerendering
 
         if (zoom >= 15) {
           const data = await fetchPoints(map.getBounds());
@@ -248,7 +258,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
   return (
     <>
-      {!isMobile && (<MapControlsStyle />)}
+      {!isMobile && <MapControlsStyle />}
       <div ref={mapContainerRef} className="h-screen w-screen"></div>
       <MapMarkers map={mapRef.current} staticPoints={staticPoints} />
       <UserLocationMarker map={mapRef.current} userLocation={userLocation} />

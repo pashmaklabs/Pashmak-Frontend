@@ -7,6 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import routes from "../routes/Routes";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
+import { useInput } from "../stores/map";
 
 const Map = ({
   expendSearch,
@@ -17,6 +18,7 @@ const Map = ({
   const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { input, setInput } = useInput();
 
   const { mutate: fetchInitialTags, isLoading: isFetchingInitialTags } =
     usePostRequest();
@@ -48,8 +50,9 @@ const Map = ({
   } = useGetRequest();
   const handleSubmitData = ({ input, tags }) => {
     navigate("/map/search");
+    setInput(input);
     search(
-      { endpoint: "/places", params: { q: input } },
+      { endpoint: "/places/", params: { q: input } },
       {
         onSuccess: ({ places }) => {
           setSearchResult([]);

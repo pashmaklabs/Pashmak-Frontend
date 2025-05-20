@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { motion, AnimatePresence } from "framer-motion";
 import StarRating from "./StarRating";
+import { Helmet } from "react-helmet";
+import { useInput } from "../stores/map";
 
 const SearchResults = ({ setExpendSearch, expendSearch, searchResult }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { input, setInput } = useInput();
 
   const handlePlaceSelect = (item) => {
     setExpendSearch(true);
@@ -38,6 +40,9 @@ const SearchResults = ({ setExpendSearch, expendSearch, searchResult }) => {
       {/* Animated Panel */}
       {/* Animated Panel */}
       <div>
+        <Helmet>
+          <title>{input}</title>
+        </Helmet>
         {expendSearch && (
           <div className="flex flex-col ">
             {/* Panel header */}

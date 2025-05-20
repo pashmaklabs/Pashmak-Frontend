@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { useEmail, useLoginStep } from "../stores/login";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
-import routes from "../routes/Routes";
-
+import { useEffect } from "react";
 const EmailInput = ({ handleEmailSubmit, isLoading }) => {
   const { email, setEmail } = useEmail();
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -23,6 +22,10 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     setIsValidEmail(emailRegex.test(inputEmail));
   };
+  useEffect(() => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setIsValidEmail(emailRegex.test(email));
+  }, []);
 
   return (
     <div>
