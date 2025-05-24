@@ -43,14 +43,14 @@ export default function CommentSubmitForm(props) {
       const rating = rate;
       submitComment(
         {
-          url:`comments/${props.locationId}/add-comment`,
-          data:{Content:text,rating:rating},
+          url: `comments/${props.locationId}/add-comment`,
+          data: { Content: text, rating: rating },
         },
         {
           onSuccess: (data) => {
-            console.log(data)
+            console.log(data);
             toast.success("نظر شما با موفقیت ثبت شد");
-            props.setRefetchComments(!props.refetchComments)
+            props.setRefetchComments(!props.refetchComments);
             props.setShowCommentForm(false);
           },
           onError: (error) => {
@@ -61,8 +61,8 @@ export default function CommentSubmitForm(props) {
             }
             props.setShowCommentForm(false);
           },
-        }
-      )
+        },
+      );
     } else {
       setShowLoginPopup(true);
     }

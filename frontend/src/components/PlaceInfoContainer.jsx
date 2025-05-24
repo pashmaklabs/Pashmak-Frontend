@@ -3,6 +3,7 @@ import StarRating from "./StarRating";
 import { useNavigate } from "react-router-dom";
 import CommentsList from "./CommentsList";
 import SharePopup from "./SharePopUp";
+import PhoneCall from "./PhoneCall";
 import { Helmet } from "react-helmet";
 import routes from "../routes/Routes";
 
@@ -32,6 +33,8 @@ const PlaceInfoContainer = ({
   const [showCommentForm, setShowCommentForm] = useState(false);
 
   const [isShareOpen, setIsShareOpen] = useState(false);
+
+  const [isCallOpen, setIsCallOpen] = useState(false);
 
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
   const shareURL = window.location.href;
@@ -211,7 +214,11 @@ const PlaceInfoContainer = ({
               src="/call.svg"
               alt="call"
               className="w-10 h-10 cursor-pointer"
+              onClick={() => setIsCallOpen(true)}
             />
+            {isCallOpen && (
+              <PhoneCall phone={phone} onClose={() => setIsCallOpen(false)} />
+            )}
             <img
               src="/share.svg"
               alt="share"
