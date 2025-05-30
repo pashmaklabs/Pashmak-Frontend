@@ -9,6 +9,7 @@ import MapMarkers from "./MapMarkers";
 import UserLocationMarker from "./UserLocationMarker";
 import { fetchPoints } from "../utils/fetchPoints";
 import useIsMobile from "../hooks/useIsMobile";
+import { typeToIconMapping, iconMapping } from "../utils/iconUtils";
 
 maplibregl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
@@ -33,7 +34,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   ];
   const initialZoom = parseFloat(searchParams.get("zoom")) || defaultZoom;
   const isMobile = useIsMobile();
-  // Initialize map
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -137,6 +138,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
     }
   }, [searchParams]);
 
+  // map load event to add layers and sources
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -144,12 +146,13 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
     let onMoveEnd, onClick, removeLayerAndSource;
 
     const setupLayer = async () => {
-      // Only add image if not already present
-      if (!map.hasImage("cat")) {
-        const image = await map.loadImage(
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Blue_circle.png/120px-Blue_circle.png",
-        );
-        map.addImage("cat", image.data);
+      if (!map.hasImage("material-icon")) {
+        for (const [type, icon] of Object.entries(iconMapping)) {
+          const image = new Image();
+          image.src = icon;
+          await new Promise((resolve) => (image.onload = resolve));
+          map.addImage(type, image);
+        }
       }
 
       if (!map.getSource("points")) {
@@ -169,14 +172,24 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
           source: "points",
           layout: {
             "icon-image": ["get", "icon"],
-            "icon-size": 0.1,
+            "icon-size": 0.3,
             "icon-allow-overlap": true,
+            "text-field": ["get", "name"],
+            "text-font": ["Open Sans", "Arial Unicode MS"],
+            "text-size": 10,
+            "text-offset": [0, 1.5],
+            "text-anchor": "top",
+          },
+          paint: {
+            "text-color": ["get", "iconColor"],
+            "text-halo-color": "white",
+            "text-halo-width": 1,
+            "text-halo-blur": 0.5,
           },
           minzoom: 15,
         });
       }
 
-      // Click handler
       onClick = (e) => {
         const feature = e.features[0];
         const { id } = feature.properties;
@@ -199,10 +212,8 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
           duration: 2000,
         });
       };
-
       map.on("click", "points-layer", onClick);
 
-      // Moveend handler
       onMoveEnd = async () => {
         const source = map.getSource("points");
         const zoom = map.getZoom();
@@ -224,13 +235,35 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
         if (zoom >= 15) {
           const data = await fetchPoints(map.getBounds());
+          // //-----------------log---------------------------
+          // const pointTypes = new Set();
+          // data.features.forEach(point => pointTypes.add(point.properties.type));
+          // console.log('point types:', Array.from(pointTypes));
+          // //-----------------------------------------------
+          data.features.forEach((feature) => {
+            const type = feature.properties.type;
+            feature.properties.icon = iconMapping[type] ? type : "default"; // Ensure the type matches the iconMapping keys
+            feature.properties.name =
+              feature.properties.name || "Unknown Place";
+            const backgroundColor =
+              typeToIconMapping[type]?.color || typeToIconMapping.default.color; // Use default color if type not found
+            feature.properties.iconColor = backgroundColor || "#000000"; // Default to black if no color is found
+          });
+
           source.setData(data);
         } else {
           source.setData({ type: "FeatureCollection", features: [] });
         }
       };
-
       map.on("moveend", onMoveEnd);
+
+      map.on("mouseenter", "points-layer", () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+
+      map.on("mouseleave", "points-layer", () => {
+        map.getCanvas().style.cursor = "";
+      });
 
       // Initial fetch
       onMoveEnd();

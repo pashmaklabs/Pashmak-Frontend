@@ -18,6 +18,7 @@ export const fetchPoints = async (bounds) => {
   const data = await response.json();
   const features = data.elements
     .filter((item) => item.lat && item.lon)
+    .filter((item) => item.tags?.name && item.tags.name !== "Unnamed Location") 
     .map((item) => {
       const type = item.tags?.amenity || item.tags?.shop || "default";
       return {
