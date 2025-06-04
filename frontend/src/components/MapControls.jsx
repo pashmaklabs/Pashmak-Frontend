@@ -37,6 +37,10 @@ const MapControlsStyle = () => (
         right: 65px !important;
         bottom: -5px !important;
       }
+      .custom-attribution {
+        bottom: -10px !important; 
+        left: -10px !important;   
+}
     `}
   </style>
 );

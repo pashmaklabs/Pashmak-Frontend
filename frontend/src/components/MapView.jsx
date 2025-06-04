@@ -72,8 +72,12 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
     map.addControl(
       new maplibregl.AttributionControl({ compact: true }),
-      "bottom-right",
+      "bottom-left",
     );
+    const attributionControl = document.querySelector(".maplibregl-ctrl-attrib");
+    if (attributionControl) {
+      attributionControl.classList.add("custom-attribution");
+    }
 
     return () => {
       map.remove();
