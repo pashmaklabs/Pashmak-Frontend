@@ -1,12 +1,12 @@
 import { useState, memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
 import EmailInput from "../components/EmailInput";
 import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
 import Signup from "../components/Signup";
 import routes from "../routes/Routes";
-import { useLoginStep, useEmail, useUserLogin } from "../stores/login";
+import { useLoginStep, useEmail, useUserLogin, useRole } from "../stores/login";
 import { toast } from "react-toastify";
 import { usePostRequest, usePatchRequest } from "../services/api";
 import { Helmet } from "react-helmet";
@@ -14,6 +14,7 @@ import { Helmet } from "react-helmet";
 const Login = () => {
   const { step, setStep } = useLoginStep();
   const { email, setEmail } = useEmail();
+  const { role, setRole } = useRole();
   const { userLogin, setUserLogin } = useUserLogin();
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
@@ -51,10 +52,16 @@ const Login = () => {
       { url: "/auth/otp/verify", data: { email: email, otp: otp } },
       {
         onSuccess: (response) => {
+          const roleFromServer = response.data?.role;
           if (userExists) {
             setUserLogin(true);
-            navigate(routes.map);
+            setRole(roleFromServer);
             toast.success("خوش آمدید.");
+            if (roleFromServer === "admin") {
+              navigate(routes.admin);
+            } else {
+              navigate(routes.map);
+            }
           } else {
             setStep("signup");
             toast.success("ورود موفقیت آمیز بود. پروفایل خود را تکمیل کنید.");
@@ -66,8 +73,6 @@ const Login = () => {
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
-            // console.log("cause : ", error.cause);
-            // console.log("error : ", error);
             toast.error("ورود موفقیت آمیز نبود. دوباره تلاش کنید.");
           }
         },
@@ -116,8 +121,14 @@ const Login = () => {
         onSuccess: (data) => {
           setUserLogin(true);
           setUserExists(true);
+          const roleFromServer = data.data?.role;
+          setRole(roleFromServer);
           toast.success("با موفقیت وارد شدید.");
-          navigate(routes.map);
+          if (roleFromServer === "admin") {
+            navigate(routes.admin);
+          } else {
+            navigate(routes.map);
+          }
         },
         onError: (error) => {
           console.error("خطا در ورود با رمز:", error);

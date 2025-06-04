@@ -16,4 +16,9 @@ const useUserLogin = create((set) => ({
   setUserLogin: (newUserLogin) => set({ userLogin: newUserLogin }),
 }));
 
-export { useLoginStep, useEmail, useUserLogin };
+const useRole = create((set) => ({
+  role: "",
+  setRole: (newRole) => set({ role: newRole }),
+}));
+
+export { useLoginStep, useEmail, useUserLogin, useRole };

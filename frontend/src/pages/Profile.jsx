@@ -45,7 +45,7 @@ const Profile = () => {
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
-            toast.error("dwdwwdwخطایی رخ داده. لطفا دوباره امتحان کنید");
+            toast.error("خطایی رخ داده. لطفا دوباره امتحان کنید");
           }
         },
       },

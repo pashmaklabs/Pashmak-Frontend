@@ -1,12 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import routes from "./Routes";
-import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import MapLayout from "../pages/MapLayout";
 import NotFound from "../pages/NotFound";
 import ProtectedLayout from "./ProtectedLayout";
-import Routing from "../pages/Routing";
+
+import AdminLayout from "../pages/AdminLayout";
+import LocationSuggestions from "../pages/LocationSuggestions";
+import UserManagement from "../pages/UserManagement";
+import CommentReports from "../pages/CommentReports";
+import { useRole } from "../stores/login";
+
 function AppRouter() {
+  const { role } = useRole();
   return (
     <Routes>
       <Route path={routes.notfound} element={<NotFound />} />
@@ -19,6 +25,17 @@ function AppRouter() {
         <Route path={routes.login} element={<></>} />
         <Route path={routes.changePassword} element={<></>} />
       </Route>
+      {role === "admin" && (
+        <Route path={routes.admin} element={<AdminLayout />}>
+          <Route index element={<LocationSuggestions />} />
+          <Route
+            path={routes.admin_locations}
+            element={<LocationSuggestions />}
+          />
+          <Route path={routes.admin_user} element={<UserManagement />} />
+          <Route path={routes.admin_comments} element={<CommentReports />} />
+        </Route>
+      )}
       {/* Protected Route */}
       <Route element={<ProtectedLayout />}>
         <Route path={routes.profile} element={<Profile />} />

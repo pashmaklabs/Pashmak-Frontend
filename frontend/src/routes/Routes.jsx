@@ -5,6 +5,10 @@ const routes = {
   login: "/login",
   changePassword: "/change-password",
   profile: "/profile",
+  admin: "/admin",
+  admin_user: "user",
+  admin_locations: "locations",
+  admin_comments: "comments",
   notfound: "*",
   dir: "/map/dir",
 };
