@@ -5,6 +5,7 @@ import Profile from "../pages/Profile";
 import MapLayout from "../pages/MapLayout";
 import NotFound from "../pages/NotFound";
 import ProtectedLayout from "./ProtectedLayout";
+import Routing from "../pages/Routing";
 function AppRouter() {
   return (
     <Routes>
@@ -14,6 +15,7 @@ function AppRouter() {
         <Route path={routes.map} element={<></>} />
         <Route path={routes.search} element={<></>} />
         <Route path={routes.place} element={<></>} />
+        <Route path={routes.dir} element={<></>} />
         <Route path={routes.login} element={<></>} />
         <Route path={routes.changePassword} element={<></>} />
       </Route>

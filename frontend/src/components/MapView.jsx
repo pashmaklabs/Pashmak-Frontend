@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "font-awesome/css/font-awesome.min.css";
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import MapControlsStyle from "./MapControls";
-import MapMarkers from "./MapMarkers";
+import MapMarkers from "./MapStaticPoints";
 import UserLocationMarker from "./UserLocationMarker";
 import { fetchPoints } from "../utils/fetchPoints";
 import useIsMobile from "../hooks/useIsMobile";
 import { typeToIconMapping, iconMapping } from "../utils/iconUtils";
+import MapRoute from "./MapRoute";
+import { createRedPinMarker, addMarkerToMap } from "../utils/customMapElements";
 
 maplibregl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
@@ -18,6 +20,7 @@ maplibregl.setRTLTextPlugin(
 );
 
 const MapView = ({ staticPoints, userLocation, onPointClick }) => {
+  const [mapReady, setMapReady] = useState(false);
   const maptilerApiKey = import.meta.env.VITE_MAPTILER_API_KEY;
   const defaultCenter = [51.389, 35.6892]; // [lng, lat]
   const defaultZoom = 13;
@@ -27,16 +30,34 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   const selectedPlaceRef = useRef(null);
 
   const location = useLocation();
-  const navigate = useNavigate();
-  const initialCenter = [
-    parseFloat(searchParams.get("lng")) || defaultCenter[0],
-    parseFloat(searchParams.get("lat")) || defaultCenter[1],
-  ];
-  const initialZoom = parseFloat(searchParams.get("zoom")) || defaultZoom;
   const isMobile = useIsMobile();
 
+  const decodeParams = () => {
+    const hash = window.location.hash;
+
+    if (hash.startsWith("#c")) {
+      const [lat, lng, zoom] = hash
+        .slice(2)
+        .split("-")
+        .map((part) => part.replace(/[a-z]/g, ""));
+      // console.log("Decoded Params:", { lat, lng, zoom });
+      return {
+        initialCenter: [parseFloat(lng), parseFloat(lat)],
+        initialZoom: parseFloat(zoom),
+      };
+    }
+
+    return {
+      initialCenter: defaultCenter,
+      initialZoom: defaultZoom,
+    };
+  };
+
+  // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current) return;
+
+    const { initialCenter, initialZoom } = decodeParams();
 
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
@@ -115,16 +136,9 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       if (selectedPlaceRef.current) {
         selectedPlaceRef.current.remove();
       }
-      const el = document.createElement("img");
-      el.src = "/locPin.svg";
-      el.style.width = "50px";
-      el.style.height = "50px";
-      el.style.marginTop = "-25px";
-      el.style.cursor = "pointer";
 
-      const marker = new maplibregl.Marker({ element: el })
-        .setLngLat([lng, lat])
-        .addTo(map);
+      const markerElement = createRedPinMarker();
+      const marker = addMarkerToMap(map, [lng, lat], markerElement);
 
       selectedPlaceRef.current = marker;
 
@@ -201,10 +215,6 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
           selectedPlaceRef.current.remove();
         }
 
-        const marker = new maplibregl.Marker().setLngLat([lon, lat]).addTo(map);
-
-        selectedPlaceRef.current = marker;
-
         map.flyTo({
           center: [lon, lat],
           zoom: 16,
@@ -222,15 +232,11 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
         if (!source) return;
 
         const currentParams = new URLSearchParams(window.location.search); // searchParams are not updated inside useEffect so window.location.search is used
-
-        currentParams.set("lat", center.lat.toFixed(6));
-        currentParams.set("lng", center.lng.toFixed(6));
-        currentParams.set("zoom", zoom.toFixed(2));
-
+        const encodedParams = `#c${center.lat.toFixed(6)}-${center.lng.toFixed(6)}-${zoom.toFixed(2)}z-0p`;
         window.history.pushState(
           {},
           "",
-          `${window.location.pathname}?${currentParams.toString()}`,
+          `${window.location.pathname}?${currentParams.toString()}${encodedParams}`,
         ); //prevents map rerendering
 
         if (zoom >= 15) {
@@ -267,6 +273,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
 
       // Initial fetch
       onMoveEnd();
+      setMapReady(true);
 
       // Clean up
       // removeLayerAndSource = () => {
@@ -294,6 +301,9 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       {!isMobile && <MapControlsStyle />}
       <div ref={mapContainerRef} className="h-screen w-screen"></div>
       <MapMarkers map={mapRef.current} staticPoints={staticPoints} />
+      {location.pathname === routes.dir && (
+        <MapRoute map={mapRef.current} mapReady={mapReady} />
+      )}
       <UserLocationMarker map={mapRef.current} userLocation={userLocation} />
     </>
   );

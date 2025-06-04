@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import PlaceInfo from "../components/PlaceInfo";
 import { useGetRequest } from "../services/api";
 import { toast } from "react-toastify";
+import { usePrevRouteStore } from "../stores/routing";
 import StarRating from "../components/StarRating";
 import { Helmet } from "react-helmet";
 import routes from "../routes/Routes";
@@ -14,14 +15,13 @@ const PlaceDetail = ({
   setExpendSearch,
   hasSearch,
   imageUrl,
-  name,
-  rating,
-  reviews,
 }) => {
   imageUrl = imageUrl || "/resturant.jpg";
-  rating = rating || 2.5;
-  reviews = reviews || 120;
-  name = name || "نام مکان";
+
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(0);
+  const [reviews, setReviews] = useState(0);
+
   const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
   const [showCommentForm, setShowCommentForm] = useState(false);
@@ -29,6 +29,7 @@ const PlaceDetail = ({
   const [searchParams] = useSearchParams();
   const pointId = searchParams.get("id");
   const navigate = useNavigate();
+  const setPreviousRoute = usePrevRouteStore((state) => state.setPreviousRoute);
 
   const {
     mutate: getPointDetails,
@@ -108,6 +109,31 @@ const PlaceDetail = ({
       console.error("Error fetching point details:", error);
     }
   }, [error]);
+
+  useEffect(() => {
+    console.log("1");
+    if (pointDetails) {
+      console.log(pointDetails);
+      setName(pointDetails.place.name || "بدون نام");
+      setRating(pointDetails.place.rating || 0);
+      setReviews(pointDetails.place.reviews || 0);
+    }
+  }, [pointDetails]);
+
+  const handleRouteClick = () => {
+    const lat = searchParams.get("lat");
+    const lng = searchParams.get("lng");
+
+    if (lat && lng) {
+      setPreviousRoute({
+        pathname: location.pathname,
+        search: location.search,
+      });
+
+      const endParam = `${lat},${lng}`;
+      navigate(`${routes.dir}?end=${endParam}`);
+    }
+  };
 
   return (
     <div
@@ -190,11 +216,12 @@ const PlaceDetail = ({
       {activeTab === "اطلاعات کلی" && (
         <>
           <PlaceInfo
-            address={pointDetails?.address}
-            weeklySchedule={pointDetails?.weeklySchedule}
-            phone={pointDetails?.phone}
-            links={pointDetails?.links}
+            address={pointDetails?.place.address}
+            weeklySchedule={pointDetails?.place.weeklySchedule}
+            phone={pointDetails?.place.phone}
+            links={pointDetails?.place.links}
             handleSubmitCommentButton={handleSubmitCommentButton}
+            handleRouteClick={handleRouteClick}
           />
         </>
       )}

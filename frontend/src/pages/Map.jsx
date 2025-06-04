@@ -78,7 +78,7 @@ const Map = ({
   };
 
   const handlePointClick = ({ id, lat, lng }) => {
-    if (id && lat && lng) {
+    if (id && lat && lng && location.pathname != routes.dir) {
       const newParams = new URLSearchParams();
       newParams.set("id", id);
       newParams.set("lat", lat.toFixed(5));

@@ -6,6 +6,7 @@ import Login from "./Login";
 import ChangePassword from "./ChangePassword";
 import routes from "../routes/Routes";
 import { useState, useEffect, useRef } from "react";
+import Routing from "./Routing"; 
 
 const MainLayout = () => {
   const location = useLocation();
@@ -26,6 +27,7 @@ const MainLayout = () => {
 
   const search = effectivePath.includes(routes.search);
   const place = effectivePath.includes(routes.place);
+  const dir = effectivePath.includes(routes.dir); 
   const login = location.pathname.includes(routes.login);
   const changePassword = location.pathname.includes(routes.changePassword);
 
@@ -65,6 +67,8 @@ const MainLayout = () => {
         />
       )}
 
+      {dir && <Routing />}
+      
       <Outlet />
     </>
   );

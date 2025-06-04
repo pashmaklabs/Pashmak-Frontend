@@ -6,6 +6,7 @@ const routes = {
   changePassword: "/change-password",
   profile: "/profile",
   notfound: "*",
+  dir: "/map/dir",
 };
 
 export default routes;

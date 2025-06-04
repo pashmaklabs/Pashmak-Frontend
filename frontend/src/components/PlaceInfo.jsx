@@ -8,6 +8,7 @@ const PlaceInfoContainer = ({
   phone,
   links,
   handleSubmitCommentButton,
+  handleRouteClick,
 }) => {
   // Default values
   address = address || "آدرس رستوران";
@@ -75,6 +76,7 @@ const PlaceInfoContainer = ({
             src="/direction.svg"
             alt="route"
             className="w-10 h-10 cursor-pointer"
+            onClick={() => handleRouteClick()}
           />
           <img
             src="/save.svg"
