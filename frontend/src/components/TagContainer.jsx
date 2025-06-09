@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 export default function TagContainer({ availableTags, onTagClick, width }) {
   return (
-    <div className="relative flex flex-col gap-2 ml-auto w-full">
+    <div className="relative flex flex-col gap-2 ml-auto w-full px-1">
       <TagList tags={availableTags} onTagClick={onTagClick} width={width} />
     </div>
   );
@@ -57,7 +57,7 @@ function TagList({ tags, onTagClick, width }) {
   };
   return (
     <div
-      className="flex items-center relative self-end px-2 "
+      className="flex items-center relative self-end "
       ref={wrapperRef}
       style={{ maxWidth: `${width}px` }}
     >

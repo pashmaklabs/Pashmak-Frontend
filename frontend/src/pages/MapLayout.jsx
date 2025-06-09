@@ -12,6 +12,14 @@ const MainLayout = () => {
   const location = useLocation();
   const prevPath = useRef(null);
   const [effectivePath, setEffectivePath] = useState(location.pathname);
+  const search = effectivePath.includes(routes.search);
+  const place = effectivePath.includes(routes.place);
+  const login = location.pathname.includes(routes.login);
+  const changePassword = location.pathname.includes(routes.changePassword);
+  const [expendSearch, setExpendSearch] = useState(false);
+  const [hasSearch, setHasSearch] = useState(false);
+  const [resetSearch, setResetSearch] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
     const isLogin = location.pathname.includes(routes.login);
@@ -25,26 +33,23 @@ const MainLayout = () => {
     }
   }, [location.pathname]);
 
-  const search = effectivePath.includes(routes.search);
-  const place = effectivePath.includes(routes.place);
-  const dir = effectivePath.includes(routes.dir); 
-  const login = location.pathname.includes(routes.login);
-  const changePassword = location.pathname.includes(routes.changePassword);
 
-  const [expendSearch, setExpendSearch] = useState(false);
-  const [hasSearch, setHasSearch] = useState(false);
-  const [searchResult, setSearchResult] = useState([]);
+  const dir = effectivePath.includes(routes.dir); 
+
+  
   useEffect(() => {
     if (search) {
       setHasSearch(true);
     }
   }, [search]);
 
+
   return (
     <>
       <Map
+        resetSearch={resetSearch}
+        setResetSearch={setResetSearch}
         expendSearch={expendSearch}
-        setExpendSearch={setExpendSearch}
         setSearchResult={setSearchResult}
       />
       {login && <Login />}
@@ -53,6 +58,7 @@ const MainLayout = () => {
 
       {((place && expendSearch) || search) && searchResult && (
         <SearchLocation
+          setResetSearch={setResetSearch}
           setExpendSearch={setExpendSearch}
           expendSearch={expendSearch}
           searchResult={searchResult}

@@ -3,22 +3,29 @@ import MapView from "../components/MapView";
 import PromptBar from "../components/PromptBar";
 import LocateButton from "../components/LocateButton";
 import { useGetRequest, usePostRequest } from "../services/api";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import routes from "../routes/Routes";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
 import { useInput } from "../stores/map";
 
 const Map = ({
+  resetSearch,
+  setResetSearch,
   expendSearch,
-  staticPoints,
-  setExpendSearch,
   setSearchResult,
 }) => {
   const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { input, setInput } = useInput();
+  const [places, setPlaces] = useState([]);
+  const location = useLocation();
+  const [prompt, setPrompt] = useState(false);
+
+  useEffect(() => {
+    setPrompt(!location.pathname.includes(routes.dir));
+  }, [location.pathname]);
 
   const { mutate: fetchInitialTags, isLoading: isFetchingInitialTags } =
     usePostRequest();
@@ -57,7 +64,7 @@ const Map = ({
         onSuccess: ({ places }) => {
           setSearchResult([]);
           setSearchResult(places);
-
+          setPlaces(places);
           try {
             const jsonString = JSON.stringify(places);
             const base64 = btoa(unescape(encodeURIComponent(jsonString)));
@@ -76,6 +83,17 @@ const Map = ({
       },
     );
   };
+
+
+  // useEffect(() => {
+  //   if (resetSearch) {
+  //     // Do something when ResetSearch becomes true
+  //     // For example: clear search results
+  //     setSearchResult([]);
+  //     // Then set it back to false
+  //     setResetSearch(false);
+  //   }
+  // }, [resetSearch])
 
   const handlePointClick = ({ id, lat, lng }) => {
     if (id && lat && lng && location.pathname != routes.dir) {
@@ -96,20 +114,25 @@ const Map = ({
       <Helmet>
         <title>نقشه</title>
       </Helmet>
+      {prompt && (
+        <PromptBar
+          resetSearch={resetSearch}
+          setResetSearch={setResetSearch}
+          fetchInitialTags={handleFetchInitialTags}
+          fetchSuggestedTags={handleFetchSuggestedTags}
+          submitData={handleSubmitData}
+          expendSearch={expendSearch}
+        />
+      )}
 
-      <PromptBar
-        fetchInitialTags={handleFetchInitialTags}
-        fetchSuggestedTags={handleFetchSuggestedTags}
-        submitData={handleSubmitData}
-        expendSearch={expendSearch}
-      />
       <LocateButton
         setUserLocation={setUserLocation}
         userLocation={userLocation}
       />
+      
       <MapView
         userLocation={userLocation}
-        staticPoints={searchOutput?.places}
+        staticPoints={!resetSearch && searchOutput ? searchOutput.places : undefined}
         onPointClick={handlePointClick}
       />
     </div>

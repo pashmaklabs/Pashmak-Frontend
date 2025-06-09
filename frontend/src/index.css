@@ -31,6 +31,9 @@
   -moz-osx-font-smoothing: grayscale;
 
   --sidebar-width: 70px;
+  --prompt_right: 77px;
+  --promptbar-height: 218px;
+  --sidebar-and-prompt-bar: 270px;
   --sidebar-width-expanded: 380px;
 }
 

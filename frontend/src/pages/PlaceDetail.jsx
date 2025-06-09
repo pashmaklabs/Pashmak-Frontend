@@ -138,10 +138,10 @@ const PlaceDetail = ({
   return (
     <div
       dir="rtl"
-      className={` z-[13] absolute scrollbar-hide bg-white shadow-md scroll-smooth overflow-x-hidden font-sans ${
+      className={` z-[13] absolute scrollbar-hide bg-white shadow-md scroll-smooth overflow-x-hidden font-sans rounded-xl ${
         expendSearch
-          ? "right-[475px] h-[80%] rounded-xl w-[350px] bottom-8"
-          : " sm:w-[400px] w-full sm:right-[var(--sidebar-width)] sm:top-0 right-0  sm:bottom-0 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width))] sm:h-auto"
+          ? "right-[485px] h-[80%] w-[350px] bottom-8"
+          : " sm:w-[400px] w-full sm:right-[calc(var(--sidebar-width)+6px)]  sm:top-2 right-0  sm:bottom-2 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width))] sm:h-auto"
       }  transition-all duration-500`}
     >
       <Helmet>
@@ -158,7 +158,7 @@ const PlaceDetail = ({
           {hasSearch && !expendSearch ? (
             <div
               onClick={onClose}
-              className="fixed w-9 h-9 right-20 top-2 p-2 rounded-full bg-white hover:bg-gray-100 shadow-md z-[10] cursor-pointer"
+              className="fixed w-9 h-9 right-[85px] top-4 p-2 rounded-full bg-white hover:bg-gray-100 shadow-md z-[10] cursor-pointer"
               aria-label="Expand search results"
             >
               <img

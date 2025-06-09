@@ -96,7 +96,7 @@ const Routing = () => {
   return (
     <div
       className=" z-[10] absolute bg-white  text-gray-700 shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans 
-           rounded-md sm:right-[calc(var(--sidebar-width)+8px)] sm:top-2 right-0  sm:bottom-0 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width)-200px)] sm:h-[280px] h-min-[calc(100vh-200px)]
+           rounded-xl sm:right-[calc(var(--sidebar-width)+8px)] sm:top-2 right-0  sm:bottom-0 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width)-200px)] sm:h-[280px] h-min-[calc(100vh-200px)]
             transition-all duration-500 sm:w-[400px] w-full"
       dir="rtl"
     >
