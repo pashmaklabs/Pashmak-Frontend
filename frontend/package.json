@@ -18,6 +18,7 @@
     "framer-motion": "^12.4.10",
     "jalali-moment": "^3.3.11",
     "js-cookie": "^3.0.5",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.507.0",
     "mapbox-gl": "^3.11.1",
     "maplibre-gl": "^5.4.0",

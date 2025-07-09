@@ -2,8 +2,9 @@ import { useState, memo, useEffect } from "react";
 import MapView from "../components/MapView";
 import PromptBar from "../components/PromptBar";
 import LocateButton from "../components/LocateButton";
+import SearchLoader from "../components/SearchLoader";
 import { useGetRequest, usePostRequest } from "../services/api";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
@@ -17,18 +18,13 @@ const Map = ({
 }) => {
   const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { input, setInput } = useInput();
+  const { setInput } = useInput();
   const [places, setPlaces] = useState([]);
   const location = useLocation();
   const [prompt, setPrompt] = useState(false);
+  const [isShowingFancyLoader, setIsShowingFancyLoader] = useState(false);
+  const { mutateAsync: searchAsync } = useGetRequest();
 
-  useEffect(() => {
-    setPrompt(!location.pathname.includes(routes.dir));
-  }, [location.pathname]);
-
-  const { mutate: fetchInitialTags, isLoading: isFetchingInitialTags } =
-    usePostRequest();
   const handleFetchInitialTags = async () => {
     return [
       "عطاری",
@@ -44,75 +40,62 @@ const Map = ({
     ];
   };
 
-  const { mutate: fetchSuggestedTags, isLoading: isFetchingSuggestedTags } =
-    usePostRequest();
   const handleFetchSuggestedTags = async (input) => {
     return ["کتابخانه", "طبیعت"];
   };
-  const {
-    mutate: search,
-    data: searchOutput,
-    isPending: isGettingResult,
-    error,
-  } = useGetRequest();
-  const handleSubmitData = ({ input, tags }) => {
-    navigate("/map/search");
+
+  const handleSubmitData = async ({ input, tags }) => {
     setInput(input);
-    search(
-      { endpoint: "/places/", params: { q: input } },
-      {
-        onSuccess: ({ places }) => {
-          setSearchResult([]);
-          setSearchResult(places);
-          setPlaces(places);
-          try {
-            const jsonString = JSON.stringify(places);
-            const base64 = btoa(unescape(encodeURIComponent(jsonString)));
-            localStorage.setItem("search_places", base64);
-          } catch (e) {
-            console.error("Failed to store results in localStorage", e);
-          }
-        },
-        onError: (error) => {
-          if (error.response?.data?.message) {
-            toast.error(error.response.data.message);
-          } else {
-            toast.error("خطایی رخ داده. لطفا دوباره امتحان کنید");
-          }
-        },
-      },
-    );
+    setPlaces([]);
+    setSearchResult([]);
+
+    setIsShowingFancyLoader(true);
+
+    try {
+      const searchResultValue = await searchAsync({
+        endpoint: "/places/",
+        params: { q: input },
+      });
+
+      const { places: newPlaces } = searchResultValue;
+      setSearchResult(newPlaces);
+      setPlaces(newPlaces);
+      navigate("/map/search");
+    } catch (err) {
+      if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("خطایی رخ داده. لطفا دوباره امتحان کنید");
+      }
+    } finally {
+      setIsShowingFancyLoader(false);
+    }
   };
 
-  // useEffect(() => {
-  //   if (resetSearch) {
-  //     // Do something when ResetSearch becomes true
-  //     // For example: clear search results
-  //     setSearchResult([]);
-  //     // Then set it back to false
-  //     setResetSearch(false);
-  //   }
-  // }, [resetSearch])
-
   const handlePointClick = ({ id, lat, lng }) => {
-    if (id && lat && lng && location.pathname != routes.dir) {
+    if (id && lat && lng && location.pathname !== routes.dir) {
       const newParams = new URLSearchParams();
       newParams.set("id", id);
       newParams.set("lat", lat.toFixed(5));
       newParams.set("lng", lng.toFixed(5));
-
-      navigate({
-        pathname: routes.place,
-        search: `?${newParams.toString()}`,
-      });
+      navigate({ pathname: routes.place, search: `?${newParams.toString()}` });
     }
   };
+
+  useEffect(() => {
+    setPrompt(!location.pathname.includes(routes.dir));
+  }, [location.pathname]);
 
   return (
     <div style={{ position: "relative" }}>
       <Helmet>
         <title>نقشه</title>
       </Helmet>
+
+      {isShowingFancyLoader && (
+        <SearchLoader isVisible={isShowingFancyLoader} />
+      )}
+
       {prompt && (
         <PromptBar
           resetSearch={resetSearch}
@@ -131,9 +114,7 @@ const Map = ({
 
       <MapView
         userLocation={userLocation}
-        staticPoints={
-          !resetSearch && searchOutput ? searchOutput.places : undefined
-        }
+        staticPoints={places}
         onPointClick={handlePointClick}
       />
     </div>

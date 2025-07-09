@@ -17,6 +17,20 @@ export default {
       fontFamily: {
         sans: ["Vazir", "sans-serif"],
       },
+      animation: {
+        fadeIn: "fadeIn 0.8s ease-out forwards",
+        indeterminate: "indeterminate-progress 2s ease-in-out infinite",
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: "0", transform: "translateY(10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "indeterminate-progress": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide"), require("tailwind-scrollbar")],
