@@ -136,7 +136,7 @@ const Routing = () => {
             />
             {start && (
               <button
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-transparent !border-transparent"
+                className="absolute h-8 w-8 left-1 top-1/2 transform -translate-y-1/2 bg-white/90 !border-transparent flex items-center justify-center"
                 onClick={() => {
                   setStart("");
                   handleRoute("", end);
@@ -166,7 +166,7 @@ const Routing = () => {
             />
             {end && (
               <button
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-transparent !border-transparent"
+                className="absolute h-8 w-8 left-1 top-1/2 transform -translate-y-1/2 bg-white/90 !border-transparent flex items-center justify-center"
                 onClick={() => {
                   setEnd("");
                   handleRoute(start, "");

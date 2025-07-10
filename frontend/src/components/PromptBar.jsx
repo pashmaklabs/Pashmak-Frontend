@@ -21,6 +21,7 @@ export default function PromptBar({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const promptBarRef = useRef(null);
+  const textareaRef = useRef(null);
   const location = useLocation();
 
   const isSearchDisabled =
@@ -28,6 +29,7 @@ export default function PromptBar({
 
   const handleExpand = () => {
     if (!isSearching) setIsExpanded(true);
+    textareaRef.current?.focus();
   };
 
   const handleSubmit = () => {
@@ -182,10 +184,17 @@ export default function PromptBar({
             transition={{ duration: 0.3 }}
           >
             <textarea
+              ref={textareaRef}
               rows={isExpanded ? 3 : 1}
               dir="rtl"
               value={isSearching && !expendSearch ? "" : inputPrompt}
               onChange={(e) => setInputPrompt(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault(); // Prevents a new line from being added
+                  handleSubmit(); // Calls the handleSubmit function
+                }
+              }}
               placeholder={isExpanded ? "" : "کجا میخواهید بروید؟"}
               className="w-full pr-6 pl-5 z-[10] text-black text-[16px] leading-6 p-2 resize-none outline-none border-none bg-transparent scrollbar-hide"
               style={{
@@ -229,7 +238,7 @@ export default function PromptBar({
                     right: "var(--prompt_right)",
                   }}
                 >
-                  <TagContainer
+                <TagContainer
                     availableTags={availableTags}
                     onTagClick={addTag}
                     width={
