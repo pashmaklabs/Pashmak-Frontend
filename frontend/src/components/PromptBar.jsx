@@ -238,7 +238,7 @@ export default function PromptBar({
                     right: "var(--prompt_right)",
                   }}
                 >
-                <TagContainer
+                  <TagContainer
                     availableTags={availableTags}
                     onTagClick={addTag}
                     width={

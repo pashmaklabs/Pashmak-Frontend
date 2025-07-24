@@ -6,13 +6,13 @@ const AdminLayout = () => {
   return (
     <div
       dir="rtl"
-      className="flex min-h-screen h-screen w-screen  justify-right items-right"
+      className="flex min-h-screen h-screen w-screen justify-right items-right"
     >
       <Helmet>
         <title>داشبورد ادمین</title>
       </Helmet>
 
-      <aside className="w-64 bg-gray-800 text-white flex flex-col p-4 text-right">
+      <aside className="w-64 bg-gray-800 text-white flex flex-col p-4 text-right flex-shrink-0">
         <h1 className="text-2xl font-bold mb-6">پنل مدیریت</h1>
         <NavLink
           to={`${routes.admin}/${routes.admin_locations}`}
@@ -40,7 +40,7 @@ const AdminLayout = () => {
         </NavLink>
       </aside>
 
-      <main className="flex-1 p-6 bg-gray-50 text-right">
+      <main className="flex-1 p-6 bg-gray-50 text-right overflow-y-auto">
         <Outlet />
       </main>
     </div>

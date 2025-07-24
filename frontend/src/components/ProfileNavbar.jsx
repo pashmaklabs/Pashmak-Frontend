@@ -21,6 +21,7 @@ export default function ProfileNavbar(props) {
       path: "/",
       domain: ".darkube.app",
     });
+    Cookies.remove("role");
     navigate(routes.map);
   };
 

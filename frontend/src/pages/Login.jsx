@@ -10,6 +10,7 @@ import { useLoginStep, useEmail, useUserLogin, useRole } from "../stores/login";
 import { toast } from "react-toastify";
 import { usePostRequest, usePatchRequest } from "../services/api";
 import { Helmet } from "react-helmet";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
@@ -52,10 +53,11 @@ const Login = () => {
       { url: "/auth/otp/verify", data: { email: email, otp: otp } },
       {
         onSuccess: (response) => {
-          const roleFromServer = response.data?.role;
+          const roleFromServer = response?.role;
           if (userExists) {
             setUserLogin(true);
             setRole(roleFromServer);
+            Cookies.set("role", roleFromServer);
             toast.success("خوش آمدید.");
             if (roleFromServer === "admin") {
               navigate(routes.admin);
@@ -121,8 +123,9 @@ const Login = () => {
         onSuccess: (data) => {
           setUserLogin(true);
           setUserExists(true);
-          const roleFromServer = data.data?.role;
+          const roleFromServer = data?.role;
           setRole(roleFromServer);
+          Cookies.set("role", roleFromServer);
           toast.success("با موفقیت وارد شدید.");
           if (roleFromServer === "admin") {
             navigate(routes.admin);

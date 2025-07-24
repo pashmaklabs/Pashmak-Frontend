@@ -17,7 +17,7 @@ const useUserLogin = create((set) => ({
 }));
 
 const useRole = create((set) => ({
-  role: "",
+  role: Cookies.get("role"),
   setRole: (newRole) => set({ role: newRole }),
 }));
 
