@@ -13,20 +13,13 @@ const PersonalInfo = (props) => {
   let default_lastname = props.user.LastName;
   const [lastname, setLastname] = useState(default_lastname);
   const [lastNameChanged, setLastNameChanged] = useState(false);
-  //hard code
-  let default_aboutMe = "خسته ام";
-  const [aboutMe, setAboutMe] = useState(default_aboutMe);
-  const [aboutMeChanged, setAboutMeChanged] = useState(false);
 
   //hard code
   let defaultProfilePicture = props.user.Avatar_url;
   const [profilePicture, setProfilePicture] = useState(defaultProfilePicture);
   const [shownProfile, setShownProfile] = useState(defaultProfilePicture);
   const [profilePictureChanged, setProfilePictureChanged] = useState(false);
-  //hard code
-  let defaultBirthDate = "1323-12-01";
-  const [birthDate, setBirthDate] = useState(defaultBirthDate);
-  const [birthDateChanged, setBirthDateChanged] = useState(false);
+
   //hard code
   const rating = 3;
   const percentage = (rating / 5) * 360;
@@ -37,12 +30,40 @@ const PersonalInfo = (props) => {
 
   const { mutate: changeProfilePhoto, isLoading: isUploading } =
     usePostRequest();
+
   const { mutate: changeProfile, isLoading: isChanging } = usePostRequest();
+
+  const uploadImage = (file) => {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    changeProfilePhoto(
+      {
+        url: "/profiles/avatar/upload",
+        data: formData,
+        headers: {
+          "Content-Type": undefined,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          toast.success("تصویر با موفقیت آپلود شد");
+          props.setReRender(!props.reRender);
+        },
+        onError: (error) => {
+          console.error("Error uploading image:", error);
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("profilePhoto", profilePicture);
     changeProfile(
       {
         url: "/profiles/me/update",
@@ -66,27 +87,6 @@ const PersonalInfo = (props) => {
         },
       },
     );
-    changeProfilePhoto(
-      {
-        url: "/profiles/avatar/",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success("عکس پروفایل با موفقیت تغییر یافت");
-        },
-        onError: (error) => {
-          if (error.response?.data?.message) {
-            toast.error(error.response.data.message);
-          } else {
-            toast.error("مشکلی در ارسال عکس پروفایل وجود دارد.");
-          }
-        },
-      },
-    );
   };
 
   const handleNameChange = (e, setter) => {
@@ -94,10 +94,6 @@ const PersonalInfo = (props) => {
     if (/^[\u0600-\u06FFa-zA-Z\s]*$/.test(value)) {
       setter(value);
     }
-  };
-
-  const handleBirthDateChange = (e) => {
-    setBirthDate(e.target.value);
   };
 
   const handleChangePasswordClick = () => {
@@ -113,6 +109,9 @@ const PersonalInfo = (props) => {
 
   const handlePhotoChange = (e) => {
     const profilePicture = e.target.files[0];
+    if (profilePicture.type.startsWith("image/")) {
+      uploadImage(profilePicture);
+    }
     if (profilePicture) {
       const imageUrl = URL.createObjectURL(profilePicture);
       setShownProfile(imageUrl);
@@ -131,23 +130,13 @@ const PersonalInfo = (props) => {
     } else {
       setLastNameChanged(false);
     }
-    if (aboutMe !== default_aboutMe) {
-      setAboutMeChanged(true);
-    } else {
-      setAboutMeChanged(false);
-    }
     if (profilePicture !== defaultProfilePicture) {
       setProfilePictureChanged(true);
     } else {
       setProfilePictureChanged(false);
     }
-    if (birthDate !== defaultBirthDate) {
-      setBirthDateChanged(true);
-    } else {
-      setBirthDateChanged(false);
-    }
     setSubmited(false);
-  }, [firstname, lastname, aboutMe, profilePicture, birthDate]);
+  }, [firstname, lastname, profilePicture]);
 
   return (
     <form
@@ -189,7 +178,7 @@ const PersonalInfo = (props) => {
 
           <div className="relative flex w-[50%] max-w-[200px] justify-center">
             <img
-              src={shownProfile}
+              src={shownProfile || "./profilePhotoPlaceholder.svg"}
               alt="User"
               className="rounded-full w-full max-w-[200px] aspect-square border-gray-400 border-[2px]"
             />
@@ -245,11 +234,7 @@ const PersonalInfo = (props) => {
           <button
             onClick={handleDiscardChangesClick}
             disabled={
-              !firstNameChanged &&
-              !lastNameChanged &&
-              !aboutMeChanged &&
-              !profilePictureChanged &&
-              !birthDateChanged
+              !firstNameChanged && !lastNameChanged && !profilePictureChanged
             }
             className={`w-[42.85%] py-2 rounded-md
                       text-gray-700 bg-gray-400
@@ -263,9 +248,7 @@ const PersonalInfo = (props) => {
             disabled={
               (!firstNameChanged &&
                 !lastNameChanged &&
-                !aboutMeChanged &&
-                !profilePictureChanged &&
-                !birthDateChanged) ||
+                !profilePictureChanged) ||
               submited
             }
             className={`w-full py-2 rounded-md
@@ -273,9 +256,7 @@ const PersonalInfo = (props) => {
                         transition duration-300 text-sm sm:text-base ${
                           (!firstNameChanged &&
                             !lastNameChanged &&
-                            !aboutMeChanged &&
-                            !profilePictureChanged &&
-                            !birthDateChanged) ||
+                            !profilePictureChanged) ||
                           !firstname ||
                           !lastname ||
                           submited

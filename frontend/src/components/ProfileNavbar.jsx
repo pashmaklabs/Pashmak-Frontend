@@ -30,7 +30,7 @@ export default function ProfileNavbar(props) {
       <div className="relative w-full">
         <span className="absolute right-0 top-0 h-full w-full bg-gradient-to-t from-[#45454575] to-[#26262600] to-[30%]" />
         <img
-          src={"./profilePhotoPlaceholder.svg"}
+          src={profilePhoto || "./profilePhotoPlaceholder.svg"}
           alt="profile_picture"
           className="w-full h-full"
         />
