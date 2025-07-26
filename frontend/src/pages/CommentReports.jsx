@@ -128,7 +128,6 @@ const CommentReports = () => {
         <title>گزارش کامنت‌ها</title>
       </Helmet>
 
-
       <div className="flex justify-center mb-6">
         <nav className="flex w-full max-w-md space-x-1 space-x-reverse rounded-full bg-gray-200 p-1.5">
           {["Pending", "Resolved", "Dismissed"].map((tab) => (

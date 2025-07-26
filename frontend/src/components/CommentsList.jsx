@@ -6,7 +6,11 @@ import UserComment from "./UserComment";
 import CommentSubmitForm from "./CommentSubmitForm";
 import { useGetRequest } from "../services/api";
 
-const CommentsList = ({ showCommentForm, setShowCommentForm, handleSubmitCommentButton }) => {
+const CommentsList = ({
+  showCommentForm,
+  setShowCommentForm,
+  handleSubmitCommentButton,
+}) => {
   const locationId = new URLSearchParams(useLocation().search).get("id");
 
   const [refetchComments, setRefetchComments] = useState(false);
@@ -30,7 +34,7 @@ const CommentsList = ({ showCommentForm, setShowCommentForm, handleSubmitComment
   } = useGetRequest();
 
   const handleFetchSuccess = (data, append = false) => {
-    console.log(data)
+    console.log(data);
     setHasNext(data?.Pagination?.hasNext ?? false);
     setNextPagePointer(data?.Pagination?.next ?? "");
 
@@ -41,18 +45,21 @@ const CommentsList = ({ showCommentForm, setShowCommentForm, handleSubmitComment
     }
   };
 
-  const getMoreComments = useCallback((cursor) => {
-    fetchMoreComments(
-      { endpoint: `/comments/${locationId}`, params: { cursor } },
-      {
-        onSuccess: (data) => handleFetchSuccess(data, true),
-        onError: (error) => {
-        const msg = error?.response?.data?.message ?? "ای بابا نشد که :(";
-        toast.error(msg);
-      },
-      }
-    );
-  }, [fetchMoreComments, locationId]);
+  const getMoreComments = useCallback(
+    (cursor) => {
+      fetchMoreComments(
+        { endpoint: `/comments/${locationId}`, params: { cursor } },
+        {
+          onSuccess: (data) => handleFetchSuccess(data, true),
+          onError: (error) => {
+            const msg = error?.response?.data?.message ?? "ای بابا نشد که :(";
+            toast.error(msg);
+          },
+        },
+      );
+    },
+    [fetchMoreComments, locationId],
+  );
 
   useEffect(() => {
     getComments(
@@ -60,10 +67,10 @@ const CommentsList = ({ showCommentForm, setShowCommentForm, handleSubmitComment
       {
         onSuccess: handleFetchSuccess,
         onError: (error) => {
-        const msg = error?.response?.data?.message ?? "ای بابا نشد که :(";
-        toast.error(msg);
+          const msg = error?.response?.data?.message ?? "ای بابا نشد که :(";
+          toast.error(msg);
+        },
       },
-      }
     );
   }, [getComments, locationId, refetchComments]);
 
@@ -99,7 +106,7 @@ const CommentsList = ({ showCommentForm, setShowCommentForm, handleSubmitComment
             <div key={comment.id}>
               <UserComment comment={comment} />
             </div>
-          )
+          ),
       )}
       {isLoadingMore && (
         <div className="flex flex-col justify-center items-center w-full p-2 float-center">
@@ -131,7 +138,7 @@ const CommentsList = ({ showCommentForm, setShowCommentForm, handleSubmitComment
     );
   }
 
-  const hasNoComments = (initialError || comments.length === 0);
+  const hasNoComments = initialError || comments.length === 0;
 
   return hasNoComments ? renderNoComments() : renderCommentsList();
 };

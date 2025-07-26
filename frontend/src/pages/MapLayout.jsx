@@ -5,8 +5,9 @@ import PlaceDetail from "./PlaceDetail";
 import Login from "./Login";
 import ChangePassword from "./ChangePassword";
 import routes from "../routes/Routes";
+import BookmakrsContainer from "../components/BookmarksContainer";
 import { useState, useEffect, useRef } from "react";
-import Routing from "./Routing"; 
+import Routing from "./Routing";
 import SearchHistory from "./SearchHistory";
 
 const MainLayout = () => {
@@ -17,16 +18,21 @@ const MainLayout = () => {
   const place = effectivePath.includes(routes.place);
   const login = location.pathname.includes(routes.login);
   const changePassword = location.pathname.includes(routes.changePassword);
+
+  const bookmarks = location.pathname.includes(routes.bookmarks);
+  const [expendBookmarksList, setexpendBookmarksList] = useState(true);
+  const [bookmarkedLocationsPoints, setBookmarksLocationsPoints] =
+    useState(null);
+
   const [expendSearch, setExpendSearch] = useState(false);
   const [hasSearch, setHasSearch] = useState(false);
   const [resetSearch, setResetSearch] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const history = location.pathname.includes(routes.searchHistory);
   const [searchWithHistory, setSearchWithHistory] = useState({
-    isSearching: false,     // boolean
-    query: "",          // string
+    isSearching: false, // boolean
+    query: "", // string
   });
-
 
   useEffect(() => {
     const isLogin = location.pathname.includes(routes.login);
@@ -56,6 +62,7 @@ const MainLayout = () => {
         expendSearch={expendSearch}
         setExpendSearch={setExpendSearch}
         setSearchResult={setSearchResult}
+        bookmarkedLocationsPoints={bookmarkedLocationsPoints}
         searchWithHistory={searchWithHistory}
         setSearchWithHistory={setSearchWithHistory}
       />
@@ -63,12 +70,22 @@ const MainLayout = () => {
 
       {changePassword && <ChangePassword />}
 
-      {((place && expendSearch) || search) && (searchResult && searchResult.length > 0) && (
-        <SearchLocation
-          setResetSearch={setResetSearch}
-          setExpendSearch={setExpendSearch}
-          expendSearch={expendSearch}
-          searchResult={searchResult}
+      {((place && expendSearch) || search) &&
+        searchResult &&
+        searchResult.length > 0 && (
+          <SearchLocation
+            setResetSearch={setResetSearch}
+            setExpendSearch={setExpendSearch}
+            expendSearch={expendSearch}
+            searchResult={searchResult}
+          />
+        )}
+
+      {bookmarks && (
+        <BookmakrsContainer
+          expendBookmarksList={expendBookmarksList}
+          setexpendBookmarksList={setexpendBookmarksList}
+          setBookmarksLocationsPoints={setBookmarksLocationsPoints}
         />
       )}
 
@@ -83,12 +100,12 @@ const MainLayout = () => {
       {dir && <Routing />}
 
       {history && (
-        <SearchHistory 
+        <SearchHistory
           searchWithHistory={searchWithHistory}
           setSearchWithHistory={setSearchWithHistory}
         />
       )}
-      
+
       <Outlet />
     </>
   );

@@ -1,5 +1,6 @@
 const routes = {
   map: "/map",
+  bookmarks: "/map/bookmarks",
   search: "/map/search",
   place: "/map/place",
   login: "/login",

@@ -21,6 +21,7 @@ function AppRouter() {
         <Route path={routes.map} element={<></>} />
         <Route path={routes.search} element={<></>} />
         <Route path={routes.place} element={<></>} />
+        <Route path={routes.bookmarks} element={<></>} />
         <Route path={routes.dir} element={<></>} />
         <Route path={routes.login} element={<></>} />
         <Route path={routes.changePassword} element={<></>} />

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUserLogin } from "../stores/login";
 import routes from "../routes/Routes";
-import { isUserLoggedIn } from "../utils/auth"
+import { isUserLoggedIn } from "../utils/auth";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  
+
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -119,7 +119,7 @@ const Sidebar = () => {
           </div>
         </NavLink>
         <NavLink
-          to="/bookmarks"
+          to="/map/bookmarks"
           end
           onClick={(e) => {
             if (!isUserLoggedIn()) {

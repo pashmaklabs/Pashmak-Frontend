@@ -12,6 +12,7 @@ import useIsMobile from "../hooks/useIsMobile";
 import { typeToIconMapping, iconMapping } from "../utils/iconUtils";
 import MapRoute from "./MapRoute";
 import { createRedPinMarker, addMarkerToMap } from "../utils/customMapElements";
+import RandomPointSelect from "./randomPointSelect";
 
 maplibregl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
@@ -90,8 +91,10 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !staticPoints || staticPoints.length === 0) return;
-
-    if (location.pathname === routes.search) {
+    if (
+      location.pathname === routes.search ||
+      location.pathname == routes.bookmarks
+    ) {
       const bounds = new maplibregl.LngLatBounds();
       staticPoints.forEach((point) => {
         bounds.extend([point.longitude, point.latitude]);
@@ -311,6 +314,12 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
         <MapRoute map={mapRef.current} mapReady={mapReady} />
       )}
       <UserLocationMarker map={mapRef.current} userLocation={userLocation} />
+      {location.pathname === routes.map && mapRef.current && (
+        <RandomPointSelect
+          map={mapRef.current}
+          selectedPlaceRef={selectedPlaceRef}
+        />
+      )}
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SharePopup from "./SharePopUp";
 import PhoneCall from "./PhoneCall";
+import SaveLocationPopup from "./SaveLocationPopup";
 
 const PlaceInfoContainer = ({
   address,
@@ -19,6 +20,8 @@ const PlaceInfoContainer = ({
   // const [showCommentForm, setShowCommentForm] = useState(false);
 
   const [isShareOpen, setIsShareOpen] = useState(false);
+
+  const [showSaveLocationPopup, setSaveLocationPopup] = useState(false);
 
   const [isCallOpen, setIsCallOpen] = useState(false);
 
@@ -82,6 +85,7 @@ const PlaceInfoContainer = ({
             src="/save.svg"
             alt="save"
             className="w-10 h-10 cursor-pointer"
+            onClick={() => setSaveLocationPopup(true)}
           />
           <img
             src="/call.svg"
@@ -106,6 +110,9 @@ const PlaceInfoContainer = ({
             placeAddress={address}
             onClose={() => setIsShareOpen(false)}
           />
+        )}
+        {showSaveLocationPopup && (
+          <SaveLocationPopup setSaveLocationPopup={setSaveLocationPopup} />
         )}
 
         {/* Section 5: Address, Time, Phone, Links */}

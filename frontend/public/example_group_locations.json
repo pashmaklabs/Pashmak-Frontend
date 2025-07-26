@@ -1,0 +1,91 @@
+{
+  "count": 5,
+  "status": "success",
+  "message": "",
+  "results": [
+    {
+      "name": "مکان اول",
+      "place_id": "4237362902",
+      "id": "11",
+      "image_url": "/unnamed.png",
+      "place_rating": 3.5,
+      "comment_count": 4800,
+      "address": "تهران، علیالی، یاس، پلاک 1 (کوی نصر)",
+      "note": "با صفا",
+      "latitude": "35.714960",
+      "longitude": "51.473619"
+    },
+    {
+      "name": "",
+      "place_id": "",
+      "id": "12",
+      "image_url": "/unnamed.png",
+      "place_rating": 0,
+      "comment_count": 0,
+      "address": "",
+      "note": "جالب",
+      "latitude": "35.714610",
+      "longitude": "51.477369"
+    },
+    {
+      "name": "مکان سوم",
+      "place_id": "4434630071",
+      "id": "13",
+      "image_url": "/unnamed.png",
+      "place_rating": 2.5,
+      "comment_count": 210,
+      "address": "تهران، علیالی، یاس، پلاک 1 (کوی نصر)",
+      "note": "",
+      "latitude": "35.715220",
+      "longitude": "51.478409"
+    },
+    {
+      "name": "مکان چهارم",
+      "place_id": "4636988346",
+      "id": "14",
+      "image_url": "/unnamed.png",
+      "place_rating": 2,
+      "comment_count": 21,
+      "address": "تهران، علیالی، یاس، پلاک 1 (کوی نصر)",
+      "note": "",
+      "latitude": "35.710090",
+      "longitude": "51.477469"
+    },
+    {
+      "name": "مکان پنجم",
+      "place_id": "5327108343",
+      "id": "15",
+      "image_url": "/unnamed.png",
+      "place_rating": 1.5,
+      "comment_count": 16,
+      "address": "تهران، علیالی، یاس، پلاک 1 (کوی نصر)",
+      "note": "",
+      "latitude": "35.711930",
+      "longitude": "51.474599"
+    },
+    {
+      "name": "مکان 6",
+      "place_id": "5174230723",
+      "id": "16",
+      "image_url": "/unnamed.png",
+      "place_rating": 1,
+      "comment_count": 1600,
+      "address": "تهران، علیالی، یاس، پلاک 1 (کوی نصر)",
+      "note": "",
+      "latitude": "35.707080",
+      "longitude": "51.437359"
+    },
+    {
+      "name": "مکان 7",
+      "place_id": "4622328494",
+      "id": "17",
+      "image_url": "/unnamed.png",
+      "place_rating": 0.5,
+      "comment_count": 16,
+      "address": "تهران، علیالی، یاس، پلاک 1 (کوی نصر)",
+      "note": "",
+      "latitude": "35.706040",
+      "longitude": "51.439099"
+    }
+  ]
+}

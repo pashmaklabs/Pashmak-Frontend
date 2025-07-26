@@ -42,13 +42,17 @@ const UserComment = ({ comment }) => {
           setIsLiked(!isLiked);
         },
         onError: (error) => {
-          toast.error(error.response?.data?.message || "مشکلی پیش آمده. دوباره تلاش کنید.");
+          toast.error(
+            error.response?.data?.message ||
+              "مشکلی پیش آمده. دوباره تلاش کنید.",
+          );
         },
-      }
+      },
     );
   };
 
-  const { mutate: submitDislike, isLoading: isSubmittingDislike } = usePostRequest();
+  const { mutate: submitDislike, isLoading: isSubmittingDislike } =
+    usePostRequest();
   const handleDislike = () => {
     submitDislike(
       {
@@ -70,9 +74,12 @@ const UserComment = ({ comment }) => {
           setIsDisliked(!isDisliked);
         },
         onError: (error) => {
-          toast.error(error.response?.data?.message || "مشکلی پیش آمده. دوباره تلاش کنید.");
+          toast.error(
+            error.response?.data?.message ||
+              "مشکلی پیش آمده. دوباره تلاش کنید.",
+          );
         },
-      }
+      },
     );
   };
 
@@ -82,7 +89,10 @@ const UserComment = ({ comment }) => {
   };
 
   return (
-    <div dir="rtl" className="font-sans text-right w-full p-4 bg-white border-b border-gray-300 rounded-lg shadow-sm">
+    <div
+      dir="rtl"
+      className="font-sans text-right w-full p-4 bg-white border-b border-gray-300 rounded-lg shadow-sm"
+    >
       {/* User Info */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -131,7 +141,10 @@ const UserComment = ({ comment }) => {
           disabled={isReported}
           className="flex items-center gap-1 hover:text-rose-500 bg-white border-0"
         >
-          <Flag size={18} className={isReported ? "text-rose-500" : "text-gray-400"} />
+          <Flag
+            size={18}
+            className={isReported ? "text-rose-500" : "text-gray-400"}
+          />
           <span>{isReported ? "گزارش شد" : "گزارش"}</span>
         </button>
 
@@ -141,7 +154,10 @@ const UserComment = ({ comment }) => {
           disabled={isSubmittingLike}
           className="flex items-center gap-1 hover:text-green-600 bg-white border-0"
         >
-          <ThumbsUp size={18} className={isLiked ? "text-green-600" : "text-gray-400"} />
+          <ThumbsUp
+            size={18}
+            className={isLiked ? "text-green-600" : "text-gray-400"}
+          />
           <span>{likesCount}</span>
         </button>
 
@@ -151,7 +167,10 @@ const UserComment = ({ comment }) => {
           disabled={isSubmittingDislike}
           className="flex items-center gap-1 hover:text-rose-500 bg-white border-0"
         >
-          <ThumbsDown size={18} className={isDisliked ? "text-rose-500" : "text-gray-400"} />
+          <ThumbsDown
+            size={18}
+            className={isDisliked ? "text-rose-500" : "text-gray-400"}
+          />
           <span>{dislikesCount}</span>
         </button>
       </div>

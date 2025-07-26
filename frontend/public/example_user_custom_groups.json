@@ -1,0 +1,47 @@
+{
+  "count": 7,
+  "status": "success",
+  "message": "",
+  "results": [
+    {
+      "name": "favorites",
+      "id": 1,
+      "number_of_marked_places": 12
+    },
+    {
+      "name": "want_to_go",
+      "id": 2,
+      "number_of_marked_places": 14
+    },
+    {
+      "name": "destination",
+      "id": 3,
+      "number_of_marked_places": 34
+    },
+    {
+      "name": "گروه اول",
+      "id": 4,
+      "number_of_marked_places": 51
+    },
+    {
+      "name": "گروه دوم",
+      "id": 5,
+      "number_of_marked_places": 15
+    },
+    {
+      "name": "گروه سوم",
+      "id": 6,
+      "number_of_marked_places": 20
+    },
+    {
+      "name": "گروه چهارم",
+      "id": 7,
+      "number_of_marked_places": 2
+    },
+    {
+      "name": "گروه پنجم",
+      "id": 8,
+      "number_of_marked_places": 2
+    }
+  ]
+}
