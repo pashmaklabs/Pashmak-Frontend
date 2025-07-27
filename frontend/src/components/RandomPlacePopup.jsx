@@ -5,10 +5,12 @@ import { XCircle } from "lucide-react";
 import AddNewLocationPopup from "./AddNewLocationPopup";
 import { usePrevRouteStore } from "../stores/routing";
 import routes from "../routes/Routes";
+import { isUserLoggedIn } from "../utils/auth";
 
 export default function RandomPlacePopup({
   selectedPlaceRef,
   setShowRandomPlacePopup,
+  setShowLoginPopup,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,6 +26,22 @@ export default function RandomPlacePopup({
     console.log(selectedPlaceRef);
     navigate("/map");
     selectedPlaceRef.current.remove();
+  };
+
+  const handleSaveLocationButtonClick = () => {
+    if (isUserLoggedIn()) {
+      setShowSaveLocationPopup(true);
+    } else {
+      setShowLoginPopup(true);
+    }
+  };
+
+  const handleAddNewLocationButtonClick = () => {
+    if (isUserLoggedIn()) {
+      setShowAddNewLocationPopup(true);
+    } else {
+      setShowLoginPopup(true);
+    }
   };
 
   const handleRouteClick = () => {
@@ -75,7 +93,7 @@ export default function RandomPlacePopup({
           src="/add_location.svg"
           alt="add_location"
           className="w-10 h-10 cursor-pointer ml-1"
-          onClick={() => setShowAddNewLocationPopup(true)}
+          onClick={handleAddNewLocationButtonClick}
         />
 
         {/* save location button */}
@@ -83,7 +101,7 @@ export default function RandomPlacePopup({
           src="/save.svg"
           alt="save"
           className="w-10 h-10 cursor-pointer ml-1"
-          onClick={() => setShowSaveLocationPopup(true)}
+          onClick={handleSaveLocationButtonClick}
         />
 
         {/* routing button */}
@@ -101,8 +119,8 @@ export default function RandomPlacePopup({
 
       {showAddNewLocationPopup && (
         <AddNewLocationPopup
-          latitude={lat}
-          longitude={lng}
+          latitude={parseFloat(lat)}
+          longitude={parseFloat(lng)}
           setShowAddNewLocationPopup={setShowAddNewLocationPopup}
         />
       )}

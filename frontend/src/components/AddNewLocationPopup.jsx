@@ -1,17 +1,15 @@
 import { XCircle } from "lucide-react";
-import React from "react";
 import { useState } from "react";
-
+import { usePostRequest } from "../services/api";
+import { toast } from "react-toastify";
 export default function AddNewLocationPopup({
-  lat,
-  lng,
+  latitude,
+  longitude,
   setShowAddNewLocationPopup,
 }) {
   const [formData, setFormData] = useState({
     name: "",
-    address: "",
-    phone: "",
-    images: [],
+    amenity: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -34,10 +32,13 @@ export default function AddNewLocationPopup({
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "نام مکان نباید خالی باشد.";
-    if (!formData.address.trim())
-      newErrors.address = "آدرس مکان نباید خالی باشد";
+    if (!formData.amenity.trim())
+      newErrors.amenity = "آدرس مکان نباید خالی باشد";
     return newErrors;
   };
+
+  const { mutate: sendNewLocationInfo, isLoading: isSendingNewLocationInfo } =
+    usePostRequest();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,13 +49,34 @@ export default function AddNewLocationPopup({
     }
 
     // Submit logic goes here
-    console.log("Form Submitted:", formData);
+    sendNewLocationInfo(
+      {
+        url: "/places/new_place",
+        data: {
+          name: formData.name,
+          amenity: formData.amenity,
+          latitude: latitude,
+          longitude: longitude,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          toast.success("پیشنهاد شما با موفقیت ثبت شد.");
+          setShowAddNewLocationPopup(false);
+        },
+        onError: (error) => {
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("ثبت پیشنهاد موفقیت آمیز نبود . لطفا مجددا تلاش کنید.");
+          }
+        },
+      },
+    );
 
     setFormData({
       name: "",
-      address: "",
-      phone: "",
-      images: [],
+      amenity: "",
     });
     setErrors({});
   };
@@ -101,68 +123,26 @@ export default function AddNewLocationPopup({
             )}
           </div>
 
-          {/* Address */}
+          {/* Amenity */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">
-              آدرس<span className="text-red-500">*</span>
+            <label className=" text-sm font-medium text-gray-900 mb-1">
+              دسته<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              name="address"
-              value={formData.address}
+              name="amenity"
+              value={formData.amenity}
               onChange={handleChange}
-              placeholder="آدرس مکان شامل کشور، استان، شهر و ..."
+              placeholder="دسته بندی مکان مورد نظر"
               className="w-full p-2 border-2
                           rounded-lg focus:outline-none
                           bg-white border-gray-300
                           text-gray-900"
             />
-            {errors.address && (
-              <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            {errors.amenity && (
+              <p className="text-red-500 text-sm mt-1">{errors.amenity}</p>
             )}
           </div>
-
-          {/* Phone */}
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-900">
-              شماره تماس
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="شماره تماس"
-              className="w-full p-2 border-2
-                          rounded-lg focus:outline-none
-                          bg-white border-gray-300
-                          text-gray-900"
-            />
-          </div>
-
-          {/* Images */}
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">افزودن تصویر (اختیاری)</label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full p-2 border rounded-lg"
-            />
-            {formData.images.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {formData.images.map((file, index) => (
-                  <span
-                    key={index}
-                    className="text-xs bg-gray-100 px-2 py-1 rounded-full border"
-                  >
-                    {file.name}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div> */}
 
           {/* Submit */}
           <button
@@ -171,7 +151,7 @@ export default function AddNewLocationPopup({
                           hover:outline-none border-none 
                           py-2 rounded-lg hover:bg-purple-700 transition"
           >
-            Submit
+            ثبت
           </button>
         </form>
       </div>

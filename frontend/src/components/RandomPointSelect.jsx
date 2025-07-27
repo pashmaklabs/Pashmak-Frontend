@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { createCircleMarker, addMarkerToMap } from "../utils/customMapElements";
-import RandomPlacePopup from "./randomPlacePopup";
+import RandomPlacePopup from "./RandomPlacePopup";
+import { useNavigate } from "react-router-dom";
 
 export default function RandomPointSelect({ map, selectedPlaceRef }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showRandomPlacePopup, setShowRandomPlacePopup] = useState(false);
+  const navigate = useNavigate();
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   useEffect(() => {
     if (selectedPlaceRef) {
@@ -76,7 +79,37 @@ export default function RandomPointSelect({ map, selectedPlaceRef }) {
         <RandomPlacePopup
           selectedPlaceRef={selectedPlaceRef}
           setShowRandomPlacePopup={setShowRandomPlacePopup}
+          setShowLoginPopup={setShowLoginPopup}
         />
+      )}
+      {showLoginPopup && (
+        <div className="z-[50] fixed inset-0 flex items-center justify-center bg-black/50">
+          <div className="bg-white p-6 rounded-3xl shadow-lg sm:w-1/3 max-w-[400px] sm:min-w-[200px]">
+            <div className="text-right">
+              <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>
+              <p className="mb-4 text-gray-500">
+                لطفا برای استفاده از این امکان وارد حساب کاربری خود شوید
+              </p>
+            </div>
+            <div className="flex justify-center space-x-10">
+              <button
+                onClick={() => setShowLoginPopup(false)}
+                className="bg-white text-blue-500 px-4 py-2 rounded "
+              >
+                بعدا
+              </button>
+              <button
+                onClick={() => {
+                  setShowLoginPopup(false);
+                  navigate("/login");
+                }}
+                className="bg-white text-blue-500 px-4 py-2 rounded"
+              >
+                ورود به حساب
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

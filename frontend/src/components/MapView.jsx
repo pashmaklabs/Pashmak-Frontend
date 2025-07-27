@@ -12,7 +12,7 @@ import useIsMobile from "../hooks/useIsMobile";
 import { typeToIconMapping, iconMapping } from "../utils/iconUtils";
 import MapRoute from "./MapRoute";
 import { createRedPinMarker, addMarkerToMap } from "../utils/customMapElements";
-import RandomPointSelect from "./randomPointSelect";
+import RandomPointSelect from "./RandomPointSelect";
 
 maplibregl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
