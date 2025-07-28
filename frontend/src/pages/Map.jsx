@@ -28,6 +28,8 @@ const Map = ({
   const [prompt, setPrompt] = useState(false);
   const [isShowingFancyLoader, setIsShowingFancyLoader] = useState(false);
   const { mutateAsync: searchAsync } = useGetRequest();
+  const profile = location.pathname.includes(routes.profile);
+  const changePassword = location.pathname.includes(routes.changePassword);
 
   const handleFetchInitialTags = async () => {
     return [
@@ -103,7 +105,7 @@ const Map = ({
         <SearchLoader isVisible={isShowingFancyLoader} />
       )}
 
-      {prompt && (
+      {prompt && !profile && !changePassword && (
         <PromptBar
           resetSearch={resetSearch}
           setResetSearch={setResetSearch}
@@ -116,11 +118,12 @@ const Map = ({
           setSearchWithHistory={setSearchWithHistory}
         />
       )}
-
-      <LocateButton
+      {!profile && (
+        <LocateButton
         setUserLocation={setUserLocation}
         userLocation={userLocation}
-      />
+        />
+      )}
 
       <MapView
         userLocation={userLocation}

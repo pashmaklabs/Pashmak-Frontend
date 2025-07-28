@@ -53,12 +53,19 @@ const Profile = () => {
   }, [reRender, fetchProfile]);
 
   return (
-    <div className="h-screen w-screen flex justify-right items-right">
+    <div className="absolute top-0 h-screen w-screen flex justify-right items-right ">
       <Helmet>
         <title>پروفایل</title>
       </Helmet>
       {isLoading ? (
-        <div>loading... </div>
+        <div className="flex flex-col items-center justify-center h-full w-full bg-purple-50 bg-opacity-70 z-[11]">
+          <div className="flex space-x-2">
+            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full"></span>
+            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-200"></span>
+            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-400"></span>
+          </div>
+          <p dir="rtl" className="mt-4 text-gray-500">در حال بارگذاری...</p>
+        </div>
       ) : (
         <>
           {state === "profileInfo" && (
@@ -69,7 +76,7 @@ const Profile = () => {
             />
           )}
           {state === "gallery" && <Galley />}
-          {state === "myComments" && <MyComments />}
+          {state === "myComments" && <MyComments user={user} />}
           {state === "favoriteLocations" && <FavoriteLocations />}
           <ProfileNavbar setState={setState} state={state} user={user} />
         </>

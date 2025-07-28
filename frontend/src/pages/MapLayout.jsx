@@ -9,6 +9,7 @@ import BookmakrsContainer from "../components/BookmarksContainer";
 import { useState, useEffect, useRef } from "react";
 import Routing from "./Routing";
 import SearchHistory from "./SearchHistory";
+import Profile from "./Profile";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -24,6 +25,7 @@ const MainLayout = () => {
   const [bookmarkedLocationsPoints, setBookmarksLocationsPoints] =
     useState(null);
 
+  const profile = location.pathname.includes(routes.profile);
   const [expendSearch, setExpendSearch] = useState(false);
   const [hasSearch, setHasSearch] = useState(false);
   const [resetSearch, setResetSearch] = useState(false);
@@ -67,8 +69,9 @@ const MainLayout = () => {
         setSearchWithHistory={setSearchWithHistory}
       />
       {login && <Login />}
+      {(profile||changePassword) && <Profile />}
 
-      {changePassword && <ChangePassword />}
+      {/* {changePassword && <ChangePassword />} */}
 
       {((place && expendSearch) || search) &&
         searchResult &&

@@ -11,7 +11,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-  const hiddenRoutes = ["/profile", "/admin"];
+  const hiddenRoutes = ["/profile", "/admin", "/change-password"];
   const allDefinedRoutes = Object.values(routes).filter((r) => r !== "*");
 
   if (

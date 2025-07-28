@@ -84,7 +84,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-black/20 backdrop-blur-sm">
+    <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center">
       <Helmet>
         <title>تغییر رمز</title>
       </Helmet>

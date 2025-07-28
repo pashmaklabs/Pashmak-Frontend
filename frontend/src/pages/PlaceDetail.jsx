@@ -125,6 +125,15 @@ const PlaceDetail = ({
       setName(pointDetails.place.name || "بدون نام");
       setRating(pointDetails.place.rating || 0);
       setReviews(pointDetails.place.reviews || 0);
+      const lat = searchParams.get("lat");
+      const lng = searchParams.get("lng");
+
+    if (!lat || !lng) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("lat", pointDetails.place.latitude);
+      newSearchParams.set("lng", pointDetails.place.longitude);
+      navigate(`${location.pathname}?${newSearchParams.toString()}`);
+    }
     }
   }, [pointDetails]);
 

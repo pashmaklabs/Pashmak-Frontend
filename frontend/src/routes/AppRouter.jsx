@@ -26,6 +26,9 @@ function AppRouter() {
         <Route path={routes.login} element={<></>} />
         <Route path={routes.changePassword} element={<></>} />
         <Route path={routes.searchHistory} element={<></>} />
+        <Route element={<ProtectedLayout />}>
+          <Route path={routes.profile} element={<></>} />
+        </Route>
       </Route>
       {role === "admin" && (
         <Route path={routes.admin} element={<AdminLayout />}>
@@ -38,10 +41,6 @@ function AppRouter() {
           <Route path={routes.admin_comments} element={<CommentReports />} />
         </Route>
       )}
-      {/* Protected Route */}
-      <Route element={<ProtectedLayout />}>
-        <Route path={routes.profile} element={<Profile />} />
-      </Route>
     </Routes>
   );
 }

@@ -6,16 +6,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     //to use when debuging:
-    // https: {
-    //   key: fs.readFileSync('./cert/develop.darkube.app-key.pem'),
-    //   cert: fs.readFileSync('./cert/develop.darkube.app.pem'),
-    // },
-    // host: "develop.darkube.app",
-    // allowedHosts: ["pashmak.darkube.app","develop.darkube.app"],
+    https: {
+      key: fs.readFileSync('./cert/develop.darkube.app-key.pem'),
+      cert: fs.readFileSync('./cert/develop.darkube.app.pem'),
+    },
+    host: "develop.darkube.app",
+    allowedHosts: ["pashmak.darkube.app","develop.darkube.app"],
 
     //to use when deploying
-    host: "0.0.0.0",
-    allowedHosts: ["pashmak.darkube.app"],
+    // host: "0.0.0.0",
+    // allowedHosts: ["pashmak.darkube.app"],
 
     port: 5173,
     cors: true,
