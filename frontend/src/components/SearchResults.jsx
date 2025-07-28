@@ -74,7 +74,7 @@ const SearchResults = ({ setExpendSearch, expendSearch, searchResult }) => {
                         <div className="flex flex-row-reverse">
                           <div className="ml-5 m-2 w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden">
                             <img
-                              src={"/unnamed.png"}
+                              src={"/placeHolder.png"}
                               alt={item.name}
                               className="w-full h-full object-cover"
                               loading="lazy"

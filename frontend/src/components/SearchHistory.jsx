@@ -135,27 +135,25 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
           </div>
         ) : searchHistory.length > 0 ? (
           <div className="space-y-3 pb-4">
-            {searchHistory.map(
-              (item) =>
-                item.Query !== "" && (
-                  <div
-                    key={item.ID}
-                    className="relative rounded-xl bg-white transition-colors group hover:bg-gray-50"
-                  >
-                    {/* X Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteSearchItem(item.ID);
-                      }}
-                      disabled={isDeleting}
-                      className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 p-1 rounded-full transition-all bg-transparent hover:border hover:border-none border border-none"
-                    >
-                      <X
-                        size={18}
-                        className="text-gray-500 hover:text-red-500 transition-colors"
-                      />
-                    </button>
+            {searchHistory.slice().reverse().map((item) => ( (item.Query !== "") && (
+              <div
+                key={item.ID}
+                className="relative rounded-xl bg-white transition-colors group hover:bg-gray-50"
+              >
+                {/* X Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteSearchItem(item.ID);
+                  }}
+                  disabled={isDeleting}
+                  className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 p-1 rounded-full transition-all bg-transparent hover:border hover:border-none border border-none"
+                >
+                  <X
+                    size={18}
+                    className="text-gray-500 hover:text-red-500 transition-colors"
+                  />
+                </button>
 
                     {/* Main Content */}
                     <div
@@ -180,8 +178,7 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
                       </div>
                     </div>
                   </div>
-                ),
-            )}
+            )))}
           </div>
         ) : (
           <div className="text-center py-12">

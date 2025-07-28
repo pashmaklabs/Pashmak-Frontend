@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import TagContainer from "./TagContainer";
 import TagRenderer from "./TagRenderer";
 import useIsMobile from "../hooks/useIsMobile";
+import routes from "../routes/Routes";
 
 export default function PromptBar({
   resetSearch,
@@ -20,8 +21,9 @@ export default function PromptBar({
   const [availableTags, setAvailableTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [inputPrompt, setInputPrompt] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  // const [isSearching, setIsSearching] = useState(false);
+  // const [isExpanded, setIsExpanded] = useState(false);
+  const [PromptBarState, setPromptBarState] = useState("center"); // center - center-wide - right
 
   const promptBarRef = useRef(null);
   const textareaRef = useRef(null);
@@ -30,11 +32,6 @@ export default function PromptBar({
   const isSearchDisabled =
     inputPrompt.trim() === "" && selectedTags.length === 0;
 
-  const handleExpand = () => {
-    if (!isSearching) setIsExpanded(true);
-    textareaRef.current?.focus();
-  };
-
   useEffect(() => {
     if (searchWithHistory.isSearching === true) {
       setInputPrompt(searchWithHistory.query);
@@ -42,8 +39,7 @@ export default function PromptBar({
         ...prev,
         isSearching: !prev.isSearching,
       }));
-      setIsSearching(true);
-      setIsExpanded(true);
+      setPromptBarState("right");
       setResetSearch(false);
       setExpendSearch(false);
       submitData({ input: searchWithHistory.query, tags: selectedTags });
@@ -56,8 +52,7 @@ export default function PromptBar({
 
   const handleSubmit = () => {
     if (isSearchDisabled) return;
-    setIsSearching(true);
-    setIsExpanded(true);
+    setPromptBarState("right");
     setResetSearch(false);
     submitData({ input: inputPrompt, tags: selectedTags });
   };
@@ -66,19 +61,23 @@ export default function PromptBar({
     setSelectedTags((prev) => [...prev, tag]);
     setAvailableTags((prev) => prev.filter((t) => t !== tag));
   };
+  useEffect(() => {
+    console.log(PromptBarState);
+  }, [PromptBarState]);
 
   useEffect(() => {
     const { pathname } = location;
-    if (pathname === "/map") {
-      setIsSearching(false);
-      setIsExpanded(false);
-    } else if (pathname === "/map/search") {
-      setIsSearching(true);
-      setIsExpanded(true);
-    } else if (pathname === "/map/place") {
-      setIsExpanded(isSearching);
+    if (
+      pathname === routes.place ||
+      (pathname === routes.search && expendSearch) ||
+      pathname === routes.searchHistory ||
+      pathname == routes.bookmarks
+    ) {
+      setPromptBarState("right");
+    } else {
+      setPromptBarState("center");
     }
-  }, [location.pathname, isSearching]);
+  }, [location.pathname, expendSearch]);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -94,207 +93,128 @@ export default function PromptBar({
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
-        !isSearching &&
+        PromptBarState != "right" &&
         promptBarRef.current &&
         !promptBarRef.current.contains(e.target)
       ) {
-        setIsExpanded(false);
+        setPromptBarState("center");
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isSearching]);
-
-  useEffect(() => {
-    if (resetSearch) {
-      setInputPrompt("");
-      setIsExpanded(false);
-      setIsSearching(false);
-    }
-  });
+  }, [PromptBarState]);
 
   return (
     <>
       {/* Prompt Bar */}
-      <motion.div
-        ref={promptBarRef}
-        className="fixed font-sans"
-        initial={{
-          left: "100%",
-          right: "auto",
+      <div
+        onClick={() => {
+          if (PromptBarState === "center") setPromptBarState("center-wide");
         }}
-        animate={
-          isSearching
-            ? {
-                bottom: isMobile ? "var(--sidebar-width)" : "10px",
-                top: "auto",
-                right: "var(--prompt_right)",
-                width: expendSearch ? "400px" : "1rem",
-                height: "200px",
-                scale: 1,
-                opacity: 1,
-                zIndex: 12,
-                boxShadow: "0 -4px 12px rgba(0, 0, 0, 0.2)",
-              }
-            : {
-                top: isMobile ? "75%" : "80%",
-                left: "50%",
-                x: isMobile ? "-50%" : "-55%",
-                y: "-50%",
-                width: "80%",
-                maxWidth: "800px",
-                scale: 1,
-                opacity: 1,
-                zIndex: 10,
-              }
-        }
-        transition={{ type: "spring", stiffness: 300, damping: 50 }}
+        ref={promptBarRef}
+        className={`fixed font-sans transition-all duration-500 ease-out bg-white w-[60%]  rounded-3xl
+          ${
+            PromptBarState == "right" && !isMobile
+              ? `
+            sm:w-[400px] w-full sm:right-[calc(var(--sidebar-width)+6px)] right-0  sm:bottom-2 bottom-[var(--sidebar-width)] h-[150px] sm:h-[150px]"
+            z-[12] 
+            shadow-[0_-4px_12px_rgba(0,0,0,0.2)] 
+          `
+              : `
+            ${PromptBarState == "center-wide" || isMobile ? "h-[150px]" : "h-[100px]"}
+            ${
+              isMobile
+                ? "bottom-[calc(var(--sidebar-width)-65px)]"
+                : PromptBarState == "center-wide"
+                  ? "top-[calc(100vh-110px)]"
+                  : "top-[calc(100vh-80px)]"
+            } 
+            ${isMobile ? "right-2 left-2 w-auto" : "left-[50%]"} 
+            ${isMobile ? "" : "-translate-x-[55%]"} 
+            shadow-lg
+            -translate-y-1/2 
+            max-w-[700px]
+            z-[10]
+            `
+          }
+            `}
       >
-        {/* Textarea + Actions */}
-        <motion.div
-          className="fixed scrollbar-hide overflow-hidden overflow-y-auto"
-          animate={{
-            boxShadow:
-              isSearching || isExpanded
-                ? "none"
-                : "0px 4px 10px rgba(0,0,0,0.1)",
-            backgroundColor:
-              isSearching && !expendSearch ? "#F3F3F4" : "#ffffff",
-            height: isSearching ? 200 : isExpanded ? 140 : 116,
-            borderRadius: isSearching ? "10px" : 20,
-            width:
-              isSearching && expendSearch
-                ? isMobile
-                  ? "100%"
-                  : 400
-                : isSearching
-                  ? 18
-                  : "100%",
-            right: isMobile ? 0 : isSearching ? "var(--prompt_right)" : 0,
-          }}
-          transition={{ duration: 0.3 }}
-        >
-          {/* Submit Button */}
-          {isExpanded && (
-            <motion.button
-              onClick={handleSubmit}
-              disabled={isSearchDisabled}
-              className={`absolute ${isSearching ? "bottom-[30px]" : "bottom-[19px]"} right-5 w-[28px] h-[28px] rounded-full bg-transparent p-0 border-none focus:outline-none hover:scale-110 z-[12]`}
-              whileHover={!isSearchDisabled ? { scale: 1.1 } : {}}
-              aria-label="Submit search"
-            >
-              <img src="/search.svg" alt="Search" className="w-full h-full" />
-            </motion.button>
-          )}
-
-          {/* Text Area and Tag Renderer */}
-          <motion.div
-            onClick={handleExpand}
-            initial={false}
-            animate={{
-              height: isSearching ? 170 : isExpanded ? 120 : 70,
-              position: "absolute",
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              width: "100%",
-              marginBottom: 10,
-              paddingRight: 0,
-              marginRight: 0,
-            }}
-            transition={{ duration: 0.3 }}
+        {/* Submit Button */}
+        {PromptBarState != "center" && (
+          <button
+            onClick={handleSubmit}
+            disabled={isSearchDisabled}
+            className={`absolute ${promptBarRef == "right" ? "bottom-[30px]" : "bottom-[12px]"} right-3 w-[40px] h-[40px] rounded-full bg-transparent p-0 border-none focus:outline-none hover:scale-110 z-[12]`}
+            aria-label="Submit search"
           >
-            <textarea
-              ref={textareaRef}
-              rows={isExpanded ? 3 : 1}
-              dir="rtl"
-              value={isSearching && !expendSearch ? "" : inputPrompt}
-              onChange={(e) => setInputPrompt(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault(); // Prevents a new line from being added
-                  handleSubmit(); // Calls the handleSubmit function
-                }
-              }}
-              placeholder={isExpanded ? "" : "کجا میخواهید بروید؟"}
-              className="w-full pr-6 pl-5 z-[10] text-black text-[16px] leading-6 p-2 resize-none outline-none border-none bg-transparent scrollbar-hide"
-              style={{
-                height: isSearching ? "100px" : isExpanded ? "130px" : "30px",
-                marginTop: "0.5rem",
-              }}
+            <img src="/search.svg" alt="Search" className="w-full h-full" />
+          </button>
+        )}
+
+        {/* Text Area and Tag Renderer */}
+        <textarea
+          ref={textareaRef}
+          rows={PromptBarState == "center-wide" ? 3 : 1}
+          dir="rtl"
+          value={inputPrompt}
+          onChange={(e) => setInputPrompt(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
+          placeholder={
+            PromptBarState == "center-wide" ? "" : "کجا میخواهید بروید؟"
+          }
+          className="w-full bg-red-100 pr-6 pl-5 z-[10] text-black text-[16px] leading-6 p-2 resize-none outline-none border-none bg-transparent scrollbar-hide"
+          style={{
+            height: setPromptBarState == "right" ? "100px" : "85px",
+            marginTop: "0.5rem",
+          }}
+        />
+
+        {/* Tag Container */}
+        {PromptBarState != "center" && (
+          <div
+            className={`fixed transition-all duration-300 z-[20] bg-transprent overflow-auto
+                    ${PromptBarState == "right" ? (isMobile ? "right-[80px]" : "right-[125px]") : "right-0"}
+                    ${PromptBarState == "right" ? "bottom-[12px]" : "bottom-full"}
+                    ${PromptBarState == "right" ? "w-[350px]" : "w-full"}
+                    opacity-100 translate-y-0
+                  `}
+            style={{
+              top: "auto",
+            }}
+          >
+            <TagContainer
+              availableTags={availableTags}
+              onTagClick={addTag}
+              width={
+                isMobile
+                  ? 0.5 * window.screen.width
+                  : PromptBarState == "right"
+                    ? isMobile
+                      ? window.screen.width
+                      : 340
+                    : 0.5 * window.screen.width
+              }
             />
+          </div>
+        )}
 
-            {/* Tag Container */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    width:
-                      isSearching && expendSearch
-                        ? 350
-                        : isSearching
-                          ? 18
-                          : 600,
-                    backgroundColor: isSearching
-                      ? expendSearch
-                        ? "#ffffff"
-                        : "#f4f4f5"
-                      : "transparent",
-                    right: isSearching
-                      ? isMobile
-                        ? 0
-                        : "var(--prompt_right)"
-                      : 0,
-                    top: "auto",
-                    bottom: isSearching ? "10px" : "100%",
-                  }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  style={{
-                    position: "fixed",
-                    zIndex: 10,
-                    right: "var(--prompt_right)",
-                  }}
-                >
-                  <TagContainer
-                    availableTags={availableTags}
-                    onTagClick={addTag}
-                    width={
-                      isSearching
-                        ? !expendSearch
-                          ? 0
-                          : isMobile
-                            ? window.screen.width
-                            : 395
-                        : window.screen.width * 0.6
-                    }
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {isExpanded && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="z-[10] pl-5 pr-1"
-              >
-                <TagRenderer
-                  fetchInitialTags={fetchInitialTags}
-                  setAvailableTags={setAvailableTags}
-                  selectedTags={selectedTags}
-                  setSelectedTags={setSelectedTags}
-                />
-              </motion.div>
-            )}
-          </motion.div>
-        </motion.div>
-      </motion.div>
+        <div
+          className={`z-[10] pl-5 pr-1  ${PromptBarState == "right" ? "-mt-6" : ""}`}
+        >
+          <TagRenderer
+            fetchInitialTags={fetchInitialTags}
+            setAvailableTags={setAvailableTags}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+          />
+        </div>
+      </div>
     </>
   );
 }

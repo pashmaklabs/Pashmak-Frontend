@@ -68,10 +68,10 @@ export default function MyComments({ user }) {
       >
         {isLoading ? (
         <div className="flex flex-col items-center justify-center h-full w-full bg-white bg-opacity-70 z-[11]">
-          <div className="flex space-x-2">
-            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full"></span>
+          <div className="flex">
+            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full ml-1"></span>
             <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-200"></span>
-            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-400"></span>
+            <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-400 mr-1"></span>
           </div>
           <p dir="rtl" className="mt-4 text-gray-500">در حال بارگذاری...</p>
         </div>

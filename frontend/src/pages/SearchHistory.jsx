@@ -78,7 +78,7 @@ const SearchHistory = ({ searchWithHistory, setSearchWithHistory }) => {
       {/* <div className={`transition-all bottom-0 duration-300 ease-in-out absolute sm:right-[var(--sidebar-width)] right-0 top-[200px] z-[10] bg-white shadow-lg  overflow-x-hidden overflow-y-auto`}> */}
       <div
         className={`z-[21] absolute bg-white shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans 
-          sm:right-[77px] sm:top-2 sm:bottom-2 right-0 bottom-2 h-full sm:h-auto h-min-[calc(100vh)]
+          sm:right-[77px] sm:top-2 sm:bottom-[var(--promptbar-height)] right-0 bottom-2 h-full sm:h-auto h-min-[calc(100vh)]
         transition-all duration-500
         ${expanded ? "sm:w-[400px] w-full  bg-white" : "w-4 sm:w-4 bg-zinc-100"}`}
         dir="rtl"

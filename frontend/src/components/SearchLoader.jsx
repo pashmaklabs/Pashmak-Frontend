@@ -38,7 +38,7 @@ const SearchLoader = ({ isVisible }) => {
     <div
       className={`fixed top-5 left-1/2 transform -translate-x-1/2 ${
         isVisible ? "translate-y-0" : "-translate-y-40"
-      } w-[90%] max-w-[400px] z-[10] bg-[rgba(40,40,60,0.6)] backdrop-blur border border-white/10 shadow-lg rounded-2xl px-5 py-3 transition-transform duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]`}
+      } w-[90%] max-w-[400px] z-[20] bg-[rgba(40,40,60,0.6)] backdrop-blur border border-white/10 shadow-lg rounded-2xl px-5 py-3 transition-transform duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]`}
     >
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 shrink-0">

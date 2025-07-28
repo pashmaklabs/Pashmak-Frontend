@@ -62,16 +62,16 @@ const BookmakrsContainer = ({
 
       {/* Main panel */}
       <div
-        className={`font-sans fixed right-[70px]
-                    top-0 z-[10] bg-white
-                    shadow-lg h-screen transition-all
-                    duration-300 ease-in-out ${
-                      expendBookmarksList
-                        ? "w-[400px]"
-                        : "w-4 bg-zinc-100 overflow-hidden"
-                    }
-        `}
+        className={`z-[10] absolute bg-white shadow-md overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden font-sans 
+          sm:right-[77px] sm:top-2 sm:bottom-[var(--promptbar-height)] right-0 bottom-[var(--sidebar-width)] h-[calc(100vh-var(--sidebar-width))] sm:h-auto h-min-[calc(100vh-200px)]
+        transition-all duration-500
+        ${expendBookmarksList ? "sm:w-[400px] w-full bg-white" : "w-4 sm:w-4 bg-zinc-100"}`}
         dir="rtl"
+        style={{
+          backgroundColor: expendBookmarksList ? "#ffffff" : "#F3F3F4",
+          borderRadius: "10px",
+          // boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+        }}
       >
         {expendBookmarksList && (
           <div className="h-full flex flex-col">

@@ -91,9 +91,16 @@ const Map = ({
   // checks if user is viewing saved locations in a specific group
   const bookmarksParams = new URLSearchParams(location.search);
   const isLocationGroup = bookmarksParams.get("group") !== null;
+
   useEffect(() => {
     setPrompt(!location.pathname.includes(routes.dir));
   }, [location.pathname]);
+
+  useEffect(() => {
+    console.log(resetSearch)
+    if(resetSearch===true)
+      setPlaces([]);
+  }, [resetSearch]);
 
   return (
     <div style={{ position: "relative" }}>
@@ -130,7 +137,7 @@ const Map = ({
         staticPoints={
           isLocationGroup && bookmarkedLocationsPoints
             ? bookmarkedLocationsPoints
-            : places
+            : resetSearch? [] : places
         }
         onPointClick={handlePointClick}
       />
