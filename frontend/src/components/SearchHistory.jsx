@@ -4,6 +4,7 @@ import { useGetRequest } from "../services/api";
 import { useDeleteRequest } from "../services/api";
 import { toast } from "react-toastify";
 
+
 const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
   const [searchHistory, setSearchHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,11 +18,11 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
   } = useGetRequest();
 
   const fetchSearchHistory = () => {
-    setLoading(true);
+    setLoading(true)
     fetchHistory(
       { endpoint: "profiles/me/search/history", params: {} },
       {
-        onSuccess: (message) => {
+        onSuccess: ( message ) => {
           setSearchHistory(message?.history || []);
           // console.log(message)
         },
@@ -32,9 +33,9 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
             toast.error("خطایی رخ داده. لطفا دوباره امتحان کنید");
           }
         },
-      },
+      }
     );
-    setLoading(false);
+    setLoading(false)
   };
 
   const { mutate: deleteRequest, isPending: isDeleting } = useDeleteRequest();
@@ -51,18 +52,20 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
             toast.error(error.response.data.message);
           } else {
             toast.error("خطایی در حذف رخ داده. لطفا دوباره امتحان کنید");
-            console.log(error);
+            console.log(error)
           }
         },
-      },
+      }
     );
   };
+
 
   // Clear all search history
   const clearAllHistory = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      
       if (onClearHistory) {
         onClearHistory(setSearchHistory);
       }
@@ -76,7 +79,7 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-
+    
     if (diffInHours < 1) {
       return "همین الان";
     } else if (diffInHours < 24) {
@@ -103,7 +106,9 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
       {/* Header */}
       <div className="flex-shrink-0 pt-2 px-4 relative">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-bold text-gray-800">تاریخچه جستجو</h1>
+          <h1 className="text-xl font-bold text-gray-800">
+            تاریخچه جستجو
+          </h1>
           {searchHistory.length > 0 && (
             <button
               onClick={clearAllHistory}
@@ -135,7 +140,7 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
           </div>
         ) : searchHistory.length > 0 ? (
           <div className="space-y-3 pb-4">
-            {searchHistory.slice().reverse().map((item) => ( (item.Query !== "") && (
+            {searchHistory.map((item) => ( (item.Query !== "") && (
               <div
                 key={item.ID}
                 className="relative rounded-xl bg-white transition-colors group hover:bg-gray-50"
@@ -155,29 +160,30 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
                   />
                 </button>
 
-                    {/* Main Content */}
-                    <div
-                      className="flex flex-row-reverse items-center p-4 cursor-pointer"
-                      onClick={() => handleSearchSelect(item.Query)}
-                    >
-                      <div className="ml-6 mt-2 pt-2 p-2 bg-gray-100 rounded-lg">
-                        <Search size={24} className="text-gray-600" />
-                      </div>
-                      <div className="flex-grow">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3 className="font-semibold text-gray-800 text-lg">
-                            {item.Query}
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <div className="flex items-center gap-1">
-                            <Clock size={14} />
-                            {formatTimestamp(item.CreatedAt)}
-                          </div>
-                        </div>
+                {/* Main Content */}
+                <div
+                  className="flex flex-row-reverse items-center p-4 cursor-pointer"
+                  onClick={() => handleSearchSelect(item.Query)}
+                >
+                  <div className="ml-6 mt-2 pt-2 p-2 bg-gray-100 rounded-lg">
+                    <Search size={24} className="text-gray-600" />
+                  </div>
+                  <div className="flex-grow">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold text-gray-800 text-lg">
+                        {item.Query}
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Clock size={14} />
+                        {formatTimestamp(item.CreatedAt)}
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+
             )))}
           </div>
         ) : (

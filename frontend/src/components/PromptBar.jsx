@@ -50,6 +50,25 @@ export default function PromptBar({
     }
   }, [searchWithHistory]);
 
+  useEffect(() => {
+    if(searchWithHistory.isSearching === true) {
+      setInputPrompt(searchWithHistory.query);
+      setSearchWithHistory(prev => ({
+      ...prev,
+      isSearching: !prev.isSearching
+      }));
+      setIsSearching(true);
+      setIsExpanded(true);
+      setResetSearch(false);
+      setExpendSearch(false);
+      submitData({ input: searchWithHistory.query, tags: selectedTags });
+      console.log(expendSearch)
+      // console.log("in prompt")
+      // console.log(searchWithHistory.isSearching)
+      // console.log(searchWithHistory.query)
+    }
+  }, [searchWithHistory])
+
   const handleSubmit = () => {
     if (isSearchDisabled) return;
     setPromptBarState("right");
