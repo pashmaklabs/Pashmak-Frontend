@@ -32,7 +32,7 @@ function AppRouter() {
       </Route>
       {role === "admin" && (
         <Route path={routes.admin} element={<AdminLayout />}>
-          <Route index element={<LocationSuggestions />} />
+          <Route index element={<CommentReports />} />
           <Route
             path={routes.admin_locations}
             element={<LocationSuggestions />}
