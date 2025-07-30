@@ -1,7 +1,10 @@
 import { useState } from "react";
 import SharePopup from "./SharePopUp";
 import PhoneCall from "./PhoneCall";
-import SaveLocationPopup from "./SaveLocationPopup";
+import {AddSchedulePopup, AddLinkPopup, AddPhonePopup} from "./PlaceInfoUserSubmit";
+import { useUserLogin } from "../stores/login";
+import { useNavigate } from "react-router-dom";
+import SaveLocationPopup from "./SaveLocationPopup"
 
 const PlaceInfoContainer = ({
   address,
@@ -18,14 +21,16 @@ const PlaceInfoContainer = ({
 
   const [isTimeExpanded, setIsTimeExpanded] = useState(false);
   // const [showCommentForm, setShowCommentForm] = useState(false);
-
   const [isShareOpen, setIsShareOpen] = useState(false);
 
   const [showSaveLocationPopup, setSaveLocationPopup] = useState(false);
 
   const [isCallOpen, setIsCallOpen] = useState(false);
-
+  const [isPopupOpen, setIsPopupOpen] = useState("none");
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
   const shareURL = window.location.href;
+  const { userLogin } = useUserLogin();
+  const navigate = useNavigate();
 
   // Weekly schedule
   weeklySchedule = {
@@ -56,8 +61,8 @@ const PlaceInfoContainer = ({
   })();
 
   // Render weekly schedule
-  const renderWeeklySchedule = () => {
-    return Object.entries(weeklySchedule).map(([day, hours], index) => (
+  const renderWeeklySchedule = (Schedule) => {
+    return Object.entries(Schedule).map(([day, hours], index) => (
       <p
         key={day}
         className={`flex justify-between items-center space-x-2 bg-gray-50 rounded-lg p-2 mt-1 mb-1 ml-10 ${
@@ -68,6 +73,16 @@ const PlaceInfoContainer = ({
         <span>{hours}</span>
       </p>
     ));
+  };
+
+  const handleAddPopups = (popup) => {
+    if (!userLogin) {
+      setShowLoginPopup(true);
+      return;
+    }
+    else{
+      setIsPopupOpen(popup);
+    }
   };
 
   return (
@@ -146,7 +161,12 @@ const PlaceInfoContainer = ({
                 }`}
                 onClick={() => setIsTimeExpanded(!isTimeExpanded)}
               />
-              <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+              <img
+                src="/Add Square.svg"
+                alt="link"
+                className="w-5 h-5 m-2 cursor-pointer"
+                onClick={()=>{handleAddPopups("schedule")}}
+              />
             </div>
           </div>
 
@@ -156,7 +176,7 @@ const PlaceInfoContainer = ({
             }`}
           >
             <div className="mr-7 ml-4 text-xs text-gray-600">
-              {renderWeeklySchedule()}
+              {renderWeeklySchedule(weeklySchedule)}
             </div>
           </div>
 
@@ -165,7 +185,7 @@ const PlaceInfoContainer = ({
               <img src="/Phone.svg" alt="phone" className="w-5 h-5 m-2" />
               <p className="text-gray-600 mt-2">{phone}</p>
             </div>
-            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2 cursor-pointer" onClick={()=>{handleAddPopups("phone")}} />
           </div>
           <div className="flex justify-between items-center">
             <div className="flex">
@@ -176,7 +196,7 @@ const PlaceInfoContainer = ({
                 </a>
               </p>
             </div>
-            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2 cursor-pointer" onClick={()=>{handleAddPopups("link")}} />
           </div>
         </div>
 
@@ -195,6 +215,55 @@ const PlaceInfoContainer = ({
           </button>
         </div>
       </div>
+
+      {isPopupOpen==="schedule" && (
+        <AddSchedulePopup
+          weeklySchedule={weeklySchedule}
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+        />
+      )}
+      {isPopupOpen==="phone" && (
+        <AddPhonePopup
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+        />
+      )}
+      {isPopupOpen==="link" && (
+        <AddLinkPopup
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+        />
+      )}
+      {showLoginPopup && (
+        <div className="z-[50] fixed inset-0 flex items-center justify-center bg-black/50">
+          <div className="bg-white p-6 rounded-3xl shadow-lg sm:w-1/3 max-w-[400px] sm:min-w-[200px]">
+            <div className="text-right">
+              <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>
+              <p className="mb-4 text-gray-500">
+                لطفا برای استفاده از این امکان وارد حساب کاربری خود شوید
+              </p>
+            </div>
+            <div className="flex justify-center space-x-10">
+              <button
+                onClick={() => setShowLoginPopup(false)}
+                className="bg-white text-blue-500 px-4 py-2 rounded "
+              >
+                بعدا
+              </button>
+              <button
+                onClick={() => {
+                  setShowLoginPopup(false);
+                  navigate("/login");
+                }}
+                className="bg-white text-blue-500 px-4 py-2 rounded"
+              >
+                ورود به حساب
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
