@@ -4,80 +4,78 @@ import { createCircleMarker, addMarkerToMap } from "../utils/customMapElements";
 import RandomPlacePopup from "./RandomPlacePopup";
 import { useNavigate } from "react-router-dom";
 
-export default function RandomPointSelect({ map, selectedPlaceRef }) {
+export default function RandomPointSelect({ map }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showRandomPlacePopup, setShowRandomPlacePopup] = useState(false);
+  let clickFuctionRef = null;
+  const startMarkerRef = useRef(null);
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-  useEffect(() => {
-    if (selectedPlaceRef) {
-      randomPointMarkerRemove(selectedPlaceRef);
+  const handleRandomPointClick = (e, startMarkerRef) => {
+    if (startMarkerRef) {
+      randomPointMarkerRemove(startMarkerRef);
     }
+    const { lng, lat } = e.lngLat;
     const newParams = new URLSearchParams(searchParams);
-    const lat = newParams.get("lat");
-    const lng = newParams.get("lng");
+    newParams.set("lat", lat);
+    newParams.set("lng", lng);
+    setSearchParams(newParams);
     const selectedPoint = `${lat},${lng}`;
     if (lat && lng) {
       const [selectedPointLat, selectedPointLng] = selectedPoint
         .split(",")
         .map(parseFloat);
       const startMarkerElement = createCircleMarker("#0074D9", "8px");
-      // selectedPlaceRef.current=startMarkerElement
-      console.log("marker put");
-      selectedPlaceRef.current = addMarkerToMap(
+      startMarkerRef.current = startMarkerElement;
+      startMarkerRef.current = addMarkerToMap(
         map,
         [selectedPointLng, selectedPointLat],
         startMarkerElement,
       );
+      map.flyTo({
+        center: [lng, lat],
+        zoom: 15,
+        duration: 2000,
+      });
+      setShowRandomPlacePopup(true);
     }
-    // else
-    // {
-    //   randomPointMarkerRemove(selectedPlaceRef);
-    // }
-  }, [searchParams]);
-
-  const handleRandomPointClick = (e) => {
-    const { lng, lat } = e.lngLat;
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("lat", lat);
-    newParams.set("lng", lng);
-    setSearchParams(newParams);
-    setShowRandomPlacePopup(true);
   };
 
   const randomPointMarkerRemove = (markerRef) => {
     if (markerRef.current) {
       markerRef.current.remove();
-      console.log("marker pick");
-      // setShowRandomPlacePopup(false)
+      setShowRandomPlacePopup(false);
     }
   };
+
   useEffect(() => {
-    const startMarkerRef = { current: null };
-    console.log(1);
-    map.on("click", (e) => {
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: ["points-layer"],
-      });
-      if (features.length === 0) {
-        handleRandomPointClick(e, startMarkerRef);
-      }
-    });
+    map.on(
+      "click",
+      (clickFuctionRef = (e) => {
+        const features = map.queryRenderedFeatures(e.point, {
+          layers: ["points-layer"],
+        });
+        if (features.length === 0) {
+          handleRandomPointClick(e, startMarkerRef);
+        }
+      }),
+    );
+
     return () => {
-      // randomPointMarkerRemove(startMarkerRef);
-      map.off("click", handleRandomPointClick);
+      randomPointMarkerRemove(startMarkerRef);
+      map.off("click", clickFuctionRef);
     };
   }, [map]);
 
   return (
     <div
-      className="absolute top-2 left-[750px]
-                w-[200px]"
+      className="absolute top-2 left-1/2 ml-[-7rem]
+                w-60"
     >
       {showRandomPlacePopup && (
         <RandomPlacePopup
-          selectedPlaceRef={selectedPlaceRef}
+          selectedPlaceRef={startMarkerRef}
           setShowRandomPlacePopup={setShowRandomPlacePopup}
           setShowLoginPopup={setShowLoginPopup}
         />

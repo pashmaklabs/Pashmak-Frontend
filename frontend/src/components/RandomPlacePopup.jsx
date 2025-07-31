@@ -1,7 +1,7 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import SaveLocationPopup from "./SaveLocationPopup";
-import { XCircle } from "lucide-react";
+import { X } from "lucide-react";
 import AddNewLocationPopup from "./AddNewLocationPopup";
 import { usePrevRouteStore } from "../stores/routing";
 import routes from "../routes/Routes";
@@ -61,21 +61,17 @@ export default function RandomPlacePopup({
       dir="rtl"
       className="flex flex-col items-center
                     justify-center w-full h-full
-                    p-2 bg-white rounded-lg
+                    p-3 bg-white rounded-lg
                     shadow-md relative"
     >
       {/* clase button */}
       <button
         className="absolute left-0 top-0
           rounded-full p-0
-          border-none"
+          border-none bg-white"
         onClick={handleCloseButtonClick}
       >
-        <XCircle
-          className="absolute left-1 top-1
-                text-gray-900
-                hover:cursor-pointer hover:text-red-500 transition-colors"
-        />
+        <img alt="close_button" src="/closeWhiteBg.svg" className="" />
       </button>
 
       <div className="m-2">

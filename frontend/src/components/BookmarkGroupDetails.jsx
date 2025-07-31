@@ -111,7 +111,7 @@ export default function BookmarkGroupDetails({
         </div>
       ) : (
         /* saved locations in this group */
-        <div className="h-[92%] overflow-y-scroll overflow-x-hidden scrollbar-hide">
+        <div className="h-full overflow-y-scroll overflow-x-hidden scrollbar-hide">
           {isGettingResult ? (
             <div
               className="flex items-center justify-center

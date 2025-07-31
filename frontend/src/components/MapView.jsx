@@ -13,7 +13,7 @@ import { typeToIconMapping, iconMapping } from "../utils/iconUtils";
 import MapRoute from "./MapRoute";
 import { createRedPinMarker, addMarkerToMap } from "../utils/customMapElements";
 import RandomPointSelect from "./RandomPointSelect";
-import RoutingLoader from "./RoutingLoader"; 
+import RoutingLoader from "./RoutingLoader";
 
 maplibregl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
@@ -30,7 +30,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   const mapContainerRef = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedPlaceRef = useRef(null);
-  const [isRouteLoading, setIsRouteLoading] = useState(false); 
+  const [isRouteLoading, setIsRouteLoading] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
 
@@ -313,7 +313,11 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       <div ref={mapContainerRef} className="h-screen w-screen"></div>
       <MapMarkers map={mapRef.current} staticPoints={staticPoints} />
       {location.pathname === routes.dir && (
-        <MapRoute map={mapRef.current} mapReady={mapReady} onLoadingChange={setIsRouteLoading} />
+        <MapRoute
+          map={mapRef.current}
+          mapReady={mapReady}
+          onLoadingChange={setIsRouteLoading}
+        />
       )}
       <UserLocationMarker map={mapRef.current} userLocation={userLocation} />
       {location.pathname === routes.map && mapRef.current && (

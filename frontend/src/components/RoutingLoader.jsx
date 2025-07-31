@@ -3,9 +3,9 @@ import Lottie from "lottie-react";
 import animationData from "../assets/animations/search-animation.json";
 
 const searchStages = [
-  { text: "پیدا کردن بهترین مسیر"},
-  { text: "جهت یابی روی نقشه"},
-  { text: "محاسبه زمان تقریبی"},
+  { text: "پیدا کردن بهترین مسیر" },
+  { text: "جهت یابی روی نقشه" },
+  { text: "محاسبه زمان تقریبی" },
 ];
 
 const DURATION_PER_STAGE = 1300;

@@ -17,9 +17,9 @@ const VerificationCode = ({
   const [resendDisabled, setResendDisabled] = useState(true);
   const { setStep } = useLoginStep();
   const { email, setEmail } = useEmail();
-  
+
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
@@ -95,30 +95,22 @@ const VerificationCode = ({
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
-    <div className="relative rounded-[24px] bg-white shadow-2xl border border-gray-100 max-w-[420px] overflow-hidden sm:w-[370px] sm:h-auto lg:h-auto lg:w-[474px]">
-          {/* Close Button */}
+      <div className="relative rounded-[24px] bg-white shadow-2xl border border-gray-100 max-w-[420px] overflow-hidden sm:w-[370px] sm:h-auto lg:h-auto lg:w-[474px]">
+        {/* Close Button */}
         <button
           onClick={handleCloseLoginFlow}
           className="bg-transparent border-none absolute right-4 top-4 z-10 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
         >
-          <img
-            src="/Close_round.svg"
-            alt="close"
-            className="w-5 h-5"
-          />
+          <img src="/Close_round.svg" alt="close" className="w-5 h-5" />
         </button>
 
         {/* Header Section */}
         <div className="pt-8 pb-6 px-8 bg-white relative">
           {/* Logo in top left */}
           <div className="absolute top-4 left-8">
-            <img
-              src="/logo.svg"
-              alt="Logo"
-              className="w-12 h-12"
-            />
+            <img src="/logo.svg" alt="Logo" className="w-12 h-12" />
           </div>
-          
+
           <div className="flex flex-col items-center text-center pt-8">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-gray-800">
@@ -127,7 +119,7 @@ const VerificationCode = ({
               <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
                 کد ۴ رقمی فرستاده شده به ایمیل زیر را وارد کنید
               </p>
-              <div 
+              <div
                 className="inline-block px-3 py-1 bg-blue-50 rounded-lg text-blue-700 text-sm font-medium"
                 style={{ direction: "ltr", unicodeBidi: "bidi-override" }}
               >
@@ -167,16 +159,18 @@ const VerificationCode = ({
                 {toPersianDigits(Math.floor(timeLeft / 60))}:
                 {toPersianDigits((timeLeft % 60).toString().padStart(2, "0"))}
               </span>
-              <span className="text-gray-500 text-sm" dir="rtl">زمان باقی‌مانده:</span>
+              <span className="text-gray-500 text-sm" dir="rtl">
+                زمان باقی‌مانده:
+              </span>
             </div>
-            
+
             <button
               type="button"
               onClick={handleResendCode}
               disabled={resendDisabled || isLoading}
               className={`bg-white text-sm font-medium transition-all duration-200 ${
                 resendDisabled || isLoading
-                  ? "text-gray-400 cursor-not-allowed" 
+                  ? "text-gray-400 cursor-not-allowed"
                   : "text-primary hover:text-primary/80 hover:underline"
               }`}
             >
@@ -198,7 +192,7 @@ const VerificationCode = ({
                 ورود با رمز عبور
               </button>
             )}
-            
+
             <button
               type="button"
               onClick={handleBack}

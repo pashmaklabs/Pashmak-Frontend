@@ -6,7 +6,13 @@ import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
 import Signup from "../components/Signup";
 import routes from "../routes/Routes";
-import { useLoginStep, useEmail, useUserLogin, useRole, useLoginStartPath } from "../stores/login";
+import {
+  useLoginStep,
+  useEmail,
+  useUserLogin,
+  useRole,
+  useLoginStartPath,
+} from "../stores/login";
 import { toast } from "react-toastify";
 import { usePostRequest, usePatchRequest } from "../services/api";
 import { Helmet } from "react-helmet";
@@ -52,12 +58,12 @@ const Login = () => {
     setEmail("");
     setUserExists(false);
     navigate(loginStartPath);
-  }
+  };
 
   const handleCloseSignUp = () => {
     setStep("email");
     navigate(loginStartPath);
-  }
+  };
 
   const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
@@ -180,8 +186,8 @@ const Login = () => {
             userExists={userExists}
             isLoading={isSubmittingOTP}
             handleCloseLoginFlow={handleCloseLoginFlow}
-            />
-          )}
+          />
+        )}
         {step === "password" && (
           <PasswordLogin
             handlePasswordLoginSuccess={handlePasswordLoginSuccess}
@@ -192,10 +198,10 @@ const Login = () => {
           />
         )}
         {step === "signup" && (
-          <Signup 
-          handleSignup={handleSignup} 
-          isLoading={isSubmittingInfo}
-          handleCloseSignUp={handleCloseSignUp}
+          <Signup
+            handleSignup={handleSignup}
+            isLoading={isSubmittingInfo}
+            handleCloseSignUp={handleCloseSignUp}
           />
         )}
       </PageTransition>

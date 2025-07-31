@@ -8,10 +8,7 @@ import { useDeleteRequest } from "../services/api";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
 
-const SearchHistory = ({
-  searchWithHistory,
-  setSearchWithHistory,
-}) => {
+const SearchHistory = ({ searchWithHistory, setSearchWithHistory }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -23,34 +20,35 @@ const SearchHistory = ({
     navigate(routes.map);
   };
 
-  const { mutate: deleteAllRequest, isPending: isDeleting } = useDeleteRequest();
-  
-    const onClearHistory = (setSearchHistory) => {
-      deleteAllRequest(
-        { url: `/profiles/me/search/history/clear` },
-        {
-          onSuccess: () => {
-            setSearchHistory([]);
-          },
-          onError: (error) => {
-            if (error.response?.data?.message) {
-              toast.error(error.response.data.message);
-            } else {
-              toast.error("خطایی در حذف رخ داده. لطفا دوباره امتحان کنید");
-              console.log(error)
-            }
-          },
-        }
-      );
-    };
+  const { mutate: deleteAllRequest, isPending: isDeleting } =
+    useDeleteRequest();
+
+  const onClearHistory = (setSearchHistory) => {
+    deleteAllRequest(
+      { url: `/profiles/me/search/history/clear` },
+      {
+        onSuccess: () => {
+          setSearchHistory([]);
+        },
+        onError: (error) => {
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("خطایی در حذف رخ داده. لطفا دوباره امتحان کنید");
+            console.log(error);
+          }
+        },
+      },
+    );
+  };
 
   const onSearchSelect = (query) => {
-    navigate(routes.search)
+    navigate(routes.search);
     setSearchWithHistory(() => ({
-      query:query,
-      isSearching:true
-    }))
-  }
+      query: query,
+      isSearching: true,
+    }));
+  };
   return (
     <>
       <Helmet>

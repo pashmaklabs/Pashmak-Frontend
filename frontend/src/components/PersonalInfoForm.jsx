@@ -7,7 +7,7 @@ import { usePostRequest } from "../services/api";
 import ChangePassword from "../pages/ChangePassword";
 
 const PersonalInfo = (props) => {
-    const isChangePassword = location.pathname.includes(routes.changePassword);
+  const isChangePassword = location.pathname.includes(routes.changePassword);
   let default_firstname = props.user.FirstName;
   const [firstname, setFirstname] = useState(default_firstname);
   const [firstNameChanged, setFirstNameChanged] = useState(false);
@@ -22,7 +22,6 @@ const PersonalInfo = (props) => {
   const [shownProfile, setShownProfile] = useState(defaultProfilePicture);
   const [profilePictureChanged, setProfilePictureChanged] = useState(false);
 
-
   //hard code
   const rating = 3;
   const percentage = (rating / 5) * 360;
@@ -33,7 +32,6 @@ const PersonalInfo = (props) => {
 
   const { mutate: changeProfilePhoto, isLoading: isUploading } =
     usePostRequest();
-
 
   const { mutate: changeProfile, isLoading: isChanging } = usePostRequest();
 
@@ -65,7 +63,6 @@ const PersonalInfo = (props) => {
       },
     );
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -150,7 +147,7 @@ const PersonalInfo = (props) => {
                 bg-purple-50 bg-opacity-70 transition duration-300 z-[11]"
     >
       {isChangePassword ? (
-          <ChangePassword />
+        <ChangePassword />
       ) : (
         <div
           className="flex flex-col items-center justify-center
@@ -160,7 +157,6 @@ const PersonalInfo = (props) => {
                      overflow-auto  scrollbar-hide z-[11] "
         >
           <div className="flex items-center justify-center p-10 gap-x-[20%]">
-            
             {/* <div className="relative min-w-16 flex items-center justify-center"> */}
             {/* <div className="absolute w-full aspect-square rounded-full border-8 border-gray-100" /> */}
 
@@ -246,7 +242,6 @@ const PersonalInfo = (props) => {
               onClick={handleDiscardChangesClick}
               disabled={
                 !firstNameChanged && !lastNameChanged && !profilePictureChanged
-
               }
               className={`w-[42.85%] max-h-10 py-2 rounded-md
                       text-white bg-slate-400

@@ -5,12 +5,12 @@ import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
 import routes from "../routes/Routes";
 import { useLoginStep, useEmail } from "../stores/login";
 
-const PasswordLogin = ({ 
-  handlePasswordLoginSuccess, 
-  setUserExists, 
-  isLoading, 
+const PasswordLogin = ({
+  handlePasswordLoginSuccess,
+  setUserExists,
+  isLoading,
   handleCloseLoginFlow,
-  handleEmailSubmit
+  handleEmailSubmit,
 }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +43,7 @@ const PasswordLogin = ({
   };
 
   const isValidPassword = password.trim().length >= 1;
-  
+
   const getInputBorderColor = () => {
     if (!isTouched) return "border-gray-200";
     if (isValidPassword) return "border-green-400";
@@ -62,24 +62,16 @@ const PasswordLogin = ({
           onClick={handleCloseLoginFlow}
           className="bg-transparent border-none absolute right-4 top-4 z-10 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
         >
-          <img
-            src="/Close_round.svg"
-            alt="close"
-            className="w-5 h-5"
-          />
+          <img src="/Close_round.svg" alt="close" className="w-5 h-5" />
         </button>
 
         {/* Header Section */}
         <div className="flex flex-col items-center text-center">
           <div className="absolute top-4 left-8">
-            <img
-              src="/logo.svg"
-              alt="Logo"
-              className="w-12 h-12"
-            />
+            <img src="/logo.svg" alt="Logo" className="w-12 h-12" />
           </div>
-            
-        <div className="pt-12 pb-6 px-8 bg-white">
+
+          <div className="pt-12 pb-6 px-8 bg-white">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-gray-800">
                 ورود با رمز عبور
@@ -87,7 +79,7 @@ const PasswordLogin = ({
               <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
                 رمز عبور خود را برای ایمیل زیر وارد کنید
               </p>
-              <div 
+              <div
                 className="inline-block px-3 py-1 bg-blue-50 rounded-lg text-blue-700 text-sm font-medium"
                 style={{ direction: "ltr", unicodeBidi: "bidi-override" }}
               >
@@ -102,7 +94,10 @@ const PasswordLogin = ({
           <div className="space-y-6">
             {/* Password Input Section */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 text-right">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 text-right"
+              >
                 رمز عبور
               </label>
               <div className="relative">
@@ -120,7 +115,7 @@ const PasswordLogin = ({
                   disabled={isLoading}
                   required
                 />
-                
+
                 {/* Password Visibility Toggle */}
                 <button
                   type="button"
@@ -143,9 +138,10 @@ const PasswordLogin = ({
               disabled={!isValidPassword || isLoading}
               className={`w-full py-4 px-6 rounded-xl font-medium text-white 
                         transition-all duration-200 transform
-                        ${isValidPassword 
-                          ? 'bg-primary hover:bg-primary/90 hover:scale-[0.99] active:scale-[0.98] shadow-lg hover:shadow-xl' 
-                          : 'bg-gray-300 cursor-not-allowed'
+                        ${
+                          isValidPassword
+                            ? "bg-primary hover:bg-primary/90 hover:scale-[0.99] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                            : "bg-gray-300 cursor-not-allowed"
                         }
                         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
             >
@@ -171,7 +167,7 @@ const PasswordLogin = ({
               >
                 ورود با رمز یکبار مصرف
               </button>
-              
+
               <button
                 type="button"
                 onClick={handleForgetPasswordClick}

@@ -64,7 +64,9 @@ const Profile = () => {
             <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-200"></span>
             <span className="animate-bounce w-4 h-4 bg-gray-500 rounded-full animation-delay-400"></span>
           </div>
-          <p dir="rtl" className="mt-4 text-gray-500">در حال بارگذاری...</p>
+          <p dir="rtl" className="mt-4 text-gray-500">
+            در حال بارگذاری...
+          </p>
         </div>
       ) : (
         <>

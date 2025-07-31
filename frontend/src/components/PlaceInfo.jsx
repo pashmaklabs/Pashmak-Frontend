@@ -1,10 +1,14 @@
 import { useState } from "react";
 import SharePopup from "./SharePopUp";
 import PhoneCall from "./PhoneCall";
-import {AddSchedulePopup, AddLinkPopup, AddPhonePopup} from "./PlaceInfoUserSubmit";
+import {
+  AddSchedulePopup,
+  AddLinkPopup,
+  AddPhonePopup,
+} from "./PlaceInfoUserSubmit";
 import { useUserLogin } from "../stores/login";
 import { useNavigate } from "react-router-dom";
-import SaveLocationPopup from "./SaveLocationPopup"
+import SaveLocationPopup from "./SaveLocationPopup";
 
 const PlaceInfoContainer = ({
   address,
@@ -79,8 +83,7 @@ const PlaceInfoContainer = ({
     if (!userLogin) {
       setShowLoginPopup(true);
       return;
-    }
-    else{
+    } else {
       setIsPopupOpen(popup);
     }
   };
@@ -165,7 +168,9 @@ const PlaceInfoContainer = ({
                 src="/Add Square.svg"
                 alt="link"
                 className="w-5 h-5 m-2 cursor-pointer"
-                onClick={()=>{handleAddPopups("schedule")}}
+                onClick={() => {
+                  handleAddPopups("schedule");
+                }}
               />
             </div>
           </div>
@@ -185,7 +190,14 @@ const PlaceInfoContainer = ({
               <img src="/Phone.svg" alt="phone" className="w-5 h-5 m-2" />
               <p className="text-gray-600 mt-2">{phone}</p>
             </div>
-            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2 cursor-pointer" onClick={()=>{handleAddPopups("phone")}} />
+            <img
+              src="/Add Square.svg"
+              alt="link"
+              className="w-5 h-5 m-2 cursor-pointer"
+              onClick={() => {
+                handleAddPopups("phone");
+              }}
+            />
           </div>
           <div className="flex justify-between items-center">
             <div className="flex">
@@ -196,7 +208,14 @@ const PlaceInfoContainer = ({
                 </a>
               </p>
             </div>
-            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2 cursor-pointer" onClick={()=>{handleAddPopups("link")}} />
+            <img
+              src="/Add Square.svg"
+              alt="link"
+              className="w-5 h-5 m-2 cursor-pointer"
+              onClick={() => {
+                handleAddPopups("link");
+              }}
+            />
           </div>
         </div>
 
@@ -216,20 +235,20 @@ const PlaceInfoContainer = ({
         </div>
       </div>
 
-      {isPopupOpen==="schedule" && (
+      {isPopupOpen === "schedule" && (
         <AddSchedulePopup
           weeklySchedule={weeklySchedule}
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}
         />
       )}
-      {isPopupOpen==="phone" && (
+      {isPopupOpen === "phone" && (
         <AddPhonePopup
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}
         />
       )}
-      {isPopupOpen==="link" && (
+      {isPopupOpen === "link" && (
         <AddLinkPopup
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}

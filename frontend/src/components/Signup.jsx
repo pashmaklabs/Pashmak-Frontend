@@ -41,7 +41,8 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
   };
 
   const hasPasswordError = Object.values(passwordErrors).some((e) => e.isError);
-  const passwordsMatch = password === confirmPassword && ( password || confirmPassword);
+  const passwordsMatch =
+    password === confirmPassword && (password || confirmPassword);
 
   useEffect(() => {
     validatePassword(password);
@@ -59,42 +60,38 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
     }
   };
 
-  const isFormValid = firstname && lastname && password && confirmPassword && !hasPasswordError && passwordsMatch;
+  const isFormValid =
+    firstname &&
+    lastname &&
+    password &&
+    confirmPassword &&
+    !hasPasswordError &&
+    passwordsMatch;
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
       <div className="relative rounded-[24px] bg-white shadow-2xl border border-gray-100 w-full max-w-[420px] overflow-hidden sm:h-auto lg:h-auto lg:w-[474px]">
         {/* Close Button */}
         <button
-          onClick={() => handleCloseSignUp() }
+          onClick={() => handleCloseSignUp()}
           className="bg-transparent border-none absolute right-4 top-4 z-10 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
         >
-          <img
-            src="/Close_round.svg"
-            alt="close"
-            className="w-5 h-5"
-          />
+          <img src="/Close_round.svg" alt="close" className="w-5 h-5" />
         </button>
 
         {/* Header Section */}
         <div className="pt-8 pb-4 px-8 bg-gradient-to-b from-gray-50 to-white">
           <div className="flex flex-col items-center text-center">
             <div className="absolute top-4 left-8">
-              <img
-                src="/logo.svg"
-                alt="Logo"
-                className="w-12 h-12"
-              />
+              <img src="/logo.svg" alt="Logo" className="w-12 h-12" />
             </div>
-            
+
             <div className="space-y-2">
-              <h2 className="pt-8 text-2xl font-bold text-gray-800">
-                ثبت‌نام
-              </h2>
+              <h2 className="pt-8 text-2xl font-bold text-gray-800">ثبت‌نام</h2>
               <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
                 اطلاعات خود را برای ایجاد حساب کاربری وارد کنید
               </p>
-              <div 
+              <div
                 className="inline-block px-3 py-1 bg-blue-50 rounded-lg text-blue-700 text-sm font-medium"
                 style={{ direction: "ltr", unicodeBidi: "bidi-override" }}
               >
@@ -110,7 +107,10 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-3" dir="rtl">
               <div className="space-y-1">
-                <label htmlFor="firstname" className="block text-xs font-medium text-gray-700 text-right">
+                <label
+                  htmlFor="firstname"
+                  className="block text-xs font-medium text-gray-700 text-right"
+                >
                   نام
                 </label>
                 <input
@@ -127,9 +127,12 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-1">
-                <label htmlFor="lastname" className="block text-xs font-medium text-gray-700 text-right">
+                <label
+                  htmlFor="lastname"
+                  className="block text-xs font-medium text-gray-700 text-right"
+                >
                   نام خانوادگی
                 </label>
                 <input
@@ -149,7 +152,10 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
             </div>
             {/* Password Field */}
             <div className="space-y-1">
-              <label htmlFor="password" className="block text-xs font-medium text-gray-700 text-right">
+              <label
+                htmlFor="password"
+                className="block text-xs font-medium text-gray-700 text-right"
+              >
                 رمز عبور
               </label>
               <div className="relative">
@@ -166,13 +172,17 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                             placeholder:text-gray-400 text-sm transition-all duration-200
                             focus:outline-none focus:ring-2 focus:bg-white hover:bg-white
                             disabled:opacity-50 disabled:cursor-not-allowed
-                            ${password === "" ? "border-gray-200 focus:ring-primary/20 focus:border-primary" :
-                              hasPasswordError ? "border-red-400 focus:ring-red-400/20 focus:border-red-400" :
-                              "border-green-400 focus:ring-green-400/20 focus:border-green-400"}`}
+                            ${
+                              password === ""
+                                ? "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                                : hasPasswordError
+                                  ? "border-red-400 focus:ring-red-400/20 focus:border-red-400"
+                                  : "border-green-400 focus:ring-green-400/20 focus:border-green-400"
+                            }`}
                   disabled={isLoading}
                   required
                 />
-                
+
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -186,24 +196,35 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                   )}
                 </button>
               </div>
- {/* Password Strength Indicator */}
+              {/* Password Strength Indicator */}
               <div className="mt-2">
                 {/* Progress Bar */}
                 <div dir="rtl" className="flex items-center gap-2 mb-2">
                   <div className="flex-1 bg-gray-200 rounded-full h-1.5">
-                    <div 
-                    
+                    <div
                       className={`h-1.5 rounded-full transition-all duration-300 ${
-                        !isTouched ? 'w-0 bg-gray-300' :
-                        hasPasswordError ? 'w-1/3 bg-red-400' : 'w-full bg-green-400'
+                        !isTouched
+                          ? "w-0 bg-gray-300"
+                          : hasPasswordError
+                            ? "w-1/3 bg-red-400"
+                            : "w-full bg-green-400"
                       }`}
                     />
                   </div>
-                  <span className={`text-xs font-medium ${
-                    !isTouched ? 'text-gray-400' :
-                    hasPasswordError ? 'text-red-500' : 'text-green-600'
-                  }`}>
-                    {!isTouched ? 'رمز عبور' : hasPasswordError ? 'ضعیف' : 'قوی'}
+                  <span
+                    className={`text-xs font-medium ${
+                      !isTouched
+                        ? "text-gray-400"
+                        : hasPasswordError
+                          ? "text-red-500"
+                          : "text-green-600"
+                    }`}
+                  >
+                    {!isTouched
+                      ? "رمز عبور"
+                      : hasPasswordError
+                        ? "ضعیف"
+                        : "قوی"}
                   </span>
                 </div>
 
@@ -217,15 +238,20 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                           error.isError ? "text-red-500" : "text-green-600"
                         }`}
                       >
-                        <div className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                          error.isError ? "bg-red-400" : "bg-green-400"
-                        }`} />
-                        <span className="truncate">{
-                          key === 'minLength' ? 'حداقل ۸ کاراکتر' :
-                          key === 'hasUpperCase' ? 'حرف بزرگ' :
-                          key === 'hasNumber' ? 'عدد' :
-                          'کاراکتر خاص'
-                        }</span>
+                        <div
+                          className={`w-2 h-2 rounded-full transition-colors duration-200 ${
+                            error.isError ? "bg-red-400" : "bg-green-400"
+                          }`}
+                        />
+                        <span className="truncate">
+                          {key === "minLength"
+                            ? "حداقل ۸ کاراکتر"
+                            : key === "hasUpperCase"
+                              ? "حرف بزرگ"
+                              : key === "hasNumber"
+                                ? "عدد"
+                                : "کاراکتر خاص"}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -235,7 +261,10 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
 
             {/* Confirm Password Field */}
             <div className="space-y-1">
-              <label htmlFor="confirmPassword" className="block text-xs font-medium text-gray-700 text-right">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-xs font-medium text-gray-700 text-right"
+              >
                 تکرار رمز عبور
               </label>
               <div className="relative">
@@ -249,19 +278,23 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                     placeholder:text-gray-400 text-sm transition-all duration-200
                     focus:outline-none focus:ring-2 focus:bg-white hover:bg-white
                     disabled:opacity-50 disabled:cursor-not-allowed
-                    ${confirmPassword === "" ? "border-gray-200 focus:ring-primary/20 focus:border-primary" :
-                      passwordsMatch ? "border-green-400 focus:ring-green-400/20 focus:border-green-400" :
-                      "border-red-400 focus:ring-red-400/20 focus:border-red-400"}`}
-                      disabled={isLoading}
-                      required
-                      />
-                
+                    ${
+                      confirmPassword === ""
+                        ? "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                        : passwordsMatch
+                          ? "border-green-400 focus:ring-green-400/20 focus:border-green-400"
+                          : "border-red-400 focus:ring-red-400/20 focus:border-red-400"
+                    }`}
+                  disabled={isLoading}
+                  required
+                />
+
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="bg-transparent border-none absolute left-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
                   disabled={isLoading}
-                  >
+                >
                   {showConfirmPassword ? (
                     <EyeIcon className="w-4 h-4 text-gray-500" />
                   ) : (
@@ -269,15 +302,24 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                   )}
                 </button>
               </div>
-              
+
               {confirmPassword && (
-                <div dir="rtl" className={`flex items-center gap-2 text-xs mt-1 ${
-                  passwordsMatch ? "text-green-600" : "text-red-500"
-                }`}>
-                  <div className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                          passwordsMatch ? "bg-green-400" : "bg-red-400"
-                        }`} />
-                  <span>{passwordsMatch ? "رمز عبور مطابقت دارد" : "رمز عبور مطابقت ندارد"}</span>
+                <div
+                  dir="rtl"
+                  className={`flex items-center gap-2 text-xs mt-1 ${
+                    passwordsMatch ? "text-green-600" : "text-red-500"
+                  }`}
+                >
+                  <div
+                    className={`w-2 h-2 rounded-full transition-colors duration-200 ${
+                      passwordsMatch ? "bg-green-400" : "bg-red-400"
+                    }`}
+                  />
+                  <span>
+                    {passwordsMatch
+                      ? "رمز عبور مطابقت دارد"
+                      : "رمز عبور مطابقت ندارد"}
+                  </span>
                 </div>
               )}
             </div>
@@ -289,9 +331,10 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                 disabled={!isFormValid || isLoading}
                 className={`w-full py-3 px-6 rounded-xl font-medium text-white text-sm
                           transition-all duration-200 transform
-                          ${isFormValid 
-                            ? 'bg-primary hover:bg-primary/90 hover:scale-[0.99] active:scale-[0.98] shadow-lg hover:shadow-xl' 
-                            : 'bg-gray-300 cursor-not-allowed'
+                          ${
+                            isFormValid
+                              ? "bg-primary hover:bg-primary/90 hover:scale-[0.99] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                              : "bg-gray-300 cursor-not-allowed"
                           }
                           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
               >
@@ -304,7 +347,7 @@ const Signup = ({ handleSignup, isLoading, handleCloseSignUp }) => {
                   "ثبت‌نام"
                 )}
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => handleCloseSignUp()}

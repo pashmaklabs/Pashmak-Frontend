@@ -69,28 +69,31 @@ const MainLayout = () => {
         setSearchWithHistory={setSearchWithHistory}
       />
       {login && <Login />}
-      {(profile||changePassword) && <Profile />}
+      {(profile || changePassword) && <Profile />}
 
       {/* {changePassword && <ChangePassword />} */}
 
-      {((place && expendSearch) || search) && (searchResult && searchResult.length > 0) && !resetSearch && (
-        <SearchLocation
-          setResetSearch={setResetSearch}
-          setExpendSearch={setExpendSearch}
-          expendSearch={expendSearch}
-          searchResult={searchResult}
-        />
-      )}
-        {bookmarks && (
+      {((place && expendSearch) || search) &&
+        searchResult &&
+        searchResult.length > 0 &&
+        !resetSearch && (
+          <SearchLocation
+            setResetSearch={setResetSearch}
+            setExpendSearch={setExpendSearch}
+            expendSearch={expendSearch}
+            searchResult={searchResult}
+          />
+        )}
+      {bookmarks && (
         <BookmakrsContainer
           expendBookmarksList={expendBookmarksList}
           setexpendBookmarksList={setexpendBookmarksList}
           setBookmarksLocationsPoints={setBookmarksLocationsPoints}
-          />
+        />
       )}
       {place && (
         <PlaceDetail
-          expendSearch={expendSearch&&!resetSearch}
+          expendSearch={expendSearch && !resetSearch}
           searchClosed={resetSearch}
           setExpendSearch={setExpendSearch}
           hasSearch={hasSearch}

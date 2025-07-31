@@ -10,7 +10,7 @@ export default function AddBookmarkGroupForm({
 }) {
   const [groupName, setGroupName] = useState("");
 
-  //api2 ezafe kardane goroohe jadiiiiiiiiiiiiiiiiiiiiiiiid
+  //api2 ezafe kardane goroohe jadid
   const { mutate: addNewGroup, isLoading: isAddingNewGroup } = usePostRequest();
   const SubmitCreateGroupFrom = (e, groupName) => {
     e.preventDefault();

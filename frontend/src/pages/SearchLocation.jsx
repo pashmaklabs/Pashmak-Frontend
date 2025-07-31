@@ -20,8 +20,7 @@ const SearchLocation = ({
   };
   const closeSearchPanel = () => {
     setResetSearch(true);
-    if(!location.pathname.includes(routes.place))
-      navigate(routes.map);
+    if (!location.pathname.includes(routes.place)) navigate(routes.map);
   };
   return (
     <>

@@ -60,7 +60,7 @@ const Map = ({
     try {
       const searchResultValue = await searchAsync({
         endpoint: "/places/",
-        params: { q: input },
+        params: { q: input, agentic: true },
       });
 
       const { places: newPlaces } = searchResultValue;
@@ -97,9 +97,8 @@ const Map = ({
   }, [location.pathname]);
 
   useEffect(() => {
-    console.log(resetSearch)
-    if(resetSearch===true)
-      setPlaces([]);
+    console.log(resetSearch);
+    if (resetSearch === true) setPlaces([]);
   }, [resetSearch]);
 
   return (
@@ -127,8 +126,8 @@ const Map = ({
       )}
       {!profile && (
         <LocateButton
-        setUserLocation={setUserLocation}
-        userLocation={userLocation}
+          setUserLocation={setUserLocation}
+          userLocation={userLocation}
         />
       )}
 
@@ -137,7 +136,9 @@ const Map = ({
         staticPoints={
           isLocationGroup && bookmarkedLocationsPoints
             ? bookmarkedLocationsPoints
-            : resetSearch? [] : places
+            : resetSearch
+              ? []
+              : places
         }
         onPointClick={handlePointClick}
       />

@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
-import { isUserLoggedIn } from "../utils/auth"
+import { isUserLoggedIn } from "../utils/auth";
 import { useLoginStartPath } from "../stores/login";
-
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { loginStartPath, setLoginStartPath } = useLoginStartPath();
-  
+
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -191,10 +190,11 @@ const Sidebar = () => {
               </button>
               <button
                 onClick={() => {
-                  setLoginStartPath(window.location.pathname + window.location.hash)
+                  setLoginStartPath(
+                    window.location.pathname + window.location.hash,
+                  );
                   setShowLoginPopup(false);
                   navigate("/login");
-                  
                 }}
                 className="bg-white text-blue-500 px-4 py-2 rounded"
               >

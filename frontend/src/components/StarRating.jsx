@@ -2,10 +2,13 @@ import React from "react";
 
 const StarRating = ({ rating, reviews }) => {
   // Render stars for the rating
+  const lessAccurateRating = parseFloat(rating.toFixed(1));
   const renderStars = () => {
     return [...Array(5)].map((_, index) => {
-      const isFullStar = index < Math.floor(rating);
-      const isHalfStar = index === Math.floor(rating) && rating % 1 !== 0;
+      const isFullStar = index < Math.floor(lessAccurateRating);
+      const isHalfStar =
+        index === Math.floor(lessAccurateRating) &&
+        lessAccurateRating % 1 !== 0;
 
       return (
         <svg
@@ -54,7 +57,7 @@ const StarRating = ({ rating, reviews }) => {
       <div className="flex items-center mr-1">
         {renderStars()}
         <p className="text-xs text-gray-600 mr-1 mt-1">
-          {rating} {reviews !== 0 && "(" + reviews + ")"}
+          {lessAccurateRating} {reviews !== 0 && "(" + reviews + ")"}
         </p>
       </div>
     </>

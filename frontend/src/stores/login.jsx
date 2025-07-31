@@ -13,7 +13,8 @@ const useEmail = create((set) => ({
 
 const useLoginStartPath = create((set) => ({
   loginStartPath: "",
-  setLoginStartPath: (newLoginStartPath) => set({ loginStartPath: newLoginStartPath }),
+  setLoginStartPath: (newLoginStartPath) =>
+    set({ loginStartPath: newLoginStartPath }),
 }));
 
 const useUserLogin = create((set) => ({
