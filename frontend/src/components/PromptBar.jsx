@@ -5,6 +5,9 @@ import TagContainer from "./TagContainer";
 import TagRenderer from "./TagRenderer";
 import useIsMobile from "../hooks/useIsMobile";
 import routes from "../routes/Routes";
+import { useEmail, useUserLogin } from "../stores/login";
+import { toast } from "react-toastify";
+import { hasSemanticSearchAccess } from "../utils/auth"
 
 export default function PromptBar({
   resetSearch,
@@ -21,6 +24,9 @@ export default function PromptBar({
   const [availableTags, setAvailableTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [inputPrompt, setInputPrompt] = useState("");
+  const [searchMode, setSearchMode] = useState("normal");
+  const { userLogin, setUserLogin } = useUserLogin();
+  const { email, setEmail } = useEmail();
   // const [isSearching, setIsSearching] = useState(false);
   // const [isExpanded, setIsExpanded] = useState(false);
   const [PromptBarState, setPromptBarState] = useState("center"); // center - center-wide - right
@@ -28,6 +34,17 @@ export default function PromptBar({
   const promptBarRef = useRef(null);
   const textareaRef = useRef(null);
   const location = useLocation();
+
+  const iconVariants = {
+    initial: { y: 5, opacity: 0 },
+    animate: {
+      y: -5,
+      opacity: 1,
+      rotate: [0, -10, 10, -10, 10, 0],
+      transition: { duration: 0.6 },
+    },
+    exit: { y: 5, opacity: 0, rotate: 0, transition: { duration: 0.3 } },
+  };
 
   const isSearchDisabled =
     inputPrompt.trim() === "" && selectedTags.length === 0;
@@ -42,7 +59,7 @@ export default function PromptBar({
       setPromptBarState("right");
       setResetSearch(false);
       setExpendSearch(false);
-      submitData({ input: searchWithHistory.query, tags: selectedTags });
+      submitData({ input: searchWithHistory.query, tags: selectedTags, agentic: searchMode==="agentic"? true : false });
       console.log(expendSearch);
       // console.log("in prompt")
       // console.log(searchWithHistory.isSearching)
@@ -124,6 +141,23 @@ export default function PromptBar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [PromptBarState]);
 
+  const toggleAgenticMode = () => {
+    if(searchMode === "normal") {
+      if(userLogin) {
+        if(hasSemanticSearchAccess(email)) {
+          setSearchMode("llm")
+        } else {
+          toast.error("شما به این گزینه دسترسی ندارید")
+        }
+      } else {
+        toast.error("ابتدا وارد شوید")
+      }
+    } else {
+      setSearchMode("normal")
+      // setSearchMode((prev) => (prev === "normal" ? "llm" : "normal"))
+    }
+
+  }
   return (
     <>
       {/* Prompt Bar */}
@@ -162,14 +196,67 @@ export default function PromptBar({
         {/* Submit Button */}
         {PromptBarState != "center" && (
           <button
-            onClick={handleSubmit}
-            disabled={isSearchDisabled}
-            className={`absolute ${promptBarRef == "right" ? "bottom-[30px]" : "bottom-[12px]"} right-3 w-[40px] h-[40px] rounded-full bg-transparent p-0 border-none focus:outline-none hover:scale-110 z-[12]`}
-            aria-label="Submit search"
+          onClick={handleSubmit}
+          disabled={isSearchDisabled}
+          className={`absolute ${promptBarRef == "right" ? "bottom-[30px]" : "bottom-[12px]"} right-3 w-[40px] h-[40px] rounded-full bg-transparent p-0 border-none focus:outline-none hover:scale-110 z-[12]`}
+          aria-label="Submit search"
           >
             <img src="/search.svg" alt="Search" className="w-full h-full" />
           </button>
         )}
+
+        {/* Agentic Switch */}
+        {PromptBarState != "center" && (
+        <div className="absolute bottom-[12px] left-3 z-[12]">
+          {/* Icon container */}
+          <div className="absolute bottom-full mb-1 left-0 w-full flex justify-start pointer-events-none">
+            <AnimatePresence mode="wait">
+              {searchMode === "llm" ? (
+                <motion.span
+                  key="robot"
+                  className="text-base"
+                  variants={iconVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  >
+                  🤖
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="search"
+                  className="text-base"
+                  variants={iconVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  >
+                  🔍
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Toggle Switch */}
+          <label className="relative bottom-3 inline-block w-8 h-4 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={searchMode === "llm"}
+              onChange={() => toggleAgenticMode() }
+              className="sr-only"
+            />
+            <div className={`block w-full h-full rounded-full ${
+                searchMode === "llm" ? "bg-[#A78BFA]" : "bg-gray-300"
+              }`}></div>
+            <div
+              className={`absolute top-0 left-0 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                searchMode === "llm" ? "translate-x-4" : "translate-x-0"
+              }`}
+            />
+          </label>
+        </div>
+            )}
+
 
         {/* Text Area and Tag Renderer */}
         <textarea
@@ -187,7 +274,7 @@ export default function PromptBar({
           placeholder={
             PromptBarState == "center-wide" ? "" : "کجا میخواهید بروید؟"
           }
-          className="w-full bg-red-100 pr-6 pl-5 z-[10] text-black text-[16px] leading-6 p-2 resize-none outline-none border-none bg-transparent scrollbar-hide"
+          className="w-full pr-6 pl-5 z-[10] text-black text-[16px] leading-6 p-2 resize-none outline-none border-none bg-transparent scrollbar-hide"
           style={{
             height: setPromptBarState == "right" ? "100px" : "85px",
             marginTop: "0.5rem",

@@ -50,7 +50,7 @@ const Map = ({
     return ["کتابخانه", "طبیعت"];
   };
 
-  const handleSubmitData = async ({ input, tags }) => {
+  const handleSubmitData = async ({ input, tags, agentic }) => {
     setInput(input);
     setPlaces([]);
     setSearchResult([]);
@@ -60,7 +60,7 @@ const Map = ({
     try {
       const searchResultValue = await searchAsync({
         endpoint: "/places/",
-        params: { q: input, agentic: true },
+        params: { q: input, agentic: agentic },
       });
 
       const { places: newPlaces } = searchResultValue;

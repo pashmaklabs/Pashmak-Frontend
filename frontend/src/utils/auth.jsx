@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { AUTHORIZED_SEMANTIC_SEARCH_EMAILS } from "./constants";
 
 export const getUserLogin = () => {
   return Cookies.get("pashmak_authentication") || null;
@@ -14,4 +15,8 @@ export const removeUserLogin = () => {
 
 export const isUserLoggedIn = () => {
   return !!Cookies.get("pashmak_authentication");
+};
+
+export const hasSemanticSearchAccess = (email) => {
+  return AUTHORIZED_SEMANTIC_SEARCH_EMAILS .includes(email);
 };
