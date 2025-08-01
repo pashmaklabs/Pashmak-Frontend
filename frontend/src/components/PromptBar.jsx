@@ -7,7 +7,6 @@ import useIsMobile from "../hooks/useIsMobile";
 import routes from "../routes/Routes";
 import { useEmail, useUserLogin } from "../stores/login";
 import { toast } from "react-toastify";
-import { hasSemanticSearchAccess } from "../utils/auth";
 
 export default function PromptBar({
   resetSearch,
@@ -205,17 +204,12 @@ export default function PromptBar({
   const toggleAgenticMode = () => {
     if (searchMode === "normal") {
       if (userLogin) {
-        if (hasSemanticSearchAccess(email)) {
-          setSearchMode("llm");
-        } else {
-          toast.error("شما به این گزینه دسترسی ندارید");
-        }
+        setSearchMode("llm");
       } else {
         toast.error("ابتدا وارد شوید");
       }
     } else {
       setSearchMode("normal");
-      // setSearchMode((prev) => (prev === "normal" ? "llm" : "normal"))
     }
   };
   return (
