@@ -135,7 +135,7 @@ const SearchHistory = ({ onSearchSelect, onClearHistory }) => {
           </div>
         ) : searchHistory.length > 0 ? (
           <div className="space-y-3 pb-4">
-            {searchHistory.map(
+            {[...searchHistory].reverse().map(
               (item) =>
                 item.Query !== "" && (
                   <div
