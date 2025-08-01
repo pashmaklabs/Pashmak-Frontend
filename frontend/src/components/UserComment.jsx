@@ -4,7 +4,7 @@ import { ThumbsUp, ThumbsDown, Flag } from "lucide-react";
 import { toast } from "react-toastify";
 import { usePostRequest } from "../services/api";
 
-const UserComment = ({ comment }) => {
+const UserComment = ({ comment, setShowReportPopup, setReportedComment }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [likesCount, setLikesCount] = useState(comment.likes || 0);
   const [dislikesCount, setDislikesCount] = useState(comment.dislikes || 0);
@@ -84,8 +84,8 @@ const UserComment = ({ comment }) => {
   };
 
   const handleReport = () => {
-    setIsReported(true);
-    toast.success("گزارش شما ثبت شد.");
+    setShowReportPopup(true);
+    setReportedComment(comment);
   };
 
   return (
@@ -97,7 +97,11 @@ const UserComment = ({ comment }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
-            src={user.avatar_url.length>0? user.avatar_url : "/userProfilePlaceHolder.png"}
+            src={
+              user.avatar_url.length > 0
+                ? user.avatar_url
+                : "/userProfilePlaceHolder.png"
+            }
             alt="avatar"
             className="rounded-full w-11 h-11 border-2 border-gray-200"
           />

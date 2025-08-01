@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import ReportCommentForm from "./ReportCommentForm";
 
 import UserComment from "./UserComment";
 import CommentSubmitForm from "./CommentSubmitForm";
@@ -17,6 +18,8 @@ const CommentsList = ({
   const [comments, setComments] = useState([]);
   const [hasNext, setHasNext] = useState(false);
   const [nextPagePointer, setNextPagePointer] = useState("");
+  const [showReportPopup, setShowReportPopup] = useState(false);
+  const [reportedComment, setReportedComment] = useState({});
 
   const scrollRef = useRef(null);
 
@@ -95,25 +98,38 @@ const CommentsList = ({
   );
 
   const renderCommentsList = () => (
-    <div
-      ref={scrollRef}
-      onScroll={handleScroll}
-      className="h-full space-y-4 p-0 w-full overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden"
-    >
-      {comments.map(
-        (comment) =>
-          comment?.content?.length > 0 && (
-            <div key={comment.id}>
-              <UserComment comment={comment} />
-            </div>
-          ),
+    <>
+      {showReportPopup && (
+        <ReportCommentForm
+          setShowReportPopup={setShowReportPopup}
+          reportedComment={reportedComment}
+        />
       )}
-      {isLoadingMore && (
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="h-full space-y-4 p-0 w-full overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden"
+      >
+        {comments.map(
+          (comment) =>
+            comment?.content?.length > 0 && (
+              <div key={comment.id}>
+                <UserComment
+                  comment={comment}
+                  setShowReportPopup={setShowReportPopup}
+                  setReportedComment={setReportedComment}
+                />
+              </div>
+            ),
+        )}
+
+        {isLoadingMore && (
         <div className="flex flex-col justify-center items-center w-full p-2 float-center">
           <span className="text-gray-600 text-xl">دریافت نظرات بیشتر...</span>
         </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 
   if (showCommentForm && !isLoadingComments) {

@@ -18,5 +18,5 @@ export const isUserLoggedIn = () => {
 };
 
 export const hasSemanticSearchAccess = (email) => {
-  return AUTHORIZED_SEMANTIC_SEARCH_EMAILS .includes(email);
+  return AUTHORIZED_SEMANTIC_SEARCH_EMAILS.includes(email);
 };
