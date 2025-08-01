@@ -46,7 +46,7 @@ const PasswordLogin = ({
 
   const getInputBorderColor = () => {
     if (!isTouched) return "border-gray-200";
-    if (isValidPassword) return "border-green-400";
+    if (isValidPassword) return "border-gray-400";
     return "border-gray-200";
   };
 
@@ -107,7 +107,7 @@ const PasswordLogin = ({
                   value={password}
                   onChange={handlePasswordChange}
                   placeholder="رمز عبور خود را وارد کنید"
-                  className={`w-full px-4 py-4 pr-4 pl-12 text-right border-2 rounded-xl bg-gray-50 text-black 
+                  className={`text-gray-700 w-full px-4 py-4 pr-4 pl-12 text-right border-2 rounded-xl bg-gray-50 
                             placeholder:text-gray-400 transition-all duration-200
                             focus:outline-none focus:ring-4 focus:bg-white
                             hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed
