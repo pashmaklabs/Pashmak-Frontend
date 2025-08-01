@@ -107,7 +107,7 @@ const PasswordLogin = ({
                   value={password}
                   onChange={handlePasswordChange}
                   placeholder="رمز عبور خود را وارد کنید"
-                  className={`w-full px-4 py-4 pr-4 pl-12 text-right border-2 rounded-xl bg-gray-50 
+                  className={`w-full px-4 py-4 pr-4 pl-12 text-right border-2 rounded-xl bg-gray-50 text-black 
                             placeholder:text-gray-400 transition-all duration-200
                             focus:outline-none focus:ring-4 focus:bg-white
                             hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed

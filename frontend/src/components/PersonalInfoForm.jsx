@@ -187,7 +187,7 @@ const PersonalInfo = (props) => {
               <img
                 src={shownProfile || "./userProfilePlaceHolder2.png"}
                 alt="User"
-                className="rounded-full mt-2 min-w-[100px] max-w-[200px] aspect-square border-gray-400 border-[2px] object-cover"
+                className="rounded-full mt-2 w-[200px] h-[200px]  aspect-square border-gray-400 border-[2px] object-cover"
               />
               <div className="">
                 <label className="absolute bottom-[4%] left-1/2 -translate-x-1/2 bg-gray-200 pt-[6px] px-[6px] pb-0 rounded-full shadow cursor-pointer hover:bg-gray-300 transition">

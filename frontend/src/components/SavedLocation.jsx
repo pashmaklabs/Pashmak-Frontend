@@ -191,7 +191,7 @@ export default function SavedLocation({
           <div className="flex gap-x-4 items-center justify-center">
             <div className=" w-24 flex-shrink-0 rounded-lg overflow-hidden">
               <img
-                src={"/unnamed.png"}
+                src={place.image_urls&&place.image_urls.length>0?place.image_urls[0] : "/placeHolder.png" }
                 alt={place.name}
                 className="w-full h-full object-cover"
                 loading="lazy"

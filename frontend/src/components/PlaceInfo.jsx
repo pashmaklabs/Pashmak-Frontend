@@ -20,7 +20,7 @@ const PlaceInfoContainer = ({
 }) => {
   // Default values
   address = address || "آدرس رستوران";
-  phone = phone || "شماره تماس: 1234567890";
+  phone = phone || "شماره تماس: 09123432455";
   links = links || "https://example.com";
 
   const [isTimeExpanded, setIsTimeExpanded] = useState(false);
@@ -50,7 +50,8 @@ const PlaceInfoContainer = ({
   // Get today's schedule
   const today = new Date();
   const daysOfWeek = Object.keys(weeklySchedule);
-  const todayIndex = (today.getDay() + 6) % 7;
+  // const todayIndex = (today.getDay() + 6) % 7;
+  const todayIndex = 6;
   const todayName = daysOfWeek[todayIndex];
   const todayHours = weeklySchedule[todayName];
 

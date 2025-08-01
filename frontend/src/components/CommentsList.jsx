@@ -110,7 +110,7 @@ const CommentsList = ({
       )}
       {isLoadingMore && (
         <div className="flex flex-col justify-center items-center w-full p-2 float-center">
-          <span className="text-gray-900 text-3xl">دریافت نظرات بیشتر...</span>
+          <span className="text-gray-600 text-xl">دریافت نظرات بیشتر...</span>
         </div>
       )}
     </div>
@@ -133,7 +133,7 @@ const CommentsList = ({
   if (isLoadingComments) {
     return (
       <div className="flex flex-col justify-center items-center w-full p-2 float-center">
-        <span className="text-gray-900 text-3xl">دریافت نظرات...</span>
+        <span className="text-gray-600 text-xl">دریافت نظرات...</span>
       </div>
     );
   }

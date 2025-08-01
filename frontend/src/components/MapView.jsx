@@ -34,26 +34,28 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
 
-  const decodeParams = () => {
-    const hash = window.location.hash;
+const decodeParams = () => {
+  const hash = window.location.hash;
 
-    if (hash.startsWith("#c")) {
-      const [lat, lng, zoom] = hash
-        .slice(2)
-        .split("-")
-        .map((part) => part.replace(/[a-z]/g, ""));
-      // console.log("Decoded Params:", { lat, lng, zoom });
+  if (hash.startsWith("#c")) {
+    const match = hash.match(
+      /^#c(-?\d+(?:\.\d+)?)-l(-?\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)z/
+    );
+
+    if (match) {
+      const [, lat, lng, zoom] = match;
       return {
         initialCenter: [parseFloat(lng), parseFloat(lat)],
         initialZoom: parseFloat(zoom),
       };
     }
+  }
 
-    return {
-      initialCenter: defaultCenter,
-      initialZoom: defaultZoom,
-    };
+  return {
+    initialCenter: defaultCenter,
+    initialZoom: defaultZoom,
   };
+};
 
   // Initialize map
   useEffect(() => {
@@ -242,7 +244,7 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
         if (!source) return;
 
         const currentParams = new URLSearchParams(window.location.search); // searchParams are not updated inside useEffect so window.location.search is used
-        const encodedParams = `#c${center.lat.toFixed(6)}-${center.lng.toFixed(6)}-${zoom.toFixed(2)}z-0p`;
+        const encodedParams = `#c${center.lat.toFixed(6)}-l${center.lng.toFixed(6)}-${zoom.toFixed(2)}z-0p`;
         window.history.pushState(
           {},
           "",

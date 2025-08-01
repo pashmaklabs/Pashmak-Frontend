@@ -17,13 +17,12 @@ const PlaceDetail = ({
   setExpendSearch,
   searchClosed,
   hasSearch,
-  imageUrl,
 }) => {
-  imageUrl = imageUrl || "/placeHolder.png";
   const isMobile = useIsMobile();
   const [name, setName] = useState("");
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState(0);
+  const [imageUrl, setImageUrl] = useState("/placeHolder.png");
 
   const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
@@ -99,8 +98,7 @@ const PlaceDetail = ({
         },
         {
           onSuccess: (data) => {
-            // Handle the successful response here, e.g.:
-            // console.log("Point details:", data);
+            
           },
           onError: (error) => {
             if (error.response?.data?.message) {
@@ -136,6 +134,9 @@ const PlaceDetail = ({
         newSearchParams.set("lng", pointDetails.place.longitude);
         navigate(`${location.pathname}?${newSearchParams.toString()}`);
       }
+      if(pointDetails.place.image_urls && pointDetails.place.image_urls.length>0)
+        setImageUrl(pointDetails.place.image_urls[0].replace(/w\d+-h\d+/, 'w220-h220'))
+        // console.log(imageUrl)
     }
   }, [pointDetails]);
 
@@ -157,7 +158,6 @@ const PlaceDetail = ({
   const togglePlace = () => {
     setExpendPlace(!expendPlace);
   };
-
   return (
     <>
       {isMobile && (
@@ -188,7 +188,7 @@ const PlaceDetail = ({
             <img
               src={imageUrl}
               alt={name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
             {hasSearch && !expendSearch && !searchClosed ? (
               <div
