@@ -63,7 +63,7 @@ const ResetPassword = ({
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="relative rounded-[24px] bg-white shadow-2xl border border-gray-100 w-full max-w-[420px] overflow-hidden h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]">
+      <div className="relative rounded-[24px] bg-white shadow-2xl border border-gray-100 w-full max-w-[420px] overflow-hidden h-auto sm:w-[370px] lg:h-[584px] lg:w-[474px] lg:right-[calc(10vw)]">
         {/* Close Button */}
         <button
           onClick={handleCloseLoginFlow}
@@ -117,7 +117,7 @@ const ResetPassword = ({
         </div>
 
         {/* Main Content - Scrollable */}
-        <div className="px-8 pb-8 overflow-y-auto max-h-[calc(100%-240px)] lg:max-h-[calc(100%-280px)]">
+        <div className="px-8 pb-8 max-h-[calc(100%-240px)] lg:max-h-[calc(100%-280px)]">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Password Field */}
             <div className="space-y-1">
@@ -232,7 +232,7 @@ const ResetPassword = ({
                   disabled={isLoading}
                 >
                   {showConfirmPassword ? (
-                    <EyeSlashIcon className="w-4 h-4 text-gray-500" />
+                    <EyeOffIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <EyeIcon className="w-4 h-4 text-gray-500" />
                   )}
