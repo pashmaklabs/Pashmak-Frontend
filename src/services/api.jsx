@@ -2,7 +2,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 
-const API_BASE_URL = "https://pashmak-api1.darkube.app";
+const API_BASE_URL = "https://pashmak.darkube.ir";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
