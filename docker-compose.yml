@@ -1,6 +1,6 @@
 services:
   pashmak_frontend:
-    image: pashmak_frontend
+    image: registry.hamdocker.ir/pashm-narm/pashmak-frontend:1.0.0
     build:
       context: .
       dockerfile: ./Dockerfile
