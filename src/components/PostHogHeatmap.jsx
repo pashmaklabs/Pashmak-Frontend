@@ -7,7 +7,7 @@ const PostHogHeatmap = () => {
   const isHeatmapActive = useRef(false);
 
   useEffect(() => {
-    const mainPages = ['/map'];
+    const mainPages = ['/map', "/login"];
     
     if (mainPages.includes(location.pathname)) {
       if (!isHeatmapActive.current) {
