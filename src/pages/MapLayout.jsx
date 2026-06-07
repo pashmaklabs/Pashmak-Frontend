@@ -69,9 +69,8 @@ const MainLayout = () => {
         setSearchWithHistory={setSearchWithHistory}
       />
       {login && <Login />}
-      {(profile || changePassword) && <Profile />}
-
-      {/* {changePassword && <ChangePassword />} */}
+      {profile && <Profile />}
+      {changePassword && <ChangePassword />}
 
       {((place && expendSearch) || search) &&
         searchResult &&
