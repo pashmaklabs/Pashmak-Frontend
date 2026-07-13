@@ -156,6 +156,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading, handleCloseLoginFlow }) => {
               )}
             </div>
 
+<<<<<<< HEAD
             <div className="flex justify-center my-4 min-h-[80px]">
               <div 
                 className="arcaptcha" 
@@ -165,6 +166,8 @@ const EmailInput = ({ handleEmailSubmit, isLoading, handleCloseLoginFlow }) => {
               ></div>
             </div>
 
+=======
+>>>>>>> origin/feature/e2e-tests
 
 
 

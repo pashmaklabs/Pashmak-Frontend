@@ -61,6 +61,9 @@ const Login = () => {
           // اگر کپچا اشتباه باشد، ویجت را ریست می‌کنیم
           window.arcaptcha?.reset();
           
+          // اگر کپچا اشتباه باشد، ویجت را ریست می‌کنیم
+          window.arcaptcha?.reset();
+          
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
@@ -191,6 +194,14 @@ const Login = () => {
 
       <PageTransition key={step}>
         {step === "email" && (
+          <div className="flex flex-col gap-4">
+            <EmailInput
+              handleEmailSubmit={handleEmailSubmit}
+              isLoading={isSubmitting}
+              handleCloseLoginFlow={handleCloseLoginFlow}
+            />
+
+          </div>
           <div className="flex flex-col gap-4">
             <EmailInput
               handleEmailSubmit={handleEmailSubmit}
