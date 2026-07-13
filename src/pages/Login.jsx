@@ -31,12 +31,12 @@ const Login = () => {
 
   const handleEmailSubmit = (email) => {
     // --- تغییر جدید برای ارکپچا ---
-    const captchaToken = window.arcaptcha?.getArcToken();
+   // const captchaToken = window.arcaptcha?.getArcToken();
     
-    if (!captchaToken && step === "email") {
-     toast.error("لطفاً تیک کپچا را بزنید");
-    return;
-    }
+    //if (!captchaToken && step === "email") {
+      //toast.error("لطفاً تیک کپچا را بزنید");
+      //return;
+    //}
     // ----------------------------
 
     if (email !== "") {
@@ -46,8 +46,7 @@ const Login = () => {
       { 
         url: "/auth/otp/send", 
         data: { 
-          email,
-          "arcaptcha-token": captchaToken // ارسال توکن به بک‌اِند
+          email,//          "arcaptcha-token": captchaToken // ارسال توکن به بک‌اِند
         } 
       },
       {
@@ -58,9 +57,6 @@ const Login = () => {
         },
         onError: (error) => {
           console.error("Error checking email:", error);
-          // اگر کپچا اشتباه باشد، ویجت را ریست می‌کنیم
-          window.arcaptcha?.reset();
-          
           // اگر کپچا اشتباه باشد، ویجت را ریست می‌کنیم
           window.arcaptcha?.reset();
           
@@ -194,14 +190,6 @@ const Login = () => {
 
       <PageTransition key={step}>
         {step === "email" && (
-          <div className="flex flex-col gap-4">
-            <EmailInput
-              handleEmailSubmit={handleEmailSubmit}
-              isLoading={isSubmitting}
-              handleCloseLoginFlow={handleCloseLoginFlow}
-            />
-
-          </div>
           <div className="flex flex-col gap-4">
             <EmailInput
               handleEmailSubmit={handleEmailSubmit}
