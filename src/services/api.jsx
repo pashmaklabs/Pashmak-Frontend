@@ -2,7 +2,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 
-const API_BASE_URL = "/api";
+const API_BASE_URL = "http://localhost:8080";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
