@@ -80,7 +80,7 @@ const ChangePassword = () => {
       },
     );
 
-    navigate(routes.home);
+   // navigate(routes.home);
   };
 
   return (

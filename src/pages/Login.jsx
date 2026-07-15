@@ -28,25 +28,68 @@ const Login = () => {
   const { loginStartPath } = useLoginStartPath();
 
   const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
+  const { mutate: verifyCaptcha, isLoading: isVerifyingCaptcha } =
+    usePostRequest();
 
   const handleEmailSubmit = (email) => {
+    // --- تغییر جدید برای ارکپچا ---
+    const captchaToken = window.arcaptcha?.getArcToken();
+
+    if (!captchaToken && step === "email") {
+      toast.error("لطفاً تیک کپچا را بزنید");
+      return;
+    }
+    // ----------------------------
+
     if (email !== "") {
       setEmail(email);
     }
-    submitEmail(
-      { url: "/auth/otp/send", data: { email } },
+
+    // مرحله اول: تأیید کپچا از طریق اندپوینت مجزا
+    verifyCaptcha(
       {
-        onSuccess: (data) => {
-          setUserExists(data.userExists);
-          setStep("verification");
-          toast.success("کد ورود به ایمیل شما ارسال شد.");
+        url: "/captcha/verify",
+        data: {
+          token: captchaToken,
+        },
+      },
+      {
+        onSuccess: () => {
+          // مرحله دوم: بعد از تأیید موفق کپچا، ارسال OTP
+          submitEmail(
+            {
+              url: "/auth/otp/send",
+              data: {
+                email,
+              },
+            },
+            {
+              onSuccess: (data) => {
+                setUserExists(data.userExists);
+                setStep("verification");
+                toast.success("کد ورود به ایمیل شما ارسال شد.");
+              },
+              onError: (error) => {
+                console.error("Error checking email:", error);
+                window.arcaptcha?.reset();
+
+                if (error.response?.data?.message) {
+                  toast.error(error.response.data.message);
+                } else {
+                  toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+                }
+              },
+            },
+          );
         },
         onError: (error) => {
-          console.error("Error checking email:", error);
+          console.error("Error verifying captcha:", error);
+          window.arcaptcha?.reset();
+
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
-            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+            toast.error("تأیید کپچا ناموفق بود. دوباره تلاش کنید.");
           }
         },
       },
@@ -173,11 +216,13 @@ const Login = () => {
 
       <PageTransition key={step}>
         {step === "email" && (
-          <EmailInput
-            handleEmailSubmit={handleEmailSubmit}
-            isLoading={isSubmitting}
-            handleCloseLoginFlow={handleCloseLoginFlow}
-          />
+          <div className="flex flex-col gap-4">
+            <EmailInput
+              handleEmailSubmit={handleEmailSubmit}
+              isLoading={isSubmitting || isVerifyingCaptcha}
+              handleCloseLoginFlow={handleCloseLoginFlow}
+            />
+          </div>
         )}
         {step === "verification" && (
           <VerificationCode
