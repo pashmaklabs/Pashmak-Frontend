@@ -60,7 +60,7 @@ const Map = ({
     try {
       const searchResultValue = await searchAsync({
         endpoint: "/places/",
-        params: { q: input, agentic: agentic },
+        params: { q: input},
       });
 
       const { places: newPlaces } = searchResultValue;
